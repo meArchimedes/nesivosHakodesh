@@ -280,10 +280,8 @@ console.log('test', this.NewMaamar)
     this.api.AddMaamar(this.NewMaamar, success => {
     this.util.loadingStop();
 
-    //if (details) {
-      this.util.navigate('maamarim/' + success.maamarID)
-      this.modalRef.hide()
-    //}
+    this.util.navigate('maamarim/' + success.maamarID)
+    this.modalRef.hide()
 
       this.onClose.next({
         data: success
