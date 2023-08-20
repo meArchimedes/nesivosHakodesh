@@ -1,0 +1,12 @@
+<pdf-viewer [src]="pdfSrc"
+    [render-text]="false"
+    [zoom]="zoom"
+    [show-borders]="true"
+    (after-load-complete)="afterLoad($event)"
+    (page-rendered)="pageRendered($event)"
+    (pages-initialized)="pageInitialized($event)"
+    (text-layer-rendered)="textLayerRendered($event)"
+    (on-progress)="onProgress($event)"
+    (error)="onError($event)"
+    style="display: block;"
+></pdf-viewer>

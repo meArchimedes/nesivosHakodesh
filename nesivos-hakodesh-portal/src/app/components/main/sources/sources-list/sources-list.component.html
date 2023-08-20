@@ -1,0 +1,91 @@
+<button class="btn btn-primary p-absolute-btn" type="button" (click)="openCreateModal(false)">מקור חדש <i class="fas fa-plus-circle ml-2"></i></button>
+
+<ul class="general-tabs">
+  <li>
+    <a class="cursor-pointer active">מקורות</a>
+  </li>
+</ul>
+
+<div class="d-flex justify-content-between list-nav">
+  <button class="btn">הורדה <i class="fas fa-download"></i></button>
+  <div class="search-field form-control ml-3">
+    <input dir="rtl" type="search" placeholder="חיפוש מקורות" [(ngModel)]="search.SearchTerm" (ngModelChange)="loadSource()">
+    <i class="fas fa-search"></i>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th (click)="sort('SourceType')">מקור סוג <i class="cursor-pointer {{getSortClass('SourceType')}}"></i></th>
+      <th (click)="sort('SourceDetails')">פרטי מקור <i class="cursor-pointer {{getSortClass('SourceDetails')}}"></i></th>
+      <th (click)="sort('Notes')">הערות <i class="cursor-pointer {{getSortClass('Notes')}}"></i></th>
+      <th></th>
+      <th (click)="sort('PhoneNumber')">טלפון <i class="cursor-pointer {{getSortClass('PhoneNumber')}}"></i></th>
+      <th (click)="sort('FirstName')">שם <i class="cursor-pointer {{getSortClass('FirstName')}}"></i></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let Source of ListOfSources" (click)="openCreateModal(Source)">
+      <td class="text-left">
+        <div class="btn-group" dropdown (click)="$event.stopPropagation()">
+          <button class="btn btn-dots dropdown-toggle" dropdownToggle aria-controls="dropdown-basic">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem">
+              <a class="dropdown-item" href="#">
+                הוסף לפרויקט
+                <i class="fas fa-plus-circle ml-2"></i>
+              </a>
+            </li>
+            <li role="menuitem">
+              <a class="dropdown-item" href="#">
+                הוסף לתורה
+                <i class="fas fa-plus-circle ml-2"></i>
+              </a>
+            </li>
+            <li role="menuitem">
+              <a class="dropdown-item" (click)="openCreateModal(Source)">
+                עריכה
+                <i class="fas fa-pen ml-2"></i>
+              </a>
+            </li>
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem">
+              <button class="dropdown-item" (click)="openDeleteSource(Source.sourceID)">
+                מחיקה
+                <i class="fas fa-trash ml-2"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </td>
+     
+      <td>{{Source.typeValue}}</td>
+      <td>{{Source.sourceDetails}}</td>
+      <td>{{Source.notes}}</td>
+      <td></td>
+      <td>{{Source.phoneNumber}}</td>
+      <td >{{Source.fullName}}</td>
+      
+      <td>
+        <div class="custom-control custom-checkbox" (click)="$event.stopPropagation()">
+          <input type="checkbox" class="custom-control-input" id="select_1">
+          <label class="custom-control-label pointer" for="select_1"></label>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-pagination 
+    [page]="search.Page" 
+    [totalCount]="totalCount" 
+    [itemsPerPage]="search.ItemsPerPage" 
+    (pageChanged)="pageChanged($event)"
+    (itemsPerPageChanged)="itemsPerPageChanged($event)"
+    objectsText="מקורות"
+  ></app-pagination>

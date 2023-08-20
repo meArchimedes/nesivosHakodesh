@@ -1,0 +1,37 @@
+helle world
+    
+    <div *ngFor = "let word of search.words">
+
+<label > Word:</label>
+<input type="text"  [(ngModel)]=" word.text"  name="text">
+<label> matchExactly</label>
+<input type="checkbox" [(ngModel)]="word.matchExactly" name="matchExactly">
+<label> DistanceWords</label>
+<input type="number" [(ngModel)]="word.DistanceWords">
+<label>In Order</label>
+<input type="checkbox" [(ngModel)]="word.inOrder" name="inOrder">
+<br>
+</div>
+
+
+<label> Topic</label>
+<input type="topic"  [(ngModel)]=" filters.topic"  name="topic">
+<label> Source</label>
+<input type="Source"  [(ngModel)]=" filters.Source"  name="Source">
+<label> Mammar Type</label>
+<input type="mammarType"  [(ngModel)]=" filters.mammarType"  name="mammarType">
+<label> Parsha</label>
+<input type="parsha"  [(ngModel)]=" filters.parsha"  name="parsha">
+<label> CreatedTime</label>
+<input type="createdTime"  [(ngModel)]=" filters.createdTime"  name="CreatedTime">
+<br>
+
+<button (click)="createWord()">create Word</button>
+
+
+
+<button (click)="newWord()">New Word</button>
+<button (click)="newSearch()" >New Search</button>
+
+
+

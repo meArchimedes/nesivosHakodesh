@@ -1,0 +1,157 @@
+<button class="btn btn-primary p-absolute-btn" type="button" (click)="Save()">לשמור <i class="fas fa-save"></i></button>
+
+<div class="details-page-wrapper">
+  <div class="content-column">
+    <div class="content-header">
+      <div class="editable main-title">
+       <!-- <h3 class="inner">.{{TorahParagraphs.title}}</h3>-->
+        <h3 dir="rtl" contentEditable class="inner" [textContent]="TorahParagraphs.title" (input)="TorahParagraphs.title = $event.target.innerText"></h3>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <button class="btn" (click)="openDeleteMaamar()">
+          מחיקה
+          <i class="fas fa-trash ml-2"></i>
+        </button>
+        <div class="breadcrumbs">
+          <a>עודכן לאחרונה בתאריך {{util.getHebrewDateNames(TorahParagraphs?.lastUpdatedTime).dwy}} ע״י {{TorahParagraphs.lastUpdatedUser?.firstName}} {{TorahParagraphs.lastUpdatedUser?.lastName}} </a>
+          •
+          <a>נוצר בתאריך {{util.getHebrewDateNames(TorahParagraphs?.createdTime).dwy}} ע״י {{TorahParagraphs.createdUser?.firstName}} {{TorahParagraphs.createdUser?.lastName}}</a>
+          •
+          <a>{{TorahParagraphs.torahID}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="content-wrapper">
+      <div class="content-nav">
+        <ul class="tabs-list">
+          <li class="tab" [ngClass]="{ 'active': activeTab === tabs.links }" (click)="activeTab = tabs.links">מאמרים מקושרים</li>
+          <li class="tab" [ngClass]="{ 'active': activeTab === tabs.generalInfo }" (click)="activeTab = tabs.generalInfo">פרטים כלליים</li>
+        </ul>
+        <div *ngIf="activeTab === tabs.links">
+          <ul class="links-list">
+            <button class="btn add-new-link d-flex justify-content-between" (click)="openMergeModal()">
+              <i class="fas fa-plus-circle"></i>
+              מאמר מקושר חדש
+            </button>
+            <li *ngFor="let MaamarLink of TorahParagraphs.maamarLinks" [class.active]="MaamarLink.open">
+              <div class="link-header" (click)="MaamarLink.open = !MaamarLink.open">
+                <i class="far fa-trash-alt" *ngIf="!MaamarLink.open" (click)="openDeleteMaamar(MaamarLink, $event)"></i>
+                <i class="fas fa-external-link-alt"(click)="openMaamarLink(MaamarLink)"></i>
+                <div>
+                  <div class="title">{{MaamarLink.maamar.title}}</div>
+               
+                  <div dir="rtl" class="points">{{MaamarLink.maamar.maamarID}} • {{MaamarLink.maamar.typeValue}} • {{MaamarLink.maamar.parsha}} • {{MaamarLink.maamar.locationDetails}}</div>
+                </div>
+                <i class="fas fa-long-arrow-alt-right ml-3"></i>
+              </div>
+              <div class="link-content">
+                <h6>{{MaamarLink.maamar.title}}</h6>
+                <p *ngFor="let Paragraph of MaamarLink.maamar.maamarParagraphs">{{Paragraph.text}}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="activeTab === tabs.generalInfo">
+          <ul class="general-info-list">
+            <li>
+              <i class="fas fa-clipboard-check"></i>
+              <div class="propertie">מזהה תורה</div>
+              <div class="value">{{TorahParagraphs.torahID}}</div>
+            </li>
+            <!--<li>
+              <i class="fas fa-bookmark"></i>
+              <div class="propertie">שם הספר</div>
+              <div class="value">{{TorahParagraphs.sefer?.name}}</div>
+            </li>-->
+
+            <li dropdown dropdownToggle aria-controls="dropdown-basic">
+              <i class="far fa-list-alt"></i>
+              <div class="propertie">שם הספר</div>
+              <div class="value">{{TorahParagraphs.sefer?.name}}</div>
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem" *ngFor="let so of ListOfSefurim">
+                  <a class="dropdown-item "  (click)="updateSefer(so)">{{so.name}}</a>
+                </li>
+              </ul>
+            </li>
+
+
+            <li>
+              <i class="fas fa-info-circle"></i>
+              <div class="propertie">מראה מקום</div>
+              <!--<div class="value">{{TorahParagraphs.maarahMakoim}}</div>-->
+              <input class="inner" dir="rtl" [(ngModel)]="TorahParagraphs.maarahMakoim">
+            </li>
+            <li>
+              <i class="fas fa-file-alt"></i>
+              <div class="propertie">ספר מקור</div>
+              <div class="value">{{TorahParagraphs.originalFileName}}</div>
+              <input type="file" (change)="handleUpload($event)">
+            </li>
+            <!-- <li>
+              <i class="fas fa-tag"></i>
+              <div class="propertie">תגים</div>
+              <div class="value">תג ראשון, תג שני, תג שלישי</div>
+            </li>-->
+
+            <li dropdown dropdownToggle aria-controls="dropdown-basic">
+              <i class="far fa-list-alt"></i>
+              <div class="propertie">פרשה</div>
+              <div class="value">{{TorahParagraphs.parsha}}</div>
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem" *ngFor="let so of obListOfParsha">
+                  <a class="dropdown-item "  (click)="updateParsha(so)">{{so.name}}</a>
+                </li>
+              </ul>
+            </li>
+
+
+          </ul>
+        </div>
+      </div>
+      <div class="content">
+       <!-- <div class="editable">
+          <h4 class="subtitle inner">כותרת קטע חדש</h4>
+          <div class="field-actions">
+            <button class="btn">
+              <i class="fas fa-plus-circle"></i>
+            </button>
+            <button class="btn">
+              <i class="fas fa-grip-vertical"></i>
+            </button>
+            <button class="btn">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>-->
+        <div class="paragraph editable" *ngFor="let Paragraph of TorahParagraphs.torahParagraphs; let  i = index">
+          <ckeditor [config]="edtrConfig" [editor]="Editor" [(ngModel)]="Paragraph.text"></ckeditor>
+          <!--<div #editableParagraph contentEditable  dir="rtl" class="inner" [textContent]="Paragraph.text" (input)="Paragraph.text = $event.target.innerText" (paste)="onPaste($event, i)"></div>
+          <div  class="field-actions">
+            <button class="btn" >
+              <i class="fas fa-plus-circle" (click)="AddParagraph(i)"></i>
+            </button>
+            <button class="btn">
+              <i class="fas fa-trash" (click)="DeleteParagraph(Paragraph)"></i>
+            </button>
+          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="right-sidebar">
+    <button class="btn form-control bg-transparent" routerLink="/torahs">
+      חזרה לכל התורות
+      <i class="fas fa-long-arrow-alt-right ml-2"></i>
+    </button>
+    <hr>
+  <button class="btn btn-dark">
+      פרטי המאמר
+      <i class="fas fa-clipboard-list ml-2"></i>
+    </button>
+    <!--  <button class="btn bg-transparent">
+      פראגעקטס מקושרים
+      <i class="fas fa-shapes ml-2"></i>
+    </button>-->
+  </div>
+</div>

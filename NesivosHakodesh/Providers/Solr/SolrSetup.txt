@@ -1,0 +1,85 @@
+﻿
+install java
+apt-get install openjdk-8-jdk
+
+
+
+cd /opt
+mkdir solr
+sudo useradd -d /opt/solr solr
+
+
+
+cd solr
+
+download solr
+wget https://apache.claz.org/lucene/solr/8.8.1/solr-8.8.1.tgz
+
+
+unzip
+tar -xzf solr-8.8.1.tgz
+
+cd solr-8.8.1
+
+
+
+
+fix limit issue
+nano /etc/security/limits.conf
+
+solr    soft    nofile  65000
+solr    soft    nproc   65000
+solr    hard    nproc   65000
+
+
+sudo chown solr:solr -R /opt/solr
+
+bin/solr start -e cloud
+
+
+To enable CORS in Solr you just have to add the code below in 
+solr-x.x.x/server/solr-webapp/webapp/WEB-INF/web.xml 
+Just after the <web-app> tag
+
+<filter>
+  <filter-name>cross-origin</filter-name>
+  <filter-class>org.eclipse.jetty.servlets.CrossOriginFilter</filter-class>
+  <init-param>
+    <param-name>allowedOrigins</param-name>
+    <param-value>*</param-value>
+  </init-param>
+  <init-param>
+    <param-name>allowedMethods</param-name>
+    <param-value>GET,POST,OPTIONS,DELETE,PUT,HEAD</param-value>
+  </init-param>
+  <init-param>
+    <param-name>allowedHeaders</param-name>
+    <param-value>origin, content-type, accept</param-value>
+  </init-param>
+</filter>
+ 
+<filter-mapping>
+  <filter-name>cross-origin</filter-name>
+  <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+
+
+
+//use powershell as admin
+
+cd C:\Users\Jacob\Dev\VsProjects\NesivosHakodesh\solr-8.7.0\bin>
+
+
+//to show current status
+ .\solr status
+
+
+ //to stop all 
+  .\solr stop -all
+
+
+//to start
+ .\solr start -e cloud
+
+

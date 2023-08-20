@@ -1,0 +1,13 @@
+.toolbar-buttons-wrp {
+    padding: 5px;
+}
+
+.toolbar-buttons-wrp .btn {
+    width: 40px;
+    line-height: 23px;
+    margin-left: 5px;
+}
+
+.toolbar-buttons-wrp .btn.active {
+    background: #ccd4e1;
+}

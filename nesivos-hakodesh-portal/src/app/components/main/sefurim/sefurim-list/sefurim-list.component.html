@@ -1,0 +1,80 @@
+<button *ngIf="!isMergePopup" class="btn btn-primary p-absolute-btn" type="button" (click)="openCreateModal(false)">ספר חדש <i class="fas fa-plus-circle ml-2"></i></button>
+
+<ul class="general-tabs">
+  <li>
+    <a class="cursor-pointer active">ספרים</a>
+  </li>
+</ul>
+
+<div class="d-flex justify-content-between list-nav">
+  <div>
+    <button *ngIf="!isMergePopup" class="btn">הורדה <i class="fas fa-download"></i></button>
+  </div>
+  <div class="search-field form-control ml-3">
+    <input dir="rtl" type="search" placeholder="חיפוש ספרים" [(ngModel)]="search.SearchTerm" (ngModelChange)="loadSefurim()">
+    <i class="fas fa-search"></i>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th (click)="sort('PrintYear')">נדפס בשנת<i class="cursor-pointer {{getSortClass('PrintYear')}}"></i></th>
+      <th (click)="sort('SeferDetails')">פרטים<i class="cursor-pointer {{getSortClass('SeferDetails')}}"></i></th>
+      <th (click)="sort('Description')">תיאור ספר <i class="cursor-pointer {{getSortClass('Description')}}"></i></th>
+      <th (click)="sort('AuthorSefer')">מחבר ספר <i class="cursor-pointer {{getSortClass('AuthorSefer')}}"></i></th>
+      <th (click)="sort('Name')">שם הספר <i class="cursor-pointer {{getSortClass('Name')}}"></i></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let Sefur of ListOfSefurim" (click)="open(Sefur)">
+      <td class="text-left">
+        <div *ngIf="!isMergePopup" class="btn-group" dropdown (click)="$event.stopPropagation()">
+          <button class="btn btn-dots dropdown-toggle" dropdownToggle aria-controls="dropdown-basic">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem">
+              <button class="dropdown-item" (click)="open(Sefur)">
+                פרטים
+                <i class="fas fa-edit ml-2"></i>
+              </button>
+            </li>
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem">
+              <button class="dropdown-item" (click)="openDeleteSefur(Sefur.seferID)">
+                מחיקה
+                <i class="fas fa-trash ml-2"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </td>
+      <td></td>
+      <td>{{Sefur.printYear}}</td>
+      <td>{{Sefur.seferDetails}}</td>
+      <td>{{Sefur.description}}</td>
+      <td>{{Sefur.authorSefer}}</td>
+      <td>{{Sefur.name}}</td>
+      <td>
+        <div class="custom-control custom-checkbox" (click)="$event.stopPropagation()">
+          <input type="checkbox" class="custom-control-input" id="select_1">
+          <label class="custom-control-label pointer" for="select_1"></label>
+        </div>
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+<app-pagination 
+    [page]="search.Page" 
+    [totalCount]="totalCount" 
+    [itemsPerPage]="search.ItemsPerPage" 
+    (pageChanged)="pageChanged($event)"
+    (itemsPerPageChanged)="itemsPerPageChanged($event)"
+    objectsText="ספרים"
+  ></app-pagination>

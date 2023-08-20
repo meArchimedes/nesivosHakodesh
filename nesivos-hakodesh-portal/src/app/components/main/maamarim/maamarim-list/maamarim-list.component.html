@@ -1,0 +1,276 @@
+<button *ngIf="!isMergePopup" class="btn btn-primary p-absolute-btn" type="button" (click)="openCreateModal()">מאמר חדש <i class="fas fa-plus-circle ml-2"></i></button>
+
+<ul class="general-tabs">
+  <li>
+    <a class="cursor-pointer" [ngClass]="{ 'active': activeTab === 0 }" (click)="changeTab(maamarimListTabs.firstTab)">כל מאמרי האוצר</a>
+  </li>
+  <li>
+    <a class="cursor-pointer" [ngClass]="{ 'active': activeTab === 1 }" (click)="changeTab(maamarimListTabs.secondTab)">חיפוש לפי</a>
+  </li>
+</ul>
+
+<ng-container *ngIf="showFolderTabs">
+  <ul class="home-outer">
+    <li *ngFor="let fld of getFolderTabs(); let i = index" (click)="folderTabClick(fld, i)">
+      {{fld.text}}
+      <i class="fas ml-2" [class.fa-chevron-left]="!fld.isHome" [class.fa-home]="fld.isHome"></i>
+    </li>
+  </ul>
+  <ul class="cards-list" *ngIf="showFolders" dir="rtl">
+    <li class="card-item dashed" (click)="openFolderAll()">
+      <i class="fas fa-book-open"></i>
+      <h3>{{ currFolderTab.allText }}</h3>
+      <p>{{ currFolderTab.totalCount }} מאמרים</p>
+    </li>
+    <li class="card-item" *ngFor="let fld of currFolderTab.folders" (click)="openFolder(fld)">
+      <i class="fas fa-book-open"></i>
+      <h3>{{ fld.text }}</h3>
+      <p>{{ fld.totalCount }} מאמרים</p>
+    </li>
+  </ul>
+</ng-container>
+
+<ng-container *ngIf="showList">
+  <div class="d-flex justify-content-between list-nav align-items-start">
+    <button *ngIf="!isMergePopup" class="btn mr-auto">הורדה <i class="fas fa-download"></i></button>
+
+    <div class="position-relative ml-3">
+      <ng-select [closeOnSelect]="false" [items]="ListOfStatus" bindLabel="typeValue" [multiple]="true" dir="rtl" placeholder="כל סטטוס" class="info-icon" (add)="$event.selected = true; checked()" (remove)="$event.value.selected = null; checked()" (clear)="onClear(ListOfStatus); checked()">
+        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+          <div class="custom-control custom-checkbox dir-rtl">
+            <input type="checkbox" class="custom-control-input" id="item-{{index}}" [ngModel]="item$.selected">
+            <label class="custom-control-label pointer" for="item-{{index}}"></label>
+            <span [ngClass]="StatusColor(item.name)">{{ item.typeValue }}</span>
+          </div>
+        </ng-template>
+      </ng-select>
+      <span *ngIf="SelectedCountStatus()" class="selected-number position-absolute">{{ SelectedCountStatus() }}</span>
+    </div>
+
+    <div class="position-relative ml-3">
+      <ng-select [closeOnSelect]="false" [items]="ListOfSources" bindLabel="fullName" [multiple]="true" dir="rtl" placeholder="כל המקורות" class="user-friends-icon" (add)="$event.selected = true; checked()" (remove)="$event.value.selected = null; checked()" (clear)="onClear(ListOfSources); checked()">
+        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+          <div class="custom-control custom-checkbox dir-rtl">
+            <input type="checkbox" class="custom-control-input" id="item-{{index}}" [ngModel]="item$.selected">
+            <label class="custom-control-label pointer" for="item-{{index}}"></label>
+            {{ item.fullName }}
+          </div>
+        </ng-template>
+      </ng-select>
+      <span *ngIf="SelectedCountSource()" class="selected-number position-absolute">{{ SelectedCountSource() }}</span>
+    </div>
+
+    <button class="btn ml-3 static-width-btn" [popover]="popTemplate" container="body" [outsideClick]="true" #pop="bs-popover" placement="bottom">
+      <span *ngIf="SelectedCountDate()" class="selected-number">{{ SelectedCountDate() }}</span>
+      {{ SelectedCountDate() ? DateRangeString :  'כל הזמנים' }}
+      <i class="fas fa-calendar-day"></i>
+    </button>
+    <ng-template #popTemplate>
+      <app-hebrew-datapicker [dateRange]="true" [date]="search.dateRange.startDate" [toDate]="search.dateRange.endDate" (dateSelected)="filterDateSelected($event);pop.hide()"></app-hebrew-datapicker>
+    </ng-template>
+
+    <div class="position-relative ml-3">
+      <ng-select [closeOnSelect]="false" [items]="ListOfYears" bindLabel="name" [multiple]="true" dir="rtl" placeholder="כל השנים" class="list-alt-icon" (add)="$event.selected = true; checked()" (remove)="$event.value.selected = null; checked()" (clear)="onClear(ListOfYears); checked()">
+        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+          <div class="custom-control custom-checkbox dir-rtl">
+            <input type="checkbox" class="custom-control-input" id="item-{{index}}" [ngModel]="item$.selected">
+            <label class="custom-control-label pointer" for="item-{{index}}"></label>
+            {{ item.name }}
+          </div>
+        </ng-template>
+      </ng-select>
+      <span *ngIf="SelectedCountYear()" class="selected-number position-absolute">{{ SelectedCountYear() }}</span>
+    </div>
+
+    <div class="position-relative ml-3">
+      <ng-select [closeOnSelect]="false" [items]="obListOfParsha2" bindLabel="name" groupBy="parsesObjects" [selectableGroup]="true" [selectableGroupAsModel]="false"
+        [multiple]="true" dir="rtl" placeholder="כל הפרשיות" class="bookmark-icon" (add)="groupSelectionAdd($event)"
+        (remove)="$event.value.selected = null; checked()" (clear)="groupSelectionClear(obListOfParsha2)">
+        <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+          <div class="custom-control custom-checkbox ml-3 dir-rtl">
+            <input type="checkbox" class="custom-control-input" id="item-{{index}}" [ngModel]="item$.selected">
+            <label class="custom-control-label pointer" for="item-{{index}}"></label>
+            {{ item.name || 'Unnamed group' }}
+          </div>
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+          <div class="custom-control custom-checkbox ml-3 dir-rtl">
+            <input type="checkbox" class="custom-control-input" id="item-{{index}}" [ngModel]="item$.selected">
+            <label class="custom-control-label pointer" for="item-{{index}}"></label>
+            {{ item.name }}
+          </div>
+        </ng-template>
+      </ng-select>
+      <span *ngIf="SelectedCountParsha()" class="selected-number position-absolute">{{ SelectedCountParsha() }}</span>
+    </div>
+
+    <div class="position-relative ml-3">
+      <ng-select [closeOnSelect]="false" [items]="ListOfSeforim" bindLabel="name" [multiple]="true" dir="rtl" placeholder="כל ספרים" class="list-alt-icon"
+        (add)="$event.selected = true; checked()" (remove)="$event.value.selected = null; checked()" (clear)="onClear(ListOfSeforim); checked()">
+        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+          <div class="custom-control custom-checkbox dir-rtl">
+            <input type="checkbox" class="custom-control-input" id="item-{{index}}" [ngModel]="item$.selected">
+            <label class="custom-control-label pointer" for="item-{{index}}"></label>
+            {{ item.name }}
+          </div>
+        </ng-template>
+      </ng-select>
+      <span *ngIf="SelectedCountSeforim()" class="selected-number position-absolute">{{SelectedCountSeforim() }}</span>
+    </div>
+
+    <div class="position-relative ml-3">
+      <ng-select [closeOnSelect]="false" [items]="ListOfTopices" bindLabel="name" [multiple]="true" dir="rtl" placeholder="כל הענינים" class="list-alt-icon"
+        (add)="$event.selected = true; checked()" (remove)="$event.value.selected = null; checked()" (clear)="onClear(ListOfTopices); checked()">
+        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+          <div class="custom-control custom-checkbox dir-rtl">
+            <input type="checkbox" class="custom-control-input" id="item-{{index}}" [ngModel]="item$.selected">
+            <label class="custom-control-label pointer" for="item-{{index}}"></label>
+            {{ item.name }}
+          </div>
+        </ng-template>
+      </ng-select>
+      <span *ngIf="SelectedCountTopic()" class="selected-number position-absolute">{{ SelectedCountTopic() }}</span>
+    </div>
+
+    <div class="position-relative ml-3">
+      <ng-select [closeOnSelect]="false" dir="rtl" placeholder="כל הסוגים" [items]="ListOfType" bindLabel="typeValue" class="book-icon" [multiple]="true" (add)="$event.selected = true; checked()" (remove)="$event.value.selected = null; checked()" (clear)="onClear(ListOfType); checked()">
+        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+          <div class="custom-control custom-checkbox dir-rtl">
+            <input type="checkbox" class="custom-control-input" id="item-{{index}}" [(ngModel)]="item$.selected">
+            <label class="custom-control-label pointer" for="item-{{index}}"></label>
+            {{ item.typeValue }}
+          </div>
+        </ng-template>
+      </ng-select>
+      <span *ngIf="SelectedCountType()" class="selected-number position-absolute">{{ SelectedCountType() }}</span>
+    </div>
+
+    <div class="search-field form-control ml-3">
+      <input dir="rtl" type="search" placeholder="חיפוש מאמרים" [(ngModel)]="search.SearchTerm" (ngModelChange)="loadmaamarimList()">
+      <i class="fas fa-search"></i>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th *ngIf="!isMergePopup"></th>
+        <th (click)="sort('CreatedTime')">נוצר בתאריך <i class="cursor-pointer {{getSortClass('CreatedTime')}}"></i></th>
+        <th (click)="sort('Status')">סטטוס <i class="cursor-pointer {{getSortClass('Status')}}"></i></th>
+        <th (click)="sort('Source.FirstName')">מקור המאמר <i class="cursor-pointer {{getSortClass('Source.FirstName')}}"></i></th>
+        <th (click)="sort('Parsha')">פרטים <i class="cursor-pointer {{getSortClass('Parsha')}}"></i></th>
+        <th (click)="sort('Date')">תאריך <i class="cursor-pointer {{getSortClass('Date')}}"></i></th>
+        <th (click)="sort('LiberySource')">מראה מקום <i class="cursor-pointer {{getSortClass('LiberySource')}}"></i></th>
+        <th (click)="sort('Type')">סוג <i class="cursor-pointer {{getSortClass('Type')}}"></i></th>
+
+        <th>ספר</th>
+        <th (click)="sort('Topic.Name')">ענין <i class="cursor-pointer {{getSortClass('Topic.Name')}}"></i></th>
+        <th (click)="sort('Title')">כותרת <i class="cursor-pointer {{getSortClass('Title')}}"></i></th>
+        <th (click)="sort('MaamarID')">מזהה <i class="cursor-pointer {{getSortClass('MaamarID')}}"></i></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr (click)="openMaamar(maamarim)" *ngFor="let maamarim of loadList; index as i" class="table-row cursor-pointer" [ngClass]="{ 'selected': maamarim.selected || maamarim.maamarID === prevSelectedid}">
+        <td *ngIf="!isMergePopup" class="text-left">
+          <div class="btn-group" dropdown (click)="$event.stopPropagation()">
+            <button class="btn btn-dots dropdown-toggle" dropdownToggle aria-controls="dropdown-basic">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+              <li role="menuitem">
+                <button class="dropdown-item" (click)="openMaamar(maamarim)">
+                  פרטים
+                  <i class="fas fa-edit ml-2"></i>
+                </button>
+              </li>
+              <li role="menuitem">
+                <button class="dropdown-item" (click)="openMergeModal(maamarim)">
+                  קישור לתורה
+                  <i class="fas fa-plus-circle ml-2"></i>
+                </button>
+              </li>
+              <!--<li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  הוסף לפרויקט
+                  <i class="fas fa-plus-circle ml-2"></i>
+                </a>
+              </li>-->
+              <!--<li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  עריכה
+                  <i class="fas fa-pen ml-2"></i>
+                </a>
+              </li>-->
+              <li class="divider dropdown-divider"></li>
+              <li role="menuitem">
+                <button class="dropdown-item" (click)="openDeleteMaamar(maamarim.maamarID)">
+                  מחיקה
+                  <i class="fas fa-trash ml-2"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </td>
+        <td [tooltip]="util.getHebrewDateNames(maamarim.createdTime).dmy" [delay]="500" container="body">
+          <div>{{ util.getHebrewDateNames(maamarim.createdTime).dwy }}</div>
+        </td>
+        <td [ngClass]="StatusColor(maamarim.status)">
+          <div>{{ maamarim.statusValue }} {{ maamarim.status === 'NeedToWork' && maamarim.statusDetails != null ? ' - ' + maamarim.statusDetails :  '' }}</div>
+        </td>
+        <td>
+          <div>{{ maamarim.source?.firstName }} {{ maamarim.source?.lastName }}</div>
+        </td>
+        <td>
+          <div>{{ maamarim.otherDetails }}</div>
+        </td>
+        <td [tooltip]="util.getHebrewDateNames(maamarim.date).dmy" [delay]="500" container="body">
+          <div>{{ util.getHebrewDateNames(maamarim.date).dwy }}</div>
+        </td>
+        <td *ngIf="maamarim.liberyTitleId != null">
+          <div>{{ maamarim.liberyTitleId?.section}} - {{ maamarim.liberyTitleId?.chepter}} - {{ maamarim.liberyTitleId?.verse}}</div>
+        </td>
+        <td *ngIf="maamarim.liberyTitleId == null"></td>
+        <td>
+          <div>{{ maamarim.typeValue }}</div>
+        </td>
+        <!--<td>
+          <div class="tags-wrapper">
+            <span class="tag" *ngFor="let subTopics of maamarim.subTopics">{{ subTopics.topic.name }}</span>
+          </div>
+        </td>-->
+        <td>
+          <div class="tags-wrapper">
+            <span class="tag" *ngFor="let subTopics of  ListOfMainSeferTypes(maamarim.subTopics)">{{ subTopics.topic.name }}</span>
+          </div>
+        </td>
+        <td>
+          <div>{{ maamarim.topic?.name }}</div>
+        </td>
+        <td>
+          <div *ngIf="maamarim.title?.length < 40">{{ maamarim.title }}</div>
+          <div class="custom-tooltip-wrapper" *ngIf="maamarim.title?.length > 39">
+            <div class="cursor-pointer">{{ maamarim.title?.slice(0, 40) }}...</div>
+            <div class="tooltip-content">{{ maamarim.title }}</div>
+          </div>
+        </td>
+        <td>{{ maamarim.maamarID }}</td>
+        <td>
+          <div class="custom-control custom-checkbox" (click)="$event.stopPropagation()">
+            <input type="checkbox" class="custom-control-input" id="{{ 'select_mmm_' + maamarim.maamarID }}" [(ngModel)]="maamarim.selected" (change)="MaamarCheckedUpdates()">
+            <label class="custom-control-label pointer" for="{{ 'select_mmm_' + maamarim.maamarID }}"></label>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <app-pagination
+    [page]="search.Page"
+    [totalCount]="totalCount"
+    [itemsPerPage]="search.ItemsPerPage"
+    (pageChanged)="pageChanged($event)"
+    (itemsPerPageChanged)="itemsPerPageChanged($event)"
+    objectsText="מאמרים"
+  ></app-pagination>
+</ng-container>

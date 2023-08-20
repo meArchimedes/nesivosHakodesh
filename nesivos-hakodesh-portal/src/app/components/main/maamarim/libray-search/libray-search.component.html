@@ -1,0 +1,57 @@
+<div class="modal-header">חיפוש בספריה</div>
+<div class="modal-body">
+  <div class="form-control" >
+    <label>כותרת</label>
+     <input
+      mssautofocus
+      dir="rtl"
+      type="text"
+      [(ngModel)]="LibraryResult"
+      [typeahead]="contactsDataSource"
+      (typeaheadOnSelect)="selectContact($event)"
+      [typeaheadItemTemplate]="contactLkpTemplate"
+      typeaheadOptionField="text"
+      [typeaheadMinLength]="0"
+      (change)="contactChanged()"
+      [typeaheadAsync]="true"
+      #tab1
+    >
+    <ng-template #contactLkpTemplate let-model="item" let-index="index">
+      <div>
+        <p>{{ model.parsedText }}</p>
+      </div>
+      <p>{{ model.category }} - {{ model.type }} - {{ model.section }} - {{ model.chepter }} - {{ model.verse }}</p>
+    </ng-template>
+  </div>
+
+  הוסף מסנן לחיפוש
+
+  <div class="form-control" [hidden]="ListOfCategorys.length == 0">
+    <label>קטגוריה</label>
+    <ng-select dir="rtl"   [multiple]="true" class="ml-3 list-alt-icon" [closeOnSelect]="true" [(ngModel)] ="searchCriteria.libraryCategory" (add)= "loadTypeFilters()">
+      <ng-option *ngFor="let Category of ListOfCategorys" [value]="Category">{{ Category }}</ng-option>
+    </ng-select>
+  </div>
+
+  
+  
+ <div class="form-control" [hidden]="ListOfTypes.length == 0 ||  searchCriteria.libraryCategory.length == 0">
+    <label>סוג</label>
+    <ng-select dir="rtl" [multiple]="true" class="ml-3 list-alt-icon" [closeOnSelect]="true" [(ngModel)] ="searchCriteria.libraryType" (add)= "loadSectionFilters()">
+      <ng-option *ngFor="let type of ListOfTypes" [value]="type">{{ type }}</ng-option>
+    </ng-select>
+  </div>
+  <div class="form-control" [hidden]="ListOfSections.length == 0 || searchCriteria.libraryType.length == 0">
+    <label>סעיף</label>
+    <ng-select dir="rtl" [multiple]="true" class="ml-3 list-alt-icon" [closeOnSelect]="true" [(ngModel)] ="searchCriteria.LibrarySection" (add)= "loadChepterFilters()">
+      <ng-option *ngFor="let Section of ListOfSections" [value]="Section">{{ Section }}</ng-option>
+    </ng-select>
+  </div>
+  <div class="form-control" [hidden]="ListOfChepters.length == 0 || searchCriteria.LibrarySection.length == 0">
+    <label>פרק</label>
+    <ng-select dir="rtl" [multiple]="true" class="ml-3 list-alt-icon" [closeOnSelect]="true" [(ngModel)] ="searchCriteria.LibraryChepter" (add)="test(tab1)">
+      <ng-option *ngFor="let chepter of ListOfChepters" [value]="chepter">{{ chepter }}</ng-option>
+    </ng-select>
+  </div>
+  <button class="btn mt-2" (click)="this.modalRef.hide()">ביטול</button>
+</div>

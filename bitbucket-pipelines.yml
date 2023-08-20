@@ -1,0 +1,22 @@
+# This is an example Starter pipeline configuration
+# Use a skeleton to build, test and deploy using manual and parallel steps
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: atlassian/default-image:2
+
+pipelines:
+  default:
+    - step:
+        name: 'Test'
+        script:
+        - pipe: atlassian/ssh-run:0.3.0
+          variables:
+            SSH_USER: 'bbpl'
+            SERVER: '34.206.93.90'
+            SSH_KEY: $DEV_BBPL_KEY
+            MODE: 'script'
+            COMMAND: 'update.sh'
+      
+      
+      
+      

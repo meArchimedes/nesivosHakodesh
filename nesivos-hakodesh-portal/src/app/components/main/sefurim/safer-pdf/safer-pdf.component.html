@@ -1,0 +1,128 @@
+<button *ngIf="!isLinkPopup()" class="btn btn-primary p-absolute-btn" type="button" (click)="save()">לשמור <i class="fas fa-save"></i></button>
+
+<div class="details-page-wrapper">
+  <div class="content-column">
+    <div class="content-wrapper">
+      <div class="content-nav">
+        <ul class="tabs-list">
+          <li *ngIf="selectedTorah.torahID && util.getCurrentUser().hasMaamarimAccess" class="tab" [ngClass]="{ 'active': activeTab === tabs.links }" (click)="activeTab = tabs.links">מאמרים מקושרים</li>
+          <li *ngIf="selectedTorah.torahID" class="tab" [ngClass]="{ 'active': activeTab === tabs.torahDetails }" (click)="activeTab = tabs.torahDetails">תורה</li>
+          <li class="tab" [ngClass]="{ 'active': activeTab === tabs.generalInfo }" (click)="activeTab = tabs.generalInfo">פרטים כלליים</li>
+        </ul>
+        <div *ngIf="activeTab === tabs.links">
+          <ul class="links-list">
+            <button *ngIf="!isLinkPopup()" class="btn add-new-link d-flex justify-content-between" (click)="openMergeModal()">
+              <i class="fas fa-plus-circle"></i>
+              מאמר מקושר חדש
+            </button>
+            <li *ngFor="let MaamarLink of selectedTorah.maamarLinks" [class.active]="MaamarLink.open">
+              <div class="link-header" (click)="MaamarLink.open = !MaamarLink.open">
+                <i class="far fa-trash-alt" *ngIf="!MaamarLink.open" (click)="openDeleteMaamarLink(MaamarLink, $event)"></i>
+                <i class="fas fa-external-link-alt"(click)="openMaamarLink(MaamarLink)"></i>
+                <div>
+                  <div class="title">{{MaamarLink.maamar.title}}</div>
+               
+                  <div dir="rtl" class="points">{{MaamarLink.maamar.maamarID}} • {{MaamarLink.maamar.typeValue}} • {{MaamarLink.maamar.parsha}} • {{MaamarLink.maamar.locationDetails}}</div>
+                </div>
+                <i class="fas fa-long-arrow-alt-right ml-3"></i>
+              </div>
+              <div class="link-content">
+                <h6>{{MaamarLink.maamar.title}}</h6>
+                <span *ngFor="let Paragraph of MaamarLink.maamar.maamarParagraphs" [innerHTML]="Paragraph.text">{{Paragraph.text}}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="activeTab === tabs.torahDetails">
+          <ul class="general-info-list">
+            <li>
+              <i class="fas fa-clipboard-check"></i>
+              <div class="propertie">מזהה תורה</div>
+              <div class="value">{{selectedTorah.torahID}}</div>
+            </li>
+            <li>
+              <i class="fas fa-info-circle"></i>
+              <div class="propertie">כותרת</div>
+              <input class="inner" dir="rtl" [(ngModel)]="selectedTorah.title">
+            </li>
+            <li>
+              <i class="fas fa-info-circle"></i>
+              <div class="propertie">מראה מקום</div>
+              <input class="inner" dir="rtl" [(ngModel)]="selectedTorah.maarahMakoim">
+            </li>
+            <li dropdown dropdownToggle aria-controls="dropdown-basic">
+              <i class="far fa-list-alt"></i>
+              <div class="propertie">פרשה</div>
+              <div class="value">{{selectedTorah.parsha}}</div>
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem" *ngFor="let so of obListOfParsha">
+                  <a class="dropdown-item "  (click)="selectedTorah.parsha = so.name">{{so.name}}</a>
+                </li>
+              </ul>
+            </li>
+
+
+          </ul>
+        </div>
+        <div *ngIf="activeTab === tabs.generalInfo">
+          <ul class="general-info-list">
+            <li>
+              <i class="fas fa-clipboard-check"></i>
+              <div class="propertie">מזהה ספר</div>
+              <div class="value">{{safer.seferID}}</div>
+            </li>
+            <li class="form-control">
+              <i class="fas fa-book-open"></i>
+              <div class="propertie">שם הספר</div>
+              <input dir="rtl" class="inner" [(ngModel)]="safer.name">
+            </li>
+            <li class="form-control">
+              <i class="fas fa-address-book"></i>
+              <div class="propertie">מחבר ספר</div>
+              <input dir="rtl" class="inner" [(ngModel)]="safer.authorSefer">
+            </li>
+            <li class="form-control">
+              <i class="fas fa-book-open"></i>
+              <div class="propertie">תיאור ספר</div>
+              <input dir="rtl" class="inner" [(ngModel)]="safer.description">
+            </li>
+            <li class="form-control">
+              <i class="fas fa-book"></i>
+              <div class="propertie">פרטים</div>
+              <input dir="rtl" class="inner" [(ngModel)]="safer.seferDetails">
+            </li>
+            <li class="form-control">
+              <i class="fas fa-print"></i>
+              <div class="propertie">נדפס בשנת</div>
+              <input dir="rtl" class="inner" [(ngModel)]="safer.printYear">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="content" style="max-height: none;">
+        <ng-container *ngIf="safer.fileUrl">
+          <!--<app-pdf-view [pdfSrc]="pdfSrc" [annotations]="getAnnotations()" (annotationSelected)="annotationSelected($event)"></app-pdf-view>-->
+          <!--<app-pdf-view-temp [pdfSrc]="pdfSrc" [annotations]="annotations" [selectedAnnotationId]="selectedTorahId" [page]="page" (annotationSelected)="annotationSelected($event)" (annotationChanged)="annotationChanged($event)"></app-pdf-view-temp>-->
+          <app-pdf-view-new [pdfSrc]="pdfSrc" [page]="page" [annotations]="annotations" [selectedAnnotationId]="selectedTorahId" (annotationSelected)="annotationSelected($event)" (annotationChanged)="annotationChanged($event)" [parentApi]="getParentApi()"></app-pdf-view-new>
+        </ng-container>
+        <div *ngIf="!safer.fileUrl">
+          <input type="file" (change)="handleUpload($event)">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="right-sidebar">
+    <button *ngIf="!isLinkPopup()" class="btn form-control bg-transparent" routerLink="/sefurim">
+      חזרה לכל הספרים
+      <i class="fas fa-long-arrow-alt-right ml-2"></i>
+    </button>
+    <hr *ngIf="!isLinkPopup()">
+    <!--<button class="btn btn-dark">
+      פרטי הספר
+      <i class="fas fa-clipboard-list ml-2"></i>
+    </button>-->
+    <ul class="general-info-list">
+      <li *ngFor="let ol of safer.outline" class="form-control" (click)="GoToPage(ol.pageNumber)">{{ol.title}}</li>
+    </ul>
+  </div>
+</div>

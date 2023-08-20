@@ -1,0 +1,77 @@
+<div ngDraggable>
+<div class="modal-header">
+    חבר חדש
+  </div>
+  
+  <div class="modal-body">
+    <div class="row">
+      <div class="col">
+        <div class="form-control">
+          <label>שם משפחה </label>
+          <input dir = rtl    [(ngModel)]="NewUser.lastName" tabindex="2" #tab2 (keyup.enter)="tab3.focus()">
+         </div>
+      </div>
+      <div class="col">
+        <div class="form-control">
+          <label> שם פרטי </label>
+          <input dir = rtl  [(ngModel)]="NewUser.firstName" mssautofocus tabindex="1" (keyup.enter)="tab2.focus()">
+         </div>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="form-control">
+          <label>אימייל</label>
+          <input  [(ngModel)]="NewUser.email" tabindex="4" #tab4 (keyup.enter)="tab5.focus()">
+         </div>
+      </div>
+      <div class="col">
+        <div class="form-control">
+          <label>מספר טלפון</label>
+          <input [(ngModel)]="NewUser.phoneNumber" tabindex="3" #tab3 (keyup.enter)="tab4.focus()">
+         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"> 
+        <div class="form-control">
+          <label>סיסמה</label>
+          <input dir = rtl    [(ngModel)]="NewUser.newPassword" tabindex="6" #tab6 (keyup.enter)="tab7.focus()" > 
+         </div>
+      </div>
+      <div class="col"> 
+        <div class="form-control">
+          <label>שם משתמש</label>
+          <input dir = rtl    [(ngModel)]="NewUser.userName" tabindex="5" #tab5 (keyup.enter)="tab6.focus()">
+         </div>
+      </div>
+    </div>
+    <div>
+
+      <table>
+        <tr class="d-flex">
+          <th style="width: 13%">הורד</th>
+          <th style="width: 13%">הדפס</th>
+          <th style="width: 13%">לשנות</th>
+          <th style="width: 13%">לראות</th>
+          <th style="width: 48%"></th>
+        </tr>
+        <tr class="d-flex" *ngFor="let s of sections">
+          <td style="width: 13%"><input *ngIf="s.isMaamarim" type="checkbox" [checked]="hasRole(s.name, 'DOWNLOAD')" (click)="setRole(s.name, 'DOWNLOAD')"></td>
+          <td style="width: 13%"><input *ngIf="s.isMaamarim" type="checkbox" [checked]="hasRole(s.name, 'PRINT')" (click)="setRole(s.name, 'PRINT')"></td>
+          <td style="width: 13%"><input type="checkbox" [checked]="hasRole(s.name, 'EDIT')" (click)="setRole(s.name, 'EDIT')"></td>
+          <td style="width: 13%"><input type="checkbox" [checked]="hasRole(s.name, 'VIEW')" (click)="setRole(s.name, 'VIEW')"></td>
+          <td style="width: 48%">{{s.display}}</td>
+        </tr>
+      </table>
+
+    </div>
+
+    
+    
+     <button class="btn btn-primary mr-3 mt-2" (click)="SaveUser()" tabindex="7" #tab7>שמירה</button>
+  
+     <button class="btn mt-2" (click)="this.modalRef.hide()">ביטול</button>
+  </div>
+</div>

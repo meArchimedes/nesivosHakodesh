@@ -1,0 +1,49 @@
+.hebrew-day {
+  display: inline-block;
+  padding: 0.25rem;
+  text-align: right;
+  width: 100%;
+  min-height: 70px;
+}
+
+.outside {
+  color: lightgray;
+}
+
+.gregorian-num {
+  font-size: 11px;
+  direction: ltr;
+  text-align: left;
+  width: 100%;
+
+  height: 20px;
+}
+
+.mss-event {
+  
+  font-size: 10px;
+  direction: ltr;
+  text-align: center;
+  width: 100%;
+
+  position: absolute;
+  bottom: 5px;
+  left: 0px;
+}
+
+
+.hebrew-day.selected, 
+.hebrew-day.selected.high, 
+.hebrew-day.selected.high:not(:hover) {
+  background-color: #007bff;
+  color: white;
+}
+
+.hebrew-day.high:not(:hover) {
+  background-color: #f3f4f4;
+}
+
+.hebrew-day.faded,
+.hebrew-day.faded:not(:hover) {
+  background-color: rgba(2, 117, 216, 0.5);
+}

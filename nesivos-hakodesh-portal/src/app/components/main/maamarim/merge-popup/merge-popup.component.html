@@ -1,0 +1,103 @@
+<div class="modal-header">קישור</div>
+<div class="modal-body">
+
+  <app-torahs-list [isMergePopup]="true" (selectionUpdated)="selectionUpdated($event)"></app-torahs-list>
+
+  <div class="d-flex align-items-center mt-5">
+   <button class="btn btn-primary mr-3" (click)="connect()">מיזוג</button>
+    <button class="btn" (click) = "this.modalRef.hide()">ביטול</button>
+  </div>
+</div>
+
+
+
+
+
+<!--<div class="modal-header">קישור</div>
+<div class="modal-body">
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn ml-auto">כל המקורות <i class="fas fa-user-friends"></i></button>
+    <button class="btn ml-3">כל הזמנים <i class="fas fa-calendar-day"></i></button>
+    <button class="btn ml-3">כל הפרשיות <i class="fas fa-bookmark"></i></button>
+    <button class="btn ml-3">כל הענינים <i class="far fa-list-alt"></i></button>
+    <button class="btn ml-3">כל הסוגים <i class="fas fa-book-open"></i></button>
+    <div class="search-field form-control ml-3">
+      <input type="search" placeholder="חיפוש מאמרים">
+      <i class="fas fa-search"></i>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <td></td>
+        <td></td>
+        <td>מראה מקום</td>
+        <td>ספר</td>
+        <td>פרשה</td>
+        <td>מזהה תורה</td>
+        <td>כותרת</td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let torah of TorahList" (click)= "openParagraph(torah)">
+        <td class="text-left">
+          <div class="btn-group" dropdown (click)="$event.stopPropagation()">
+            <button class="btn btn-dots dropdown-toggle" dropdownToggle aria-controls="dropdown-basic">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+              <li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  הוסף לפרויקט
+                  <i class="fas fa-plus-circle ml-2"></i>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  הוסף לתורה
+                  <i class="fas fa-plus-circle ml-2"></i>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  עריכה
+                  <i class="fas fa-pen ml-2"></i>
+                </a>
+              </li>
+              <li class="divider dropdown-divider"></li>
+              <li role="menuitem">
+                <button class="dropdown-item">
+                  מחיקה
+                  <i class="fas fa-trash ml-2"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </td>
+        <td></td>
+        <td>{{torah.maarahMakoim}}</td>
+        <td>{{torah.sefer.name}}</td>
+        <td>{{torah.parsha}}</td>
+        <td>{{torah.title}}</td>
+        <td>{{torah.torahID}}</td>
+        <td>
+          
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="select_{{torah.torahID}}" [(ngModel)]="torah.selected">
+              <label class="custom-control-label pointer" for="select_{{torah.torahID}}"></label>
+            </div>
+          
+
+        
+        </td>
+      </tr>
+    
+    </tbody>
+  </table>
+
+  <div class="d-flex align-items-center mt-5">
+    <button class="btn btn-primary mr-3" (click)="getSelectedContacts()">מיזוג</button>
+    <button class="btn" (click) = "this.modalRef.hide()">ביטול</button>
+  </div>
+</div>-->

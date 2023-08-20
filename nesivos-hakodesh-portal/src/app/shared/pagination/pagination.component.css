@@ -1,0 +1,27 @@
+:host {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 5px 15px;
+}
+
+.form-control {
+  height: 34px;
+  margin: 0;
+  text-align: center;
+  width: 34px;
+}
+
+.btn {
+  padding: 8px 9.5px;
+}
+
+.form-control, .btn, span {
+  margin: 5px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

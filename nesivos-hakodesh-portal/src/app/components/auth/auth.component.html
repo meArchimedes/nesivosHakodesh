@@ -1,0 +1,27 @@
+<div class="login-inner">
+  <a href="#" class="logo">
+    <img [src]="util.getAssestPrefix() + 'assets/images/svg/nesivos akodesh logo.svg'">
+  </a>
+
+  <h2>היכנס למערכת</h2>
+  <h3>אנא הכנס את הפרטים שלך</h3>
+
+  <div class="form-control">
+    <label>יוזר קוד</label>
+    <input type="text" [(ngModel)]="user.userName" tabindex="1" (keyup.enter)="tab2.focus()">
+  </div>
+
+  <div class="form-control">
+    <label>סיסמה</label>
+    <input type="password" [(ngModel)]="user.NewPassword" tabindex="2" #tab2 (keyup.enter)="login()">
+  </div>
+
+  <div class="ml-auto mb-2 custom-tooltip-wrapper">
+    <div class="cursor-pointer"><i class="fas fa-info-circle"></i> שכחתי אימייל או סיסמה</div>
+    <div class="tooltip-content">
+      אם שכחת את הסיסמה או האימייל שלך, אנא פנה למשרד ההנהלה לצורך שיחזור הפרטים
+    </div>
+  </div>
+
+  <button class="btn btn-primary" type="submit" (click)="login()">היכנס</button>
+</div>

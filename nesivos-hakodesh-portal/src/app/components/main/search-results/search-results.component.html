@@ -1,0 +1,92 @@
+<!--<button class="btn btn-primary p-absolute-btn" type="button">מאמר חדש <i class="fas fa-plus-circle ml-2"></i></button>-->
+
+<button class="btn form-control bg-transparent ml-auto" routerLink="/maamarim">
+  חזרה לכל המאמרים
+  <i class="fas fa-long-arrow-alt-right ml-2"></i>
+</button>
+
+<h3 class="my-4">תוצאות חיפוש</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>סטטוס</th>
+      <th>מקור המאמר</th>
+      <th>פרטים</th>
+      <th>תאריך</th>
+      <th>סוג</th>
+      <th>ענינים נוספות</th>
+      <th>ענין</th>
+      <th>כותרת</th>
+      <th>מזהה</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor = "let SearchResult of resultSet.response.docs">
+    <tr class="result-props" (click)="maamarDetail(SearchResult)">
+      <td class="text-left">
+        <div class="btn-group" dropdown (click)="$event.stopPropagation()">
+          <button class="btn btn-dots dropdown-toggle" dropdownToggle aria-controls="dropdown-basic">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem">
+              <a class="dropdown-item">
+                הוסף לפרויקט
+                <i class="fas fa-plus-circle ml-2"></i>
+              </a>
+            </li>
+            <li role="menuitem">
+              <a class="dropdown-item">
+                הוסף לתורה
+                <i class="fas fa-plus-circle ml-2"></i>
+              </a>
+            </li>
+            <li role="menuitem">
+              <a class="dropdown-item">
+                עריכה
+                <i class="fas fa-pen ml-2"></i>
+              </a>
+            </li>
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem">
+              <button class="dropdown-item">
+                מחיקה
+                <i class="fas fa-trash ml-2"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </td>
+      <td>{{SearchResult.Status}}</td>
+      <td>{{SearchResult.Source}}</td>
+      <td>{{SearchResult.OtherDetails}}</td>
+      <td [tooltip]="util.getHebrewDateNames(SearchResult.Date).dmy" [delay]="500" container="body">{{util.getHebrewDateNames(SearchResult.Date).dwy}}</td>
+      <td>{{SearchResult.MaamarType}}</td>
+      <td>
+        <span class="tag" *ngFor = "let SubTopics of SearchResult.SubTopics">{{SubTopics}}</span>
+      </td>
+      <td>{{SearchResult.Topic}}</td>
+      <td>{{SearchResult.Title}}</td>
+      <td>{{SearchResult.internalId}}</td>
+    </tr>
+    <tr>
+      <td colspan="10">
+        <p class="solr-mathces2" *ngFor = "let Content of resultSet.highlighting[SearchResult.id].Content" [innerHtml]="Content | safehtml"></p>
+        <p class="tag">{{resultSet.highlighting[SearchResult.id].Content?.length}} התאמות </p>
+      </td>
+    </tr>
+  </ng-container>
+    
+  </tbody>
+</table>
+
+<app-pagination
+  [page]="search.Page" 
+  [totalCount]="totalCount" 
+  [itemsPerPage]="search.ItemsPerPage" 
+  (pageChanged)="pageChanged($event)"
+  (itemsPerPageChanged)="itemsPerPageChanged($event)"
+  objectsText="תוצאות"
+></app-pagination>

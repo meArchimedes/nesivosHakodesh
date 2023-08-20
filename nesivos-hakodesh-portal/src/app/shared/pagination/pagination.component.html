@@ -1,0 +1,10 @@
+<button class="btn" type="button" [disabled]="noPrevious()" (click)="selectPage(page - 1, $event)">
+  <i class="fas fa-long-arrow-alt-left"></i>
+</button>
+<input type="number" class="form-control page-input" [(ngModel)]="page" (ngModelChange)="selectPage($event)">
+<button class="btn" type="button" [disabled]="noNext()" (click)="selectPage(page + 1, $event)">
+  <i class="fas fa-long-arrow-alt-right"></i>
+</button>
+<span>מתוך {{totalCount}} {{objectsText}}</span>
+<input type="text" class="form-control" #ippInput [(ngModel)]="itemsPerPage" (blur)="updateItemsPerPage()" (keyup.enter)="ippInput.blur()">
+<span>מציג</span>

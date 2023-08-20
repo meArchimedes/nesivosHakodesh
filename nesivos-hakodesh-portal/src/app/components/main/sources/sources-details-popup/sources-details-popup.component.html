@@ -1,0 +1,35 @@
+<div ngDraggable>
+<div class="modal-header">
+    מקור חדש
+  </div>
+  
+  <div class="modal-body">
+    <div class="form-control">
+      <label> שם  פרטי</label>
+      <input dir="rtl" [(ngModel)]="NewSource.firstName" mssautofocus tabindex="1" (keyup.enter)="tab2.focus()">
+    
+    </div>
+      <div class="form-control">
+        <label>טלפון</label>
+        <input [(ngModel)]="NewSource.phoneNumber" tabindex="2" #tab2 (keyup.enter)="tab3.open()">
+      </div>
+      <div class="form-control">
+        <label>מקור סוג</label>
+        <ng-select dir="rtl" [(ngModel)]="NewSource.sourceType" tabindex="3" #tab3 notFoundText = "לא נמצאו פריטים" (change)="click(tab4)" (keyup.enter)="click(tab4)">
+          <ng-option value="0">מאמרים</ng-option>
+          <ng-option *ngIf="util.getCurrentUser().hasSourcesPrsAccess" value="1">הדרכות פרטית</ng-option>
+        </ng-select>
+      </div>
+    <div class="form-control">
+      <label>הערות</label>
+      <input dir="rtl" [(ngModel)]="NewSource.notes" tabindex="4" #tab4 (keyup.enter)="tab5.focus()">
+    </div>
+    <div class="form-control">
+      <label>פרטי מקור</label>
+      <input dir="rtl" [(ngModel)]="NewSource.sourceDetails" tabindex="5" #tab5 (keyup.enter)="tab6.focus()">
+    </div>
+    <button class="btn btn-primary mr-3 mt-2" (click)="Save()" tabindex="6" #tab6>שמירה</button>
+  
+    <button class="btn mt-2" (click)="this.modalRef.hide()">ביטול</button>
+  </div>
+</div>

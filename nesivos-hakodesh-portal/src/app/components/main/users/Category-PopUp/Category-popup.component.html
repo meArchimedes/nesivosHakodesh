@@ -1,0 +1,21 @@
+<div ngDraggable>
+<div class="modal-header">
+  קטגוריה חדש
+  </div>
+  
+  <div class="modal-body">
+    <div class="form-control">
+      <label> שם  קטגוריה</label>
+      <input dir = rtl    [(ngModel)]="NewCategory.categoryName" mssautofocus (keyup.enter)="tab1.focus()">
+    </div>
+
+
+   
+    <button class="btn btn-primary mr-3 mt-2" (click)="Save()" tabindex="1" #tab1>שמירה</button>
+  
+    <button class="btn mt-2" (click)="this.modalRef.hide()">ביטול</button>
+   
+  </div>
+</div>
+
+  <!--*ngFor="SubTopice of SubTopices"      [(ngModel)]="SubTopice.name"-->

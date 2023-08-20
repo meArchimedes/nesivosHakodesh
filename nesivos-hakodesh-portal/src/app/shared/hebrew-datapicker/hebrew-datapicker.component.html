@@ -1,0 +1,33 @@
+<ngb-datepicker class="hebrew rtl" 
+  #datepicker 
+  [(ngModel)]="model"
+  [startDate]="model"
+  [displayMonths]="dateRange ? 2 : 1" 
+  [firstDayOfWeek]="7" 
+  [dayTemplate]="dt"
+  [dayTemplateData]="dayTemplateData" 
+  [footerTemplate]="footerTemplate"
+  (dateSelect)="dateSelect($event)"
+  (navigate)="monthChanged($event)"
+  >
+</ngb-datepicker>
+
+<ng-template #dt let-date let-data="data" let-selected="selected" let-currentMonth="currentMonth" let-focused="focused">
+  <div class="hebrew-day" 
+      [class.outside]="date.month !== currentMonth" 
+      [class.high]="isHigh(data)"
+      [class.focused]="focused"
+      [class.selected]="isRange(date)"
+      [class.faded]="isHovered(date) || isInside(date)"
+  >
+    <div class="gregorian-num">{{ (data.gregorian.month) + '/' + data.gregorian.day }}</div>
+    <div class="hebrew-num">{{ i18n.getDayNumerals(date) }}</div>
+    <div class="mss-event">{{GetEvent(data)}}</div>
+  </div>
+</ng-template>
+
+<ng-template #footerTemplate>
+  <hr class="my-0">
+  <!--<button class="btn btn-primary btn-sm m-2 float-left" >Today</button>-->
+  <button class="btn btn-secondary btn-sm m-2 float-right" (click)="clear()">Clear</button>
+</ng-template>

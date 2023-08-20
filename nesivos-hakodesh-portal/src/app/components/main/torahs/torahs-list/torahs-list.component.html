@@ -1,0 +1,145 @@
+<!--
+<button *ngIf="!isMergePopup" class="btn btn-primary p-absolute-btn" type="button" (click)="openCreateModal()">תורה חדש <i class="fas fa-plus-circle ml-2"></i></button>
+-->
+
+<ul class="general-tabs">
+  <li>
+    <a class="cursor-pointer active">תורת</a>
+  </li>
+</ul>
+
+<div class="d-flex justify-content-between list-nav">
+  <button *ngIf="!isMergePopup" class="btn">הורדה <i class="fas fa-download"></i></button>
+
+  <div class="position-relative ml-auto" dropdown placement="bottom right" (isOpenChange)="onDropDownOpenChange($event)">
+    <button id="button-basic" dropdownToggle type="button" class="btn ml-3" aria-controls="dropdown-basic">
+      <span *ngIf="SelectedCountParsha()" class="selected-number">{{SelectedCountParsha()}}</span>
+      {{SelectedCountParsha() ? SelectedParsha() :  'כל הפרשיות'}}
+      <i class="fas fa-bookmark"></i></button>
+    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="button-basic" (click)="$event.stopPropagation()">
+      
+      <ng-container *ngFor="let Parsha of obListOfParsha">
+          <li role="menuitem" class="d-flex justify-content-end py-2 pr-3 pl-4" >
+            {{Parsha.name}}
+            <div class="custom-control custom-checkbox ml-3">
+              <input type="checkbox" class="custom-control-input" id="select_p2_s_{{Parsha.name}}" [checked]="isAllParshasChecked(Parsha)" (click)="checkParshaBook(Parsha)">
+              <label class="custom-control-label pointer" for="select_p2_s_{{Parsha.name}}" ></label>
+            </div>
+          </li>
+
+          <li role="menuitem" class="d-flex justify-content-end py-2 pr-3 pl-4" *ngFor="let prs of Parsha.parsesObjects">
+            {{prs.name}}
+            <div class="custom-control custom-checkbox ml-3">
+              <input type="checkbox" class="custom-control-input" id="select_p2_{{prs.name}}" [(ngModel)]="prs.selected">
+              <label class="custom-control-label pointer" for="select_p2_{{prs.name}}" ></label>
+            </div>
+            <div style="width: 30px;">
+
+            </div>
+          </li>
+        </ng-container>
+     </ul>
+  </div>
+
+  <div class="position-relative" dropdown placement="bottom right" (isOpenChange)="onDropDownOpenChange($event)">
+    <button id="button-basic" dropdownToggle type="button" class="btn ml-3" aria-controls="dropdown-basic">
+      <span *ngIf="SelectedCountSefurim()" class="selected-number">{{SelectedCountSefurim()}}</span>
+      {{SelectedCountSefurim() ? SelectedSefurim() :  'כל הספרים'}} 
+     <i class="far fa-list-alt"></i></button>
+    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="button-basic" (click)="$event.stopPropagation()">
+      <li role="menuitem" class="d-flex justify-content-end py-2 pr-3 pl-4" *ngFor="let Sefer of ListOfSefurim">
+        {{Sefer.name}}
+        <div class="custom-control custom-checkbox ml-3">
+          <input type="checkbox" class="custom-control-input" id="select_s_{{Sefer.name}}" [(ngModel)]="Sefer.selected">
+          <label class="custom-control-label pointer" for="select_s_{{Sefer.name}}" ></label>
+        </div>
+      </li>
+     </ul>
+  </div>
+
+  <div class="search-field form-control ml-3">
+    <input dir="rtl" type="search"  placeholder="חיפוש תורות" [(ngModel)]="search.SearchTerm" (ngModelChange)="LoadTorahsList()">
+    <i class="fas fa-search"></i>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th *ngIf="!isMergePopup"></th>
+      <th></th>
+     <th (click)="sort('MaarahMakoim')">מראה מקום <i class="cursor-pointer {{getSortClass('MaarahMakoim')}}"></i></th>
+      <th (click)="sort('Sefer')">ספר <i class="cursor-pointer {{getSortClass('Sefer')}}"></i></th>
+      <th (click)="sort('Parsha')">פרשה <i class="cursor-pointer {{getSortClass('Parsha')}}"></i></th>
+      <th (click)="sort('Title')"> כותרת <i class="cursor-pointer {{getSortClass('Title')}}"></i></th>
+      <th (click)="sort('TorahID')">מזהה <i class="cursor-pointer {{getSortClass('TorahID')}}"></i></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr (click)="openTorah(torah)"  *ngFor="let torah of TorahList">
+      <td *ngIf="!isMergePopup" class="text-left">
+        <div class="btn-group" dropdown (click)="$event.stopPropagation()">
+          <button class="btn btn-dots dropdown-toggle" dropdownToggle aria-controls="dropdown-basic">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li role="menuitem">
+              <button class="dropdown-item" (click)="openTorah(torah)">
+                פרטים
+                <i class="fas fa-edit ml-2"></i>
+              </button>
+            </li>
+            <li role="menuitem">
+              <button class="dropdown-item" (click)="openMergeModal(torah)">
+                קישור למאמר
+                <i class="fas fa-plus-circle ml-2"></i>
+              </button>
+            </li>
+            <!-- <li role="menuitem">
+              <a class="dropdown-item" href="#">
+                הוסף לפרויקט
+                <i class="fas fa-plus-circle ml-2"></i>
+              </a>
+            </li>
+            <li role="menuitem">
+              <a class="dropdown-item" href="#">
+                עריכה
+                <i class="fas fa-pen ml-2"></i>
+              </a>
+            </li>-->
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem">
+              <button class="dropdown-item" (click)="openDeleteMaamar(torah.torahID)">
+                מחיקה
+                <i class="fas fa-trash ml-2"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </td>
+      <td></td>
+      <td>{{torah.maarahMakoim}}</td>
+      <td>{{torah.sefer.name}}</td>
+      <td>{{torah.parsha}}</td>
+      <td>{{torah.title}}</td>
+      <td>{{torah.torahID}}</td>
+      <td>
+        <div class="custom-control custom-checkbox" (click)="$event.stopPropagation()">
+          <input type="checkbox" class="custom-control-input" id="{{ 'select_ttt_' + torah.torahID}}" [(ngModel)]="torah.selected" (change)="TorahCheckedUpdates()">
+          <label class="custom-control-label pointer" for="{{ 'select_ttt_' + torah.torahID}}"></label>
+        </div>
+      </td>
+   </tr>
+  </tbody>
+</table>
+
+<app-pagination 
+    [page]="search.Page" 
+    [totalCount]="totalCount" 
+    [itemsPerPage]="search.ItemsPerPage" 
+    (pageChanged)="pageChanged($event)"
+    (itemsPerPageChanged)="itemsPerPageChanged($event)"
+    objectsText="תורת"
+  ></app-pagination>

@@ -1,0 +1,163 @@
+<div ngDraggable>
+<div class="modal-header" >מאמר חדש</div>
+<div class="modal-body">
+
+  <div class="form-control">
+    <label>סוג</label>
+    <ng-select dir="rtl" [(ngModel)]="NewMaamar.Type" #tab2 notFoundText="לא נמצאו פריטים" (change)="click(tab3, pop, tab7)">
+      <ng-option dir="rtl" *ngFor="let type of contact.type" [value]="type.name">{{ type.typeValue }}</ng-option>
+    </ng-select>
+  </div>
+<!------------------------   Pisgumin Kadishin   --------------------------->
+<div [hidden]="NewMaamar.Type != 'PisguminKadishin'"  >
+  
+  <div class="form-control" >
+    <label>פרשה</label>
+    <ng-select dir="rtl" [(ngModel)]="NewMaamar.parsha" #tab3 notFoundText="לא נמצאו פריטים" (change)="tab4.open()">
+      <ng-option dir="rtl" *ngFor="let type of ListOfParsha" [value]="type">{{ type }}</ng-option>
+    </ng-select>
+  </div>
+  <div class="form-control" >
+    <label>שנה</label>
+    <ng-select dir="rtl" [(ngModel)]="NewMaamar.year" #tab4 notFoundText="לא נמצאו פריטים" (change)="tab5.open()">
+      <ng-option dir="rtl" *ngFor="let type of ListOfYears" [value]="type.name">{{ type.name }}</ng-option>
+    </ng-select>
+  </div>
+ 
+  <div class="form-control" >
+    <label>סדר</label>
+    <ng-select dir="rtl" [(ngModel)]="NewMaamar.weeklyIndex" #tab5 notFoundText="לא נמצאו פריטים" (change)="tab9.focus()">
+      <ng-option dir="rtl" *ngFor="let type of util.getIndexOptions()" [value]="type">{{ type }}</ng-option>
+    </ng-select>
+  </div>
+
+  <div class="form-control" [hidden]="NewMaamar.Type != 'PisguminKadishin'" >
+    <label>פסוק</label>
+     <input
+      mssautofocus
+      dir="rtl"
+      type="text"
+      [(ngModel)]="NewMaamar.title"
+      [typeahead]="contactsDataSource"
+      (typeaheadOnSelect)="selectContact($event,tab7)"
+      [typeaheadItemTemplate]="contactLkpTemplate"
+      typeaheadOptionField="text"
+      [typeaheadMinLength]="0"
+      (change)="tab7.open()"
+      [typeaheadAsync]="true"
+      #tab9
+    >
+    <ng-template #contactLkpTemplate let-model="item" let-index="index">
+      <div>
+        <p>{{ model.parsedText }}</p>
+      </div>
+      <p>{{ model.category }} - {{ model.type }} - {{ model.section }} - {{ model.chepter }} - {{ model.verse }}</p>
+    </ng-template>
+  </div>
+
+
+  
+  <div class="form-control" >
+    <label>ספר</label>
+    <ng-select dir="rtl" [(ngModel)]="AddSafer" [addTag]="true" addTagText="  ספר חדש" [multiple]="true" #tab7 notFoundText="לא נמצאו פריטים" (change)="AddSaferToMaamar(); tab13.open()">
+      <ng-option dir="rtl" *ngFor="let safer of ListOfSefurimTopices" [value]="safer">{{ safer.name }}</ng-option>
+    </ng-select>
+  </div>
+ 
+
+  <div class="form-control" >
+    <label>מקור</label>
+    <ng-select dir="rtl" [(ngModel)]="AddSource" [addTag]="true" addTagText="מקור חדש"  #tab13 notFoundText="לא נמצאו פריטים" (change)="tab8.focus()">
+      <ng-option dir="rtl" *ngFor="let source of contact.source" [value]="source">{{ source.fullName }}</ng-option>
+    </ng-select>
+  </div>
+  
+</div>
+
+  <!------------------------- Hadrachos  Yesharos   ------------------------------>
+<div [hidden]= "!hidden()  && NewMaamar.Type != 'HadrachosYesharos'">
+ 
+  <div class="form-control" >
+    <label>תאריך</label>
+    <input
+      tabindex="6" (keyup.enter)="DateClick(tab7, tab8, pop, tab10)"
+      [value]="util.getHebrewDateNames(NewMaamar.date).dwdmy || ''"
+      [popover]="popTemplate"
+      container="body"
+      [outsideClick]="true"
+      [adaptivePosition]="false"
+      #pop="bs-popover"
+      placement="right top"
+    >
+    <ng-template #popTemplate>
+      <div style="min-height: 500px;">
+        <app-hebrew-datapicker [date]="NewMaamar.date" (dateSelected)="NewMaamar.date = $event.englishDate;pop.hide();DateClick(tab7, tab8, pop,tab10);"></app-hebrew-datapicker>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="form-control" >
+    <label>כותרת</label>
+    <input dir="rtl" [(ngModel)]="NewMaamar.title"  (keyup.enter)=" tab11.open()" #tab10>
+  </div>
+  
+  
+
+  <div class="form-control">
+    <label>מקור</label>
+    <ng-select dir="rtl" [(ngModel)]="NewMaamar.Source" #tab11 notFoundText="לא נמצאו פריטים" (change)="tab8.focus()">
+      <ng-option dir="rtl" *ngFor="let source of contact.source" [value]="source">{{ source.fullName }}</ng-option>
+    </ng-select>
+  </div>
+ 
+
+ </div>
+  <!-------------------------------  Personals   -------------------------------------------->
+
+  <div [hidden]="NewMaamar.Type != 'Personals'">
+  
+    <div class="form-control"  >
+      <label>כותרת</label>
+      <input dir="rtl" [(ngModel)]="NewMaamar.title" mssautofocus (keyup.enter)="tab12.open()">
+    </div>
+
+    <div class="form-control" >
+      <label>מקור</label>
+      <ng-select dir="rtl" [(ngModel)]="NewMaamar.Source" #tab12 notFoundText="לא נמצאו פריטים" (change)= "PersonelsOpenDate(pop)">
+        <ng-option dir="rtl" *ngFor="let source of contact.source" [value]="source">{{ source.fullName }}</ng-option>
+      </ng-select>
+    </div>
+  
+    <div class="form-control" >
+      <label>תאריך</label>
+      <input
+        tabindex="6" (keyup.enter)="DateClick(tab7, tab8, pop, tab10)"
+        [value]="util.getHebrewDateNames(NewMaamar.date).dwdmy || ''"
+        [popover]="popTemplate"
+        container="body"
+        [outsideClick]="true"
+        [adaptivePosition]="false"
+        #pop="bs-popover"
+        placement="right top"
+      >
+      <ng-template #popTemplate>
+        <div style="min-height: 500px;">
+          <app-hebrew-datapicker [date]="NewMaamar.date" (dateSelected)="NewMaamar.date = $event.englishDate;pop.hide();DateClick(tab7, tab8, pop, tab10);"></app-hebrew-datapicker>
+        </div>
+      </ng-template>
+    </div>
+  
+    
+  
+
+  
+    
+   
+  </div>
+  <!---------------------------------------------------------------------------->
+ 
+  <button class="btn btn-primary mr-3 mt-2" (click)="Save(false)" #tab8>שמירה</button>
+  <button class="btn btn-primary mr-3 mt-2" (click)="Save(true)">להוסיף פרטים</button>
+  <button class="btn mt-2" (click)="this.modalRef.hide()">ביטול</button>
+</div>
+</div>

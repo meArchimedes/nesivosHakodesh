@@ -1,0 +1,23 @@
+.btn.form-control.bg-transparent {
+  border-radius: 6px;
+  display: block;
+  width: unset;
+}
+
+table p {
+  line-height: 1;
+  margin: 0.5rem 0;
+}
+
+strong.solrcnthl {
+  color: blue !important;
+}
+
+.solr-mathces {
+  max-width: 1200px;
+  display: -webkit-inline-box;
+}
+
+.result-props  {
+  background-color: #efefef;
+}

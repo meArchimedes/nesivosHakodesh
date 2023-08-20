@@ -1,0 +1,17 @@
+VERSIONS
+
+npm version 9.5.1
+angular CLI version 11.0.4
+node version 18.16.1
+
+RUN Angular
+
+ng build
+set NODE_OPTIONS=--openssl-legacy-provider && npm run start
+
+DOWNLOADS
+
+https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&passive=false&cid=2030
+https://dev.mysql.com/downloads/workbench/
+
+add directories to directory "Files": Maamarim, Sefurim, Torahs

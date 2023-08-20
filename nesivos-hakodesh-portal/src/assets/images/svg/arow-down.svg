@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <defs>
+        <path d="M13.7507051,14.8309623 L10.1979167,11.2704167 L10.1979167,11.2704167 L13.7507051,7.70987103 C14.1073435,7.35245393 14.107028,6.77369463 13.75,6.41666667 C13.393086,6.05975265 12.814414,6.05975265 12.4575,6.41666667 L8.31085678,10.5633099 C7.92033249,10.9538342 7.92033249,11.5869992 8.31085678,11.9775234 L12.4575,16.1241667 C12.814414,16.4810807 13.393086,16.4810807 13.75,16.1241667 C14.107028,15.7671387 14.1073435,15.1883794 13.7507051,14.8309623 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <polygon id="Path" transform="translate(11.000000, 11.000000) scale(1, -1) rotate(90.000000) translate(-11.000000, -11.000000) " points="6.2588823e-15 -4.12170298e-15 22 -4.12170298e-15 22 22 6.2588823e-15 22"></polygon>
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Path" fill="#1F2532" transform="translate(11.000000, 11.270417) scale(1, -1) rotate(90.000000) translate(-11.000000, -11.270417) " xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

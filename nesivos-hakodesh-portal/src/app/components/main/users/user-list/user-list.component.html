@@ -1,0 +1,267 @@
+<ul class="general-tabs"  *ngIf="activeTab === toggleTabs.Types">
+  <li>
+    <a class="cursor-pointer active">{{Category.categoryName}}</a>
+  </li>
+</ul>
+
+
+
+<div class="d-flex justify-content-between list-nav align-items-center">
+  <button class="btn btn-primary" *ngIf="activeTab !== toggleTabs.users" (click)="openCreateModal(Category)">
+    ענין חדש
+    <i class="fas fa-plus-circle ml-2"></i>
+  </button>
+
+  <button class="btn btn-primary" *ngIf="activeTab === toggleTabs.categories" (click)="openCreateCat(false)">
+    קטגוריה חדש
+    <i class="fas fa-plus-circle ml-2"></i>
+  </button>
+
+
+  <button class="btn btn-primary" *ngIf="activeTab === toggleTabs.users" (click)="openAddUserModal(false)">
+    חבר חדש
+    <i class="fas fa-plus-circle ml-2"></i>
+  </button>
+  <ul class="toggle-tabs ml-auto">
+    <li *ngIf ="util.getCurrentUser().isAdmin" [ngClass]="{ 'active': activeTab === toggleTabs.users }" (click)="activeTab = toggleTabs.users">חברי המערכת</li>
+    <li *ngIf ="util.getCurrentUser().hasTopicsAccess" [ngClass]="{ 'active': activeTab === toggleTabs.categories }"  (click)="BackToCategories()">קטגוריה</li>
+   
+  </ul>
+
+  <div class="search-field form-control ml-3" *ngIf="activeTab === toggleTabs.categories">
+    <input dir="rtl" type="search" placeholder="חיפוש קטגוריה" [(ngModel)]="CategorySearch.SearchTerm" (ngModelChange)="LoadListOfCategories()">
+    <i class="fas fa-search"></i>
+    </div>
+    <div class="right-sidebar">
+      <button class="btn form-control bg-transparent" *ngIf="activeTab === toggleTabs.Types" (click)="BackToCategories()">
+       חזרה לקטגוריה
+       <i class="fas fa-long-arrow-alt-right ml-2"></i>
+     </button>
+   </div>
+   
+
+  <div class="search-field form-control ml-3" *ngIf="activeTab === toggleTabs.Types">
+   <input dir="rtl" type="search" placeholder="חיפוש ענין" [(ngModel)]="search.SearchTerm" (ngModelChange)="LoadListOfTopices()">
+  <i class="fas fa-search"></i>
+  </div>
+
+  <div class="search-field form-control ml-3" *ngIf="activeTab === toggleTabs.users">
+    <input dir="rtl" type="search" placeholder="חיפוש חברי המערכת" [(ngModel)]="UserSearch.SearchTerm" (ngModelChange)="LoadListOfUsers()">
+    <i class="fas fa-search"></i>
+    </div>
+</div>
+
+
+<ng-container *ngIf="activeTab === toggleTabs.categories">
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th (click)="sortCategories('CategoryName')">שם <i class="cursor-pointer {{getSortClassCategories('CategoryName')}}"></i></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let Category of ListOfCategories" (click)="OpenTopices(Category)">
+        <td class="text-left">
+          <div class="btn-group" dropdown (click)="$event.stopPropagation()">
+            <button class="btn btn-dots dropdown-toggle" dropdownToggle aria-controls="dropdown-basic">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+             <!-- <li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  הוסף לפרויקט
+                  <i class="fas fa-plus-circle ml-2"></i>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  הוסף לתורה
+                  <i class="fas fa-plus-circle ml-2"></i>
+                </a>
+              </li>-->
+              <li role="menuitem">
+                <button class="dropdown-item" (click)="openCreateCat(Category)">
+                  עריכה
+                  <i class="fas fa-pen ml-2"></i>
+                </button>
+              </li>
+              <li class="divider dropdown-divider"></li>
+              <li role="menuitem">
+                <button class="dropdown-item" (click)="openDeleteTopice(Category.id, 'Category')">
+                  מחיקה
+                  <i class="fas fa-trash ml-2"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </td>
+        <td></td>
+        <td>{{Category.categoryName}}</td>
+        <td>
+          <div class="custom-control custom-checkbox" (click)="$event.stopPropagation()">
+            <input type="checkbox" class="custom-control-input" id="select_1">
+            <label class="custom-control-label pointer" for="select_1"></label>
+          </div>
+        </td>
+      </tr>
+  
+    </tbody>
+  </table>
+
+ 
+  <app-pagination [page]="CategorySearch.Page" 
+  [totalCount]="totalCountCategories" 
+  [itemsPerPage]="CategorySearch.ItemsPerPage" 
+  (pageChanged)="CategoryPageChanged($event)"
+  (itemsPerPageChanged)="CategoryItemsPerPageChanged($event)"
+  objectsText="קטגוריה">
+    
+  </app-pagination>
+</ng-container>
+
+<ng-container *ngIf="activeTab === toggleTabs.Types">
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+        <th (click)="sort('Name')">שם <i class="cursor-pointer {{getSortClass('Name')}}"></i></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let Topice of ListOfTopices" (click)="openCreateModal(Topice)">
+        <td class="text-left">
+          <div class="btn-group" dropdown (click)="$event.stopPropagation()">
+            <button class="btn btn-dots dropdown-toggle" dropdownToggle aria-controls="dropdown-basic">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+             <!-- <li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  הוסף לפרויקט
+                  <i class="fas fa-plus-circle ml-2"></i>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  הוסף לתורה
+                  <i class="fas fa-plus-circle ml-2"></i>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  עריכה
+                  <i class="fas fa-pen ml-2"></i>
+                </a>
+              </li>
+              <li class="divider dropdown-divider"></li>-->
+              <li role="menuitem">
+                <button class="dropdown-item" (click)="openDeleteTopice(Topice.topicID, 'Topice')">
+                  מחיקה
+                  <i class="fas fa-trash ml-2"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </td>
+        <td></td>
+        <td *ngFor="let subTopice of Topice.subTopices">{{subTopice.name}}</td> - <td>{{Topice.name}}</td> 
+        <td>
+          <div class="custom-control custom-checkbox" (click)="$event.stopPropagation()">
+            <input type="checkbox" class="custom-control-input" id="select_1">
+            <label class="custom-control-label pointer" for="select_1"></label>
+          </div>
+        </td>
+      </tr>
+  
+    </tbody>
+  </table>
+
+ 
+  <app-pagination [page]="search.Page" 
+  [totalCount]="totalCount" 
+  [itemsPerPage]="search.ItemsPerPage" 
+  (pageChanged)="pageChanged($event)"
+  (itemsPerPageChanged)="itemsPerPageChanged($event)"
+  objectsText="ענין">
+    
+  </app-pagination>
+</ng-container>
+
+<ng-container *ngIf="activeTab === toggleTabs.users">
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th (click)="UserSort('Email')">אימייל <i class="cursor-pointer {{getUserSortClass('Email')}}"></i></th>
+        <th (click)="UserSort('PhoneNumber')">מספר טלפון <i class="cursor-pointer {{getUserSortClass('PhoneNumber')}}"></i></th>
+        <th (click)="UserSort('Id')">קוד מזהה <i class="cursor-pointer {{getUserSortClass('Id')}}"></i></th>
+        <th (click)="UserSort('FirstName')">שם <i class="cursor-pointer {{getUserSortClass('FirstName')}}"></i></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of ListOfUsers" (click)="openAddUserModal(user)">
+        <td class="text-left">
+          <div class="btn-group" dropdown (click)="$event.stopPropagation()">
+            <button class="btn btn-dots dropdown-toggle" dropdownToggle aria-controls="dropdown-basic">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+             <!-- <li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  הוסף לפרויקט
+                  <i class="fas fa-plus-circle ml-2"></i>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  הוסף לתורה
+                  <i class="fas fa-plus-circle ml-2"></i>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a class="dropdown-item" href="#">
+                  עריכה
+                  <i class="fas fa-pen ml-2"></i>
+                </a>
+              </li>
+              <li class="divider dropdown-divider"></li>-->
+              <li role="menuitem">
+                <button class="dropdown-item" (click)="openDeleteTopice(user.id, 'user')">
+                  מחיקה
+                  <i class="fas fa-trash ml-2"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </td>
+        
+        <td>{{user.email}}</td>
+        <td>{{user.phoneNumber}}</td>
+        <td>{{user.id}}</td>
+        <td>{{user.firstName}} {{user.lastName}}</td>
+        <td>
+          <div class="custom-control custom-checkbox" (click)="$event.stopPropagation()">
+            <input type="checkbox" class="custom-control-input" id="select_1">
+            <label class="custom-control-label pointer" for="select_1"></label>
+          </div>
+        </td>
+      </tr>
+     
+    </tbody>
+  </table>
+
+  <app-pagination [page]="search.Page" 
+  [totalCount]="totalCountUser" 
+  [itemsPerPage]="search.ItemsPerPage" 
+  (pageChanged)="pageChangedUsers($event)"
+  (itemsPerPageChanged)="itemsPerPageChangedUsers($event)"
+  objectsText="הגדרות">
+    
+  </app-pagination>
+</ng-container>

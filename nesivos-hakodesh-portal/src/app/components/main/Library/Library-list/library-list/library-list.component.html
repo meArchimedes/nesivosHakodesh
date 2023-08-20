@@ -1,0 +1,19 @@
+<ul class="home-outer">
+      <li *ngFor="let fld of getFolderTabs(); let i = index" (click)="folderTabClick(fld, i)">
+        {{fld.text}}
+        <i class="fas ml-2" [class.fa-chevron-left]="!fld.isHome" [class.fa-home]="fld.isHome"></i>
+      </li>
+</ul>
+    <ul class="cards-list"  dir="rtl">
+      <!--<li class="card-item dashed" (click)="openFolderAll()">
+        <i class="fas fa-book-open"></i>
+        <h3>{{ currFolderTab.allText }}</h3>
+        <p>{{ currFolderTab.totalCount }} מאמרים</p>
+      </li>-->
+      <li class="card-item" *ngFor="let fld of List" (click)="openFolder(fld)">
+        <i class="fas fa-book-open"></i>
+        <h3>{{ fld.text }}</h3>
+      <!-- <p>{{ fld.totalCount }} מאמרים</p>--> 
+      </li>
+    </ul>
+  

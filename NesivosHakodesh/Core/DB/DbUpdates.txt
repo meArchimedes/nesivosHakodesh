@@ -1,0 +1,8 @@
+﻿
+
+update Sources set FirstName = CONCAT(FirstName, ' ', LastName) where SourceID = 2
+
+
+CREATE INDEX Library_text ON NesivosHakodesh.Library(Text(2044));
+
+CREATE INDEX Library_cat ON NesivosHakodesh.Library(Category(255));

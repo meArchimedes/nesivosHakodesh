@@ -1,0 +1,34 @@
+<div ngDraggable>
+<div class="modal-header">
+    ענין חדש
+  </div>
+  
+  <div class="modal-body">
+
+    <div class="form-control">
+      <label>קטגוריה</label>
+      <ng-select dir="rtl" [(ngModel)]="NewTopice.category.categoryName" #tab1 notFoundText="לא נמצאו פריטים" (change)="ChangeCategory($event); tab2.focus()">
+        <ng-option dir="rtl" *ngFor="let category of Topices.Categories" [value]="category.categoryName">{{category.categoryName }}</ng-option>
+      </ng-select>
+    </div>
+
+
+    <div class="form-control" >
+      <label> שם  הענין</label>
+      <input dir = rtl    [(ngModel)]="NewTopice.name"   #tab2>   <!--mssautofocus   (keyup.enter)="Test(tab3); tab3.focus()"-->
+    </div>
+
+
+    <div class="form-control" *ngFor="let SubTopice of NewTopice.subTopices; let i = index" >
+      <label>נושא משנה</label>
+      <input dir = rtl   [(ngModel)]="SubTopice.name"  #tab3>
+    </div>
+    
+    <button class="btn btn-primary mr-3 mt-2" (click)="Save()" tabindex="1" #tab1>שמירה</button>
+  
+    <button class="btn mt-2" (click)="addSubTopices()">הוסיף תת הענין</button>
+    <button class="btn mt-2" (click)="this.modalRef.hide()">ביטול</button>
+  </div>
+
+</div>
+  <!--*ngFor="SubTopice of SubTopices"      [(ngModel)]="SubTopice.name"-->

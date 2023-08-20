@@ -1,0 +1,37 @@
+<div ngDraggable>
+<div class="modal-header">
+    ספר חדש
+  </div>
+  
+  <div class="modal-body">
+    <div class="form-control">
+      <label> שם  הספר</label>
+      <input dir="rtl" [(ngModel)]="NewSefur.name" mssautofocus tabindex="1" (keyup.enter)="tab2.focus()">
+    
+    </div>
+
+    <div class="form-control">
+      <label>מחבר ספר</label>
+      <input dir="rtl" [(ngModel)]="NewSefur.authorSefer" tabindex="2"  #tab2 (keyup.enter)="tab3.focus()">
+   </div>
+
+    <div class="form-control">
+        <label>תיאור ספר</label>
+        <textarea dir="rtl" [(ngModel)]="NewSefur.description" tabindex="3"  #tab3 (keyup.enter)="tab4.focus()"></textarea>
+     </div>
+
+     <div class="form-control">
+      <label>פרטים</label>
+      <input dir="rtl" [(ngModel)]="NewSefur.seferDetails" tabindex="4"  #tab4 (keyup.enter)="tab5.focus()">
+   </div>
+
+   <div class="form-control">
+    <label>נדפס  בשנת</label>
+    <input dir="rtl" [(ngModel)]="NewSefur.printYear" tabindex="5"  #tab5 (keyup.enter)="tab6.focus()">
+ </div>
+  
+    <button class="btn btn-primary mr-3 mt-2" (click)="Save()" tabindex="6"  #tab6>שמירה</button>
+   
+    <button class="btn mt-2" (click)="this.modalRef.hide()">ביטול</button>
+  </div>
+</div>

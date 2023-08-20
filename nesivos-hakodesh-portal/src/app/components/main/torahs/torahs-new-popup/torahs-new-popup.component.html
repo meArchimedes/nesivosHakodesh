@@ -1,0 +1,32 @@
+<div class="modal-header">
+    תורה חדש
+  </div>
+  
+  <div class="modal-body">
+    <div class="form-control">
+      <label>כותרת</label>
+      <input dir="rtl" [(ngModel)]="NewTorah.title" mssautofocus>
+    
+    </div>
+    <div class="form-control">
+        <label>פרשה</label>
+          <select dir="rtl" [(ngModel)]="NewTorah.parsha">
+            <option  dir="rtl" *ngFor = "let Parsha of obListOfParsha"  [ngValue]="Parsha.name">{{Parsha.name}}<option>
+           </select>
+      </div>
+
+    <div class="form-control">
+      <label>ספר</label>
+      <select dir="rtl" [(ngModel)]="NewTorah.sefer">
+        <option  dir="rtl" *ngFor = "let Sefer of contact.Sefurim"  [ngValue]="Sefer">{{Sefer.name}}<option>
+       </select>
+    </div>
+    <div class="form-control">
+      <label>מראה מקום</label>
+         <input dir="rtl" [(ngModel)]="NewTorah.maarahMakoim">
+    </div>
+   
+    <button class="btn btn-primary mr-3 mt-2" (click)="Save(false)" >שמירה</button>
+    <button class="btn btn-primary mr-3 mt-2" (click)="Save(true)" >להוסיף פרטים</button>
+    <button class="btn mt-2" (click)="this.modalRef.hide()">ביטול</button>
+  </div>

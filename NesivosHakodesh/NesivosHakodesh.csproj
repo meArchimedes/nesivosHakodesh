@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20210105220718_init.cs" />
+    <Compile Remove="Migrations\20210105220718_init.Designer.cs" />
+    <Compile Remove="Migrations\20210318141314_source.cs" />
+    <Compile Remove="Migrations\20210318141314_source.Designer.cs" />
+    <Compile Remove="Migrations\20210418190824_maamar-cnt.cs" />
+    <Compile Remove="Migrations\20210418190824_maamar-cnt.Designer.cs" />
+    <Compile Remove="Migrations\20210418194738_index.cs" />
+    <Compile Remove="Migrations\20210418194738_index.Designer.cs" />
+    <Compile Remove="Migrations\20210421155448_Roles2.cs" />
+    <Compile Remove="Migrations\20210421155448_Roles2.Designer.cs" />
+    <Compile Remove="Migrations\20210421214132_Roles5.cs" />
+    <Compile Remove="Migrations\20210421214132_Roles5.Designer.cs" />
+    <Compile Remove="Migrations\20210422001344_Roles6.cs" />
+    <Compile Remove="Migrations\20210422001344_Roles6.Designer.cs" />
+    <Compile Remove="Migrations\20210422001537_Roles6.cs" />
+    <Compile Remove="Migrations\20210422001537_Roles6.Designer.cs" />
+    <Compile Remove="Migrations\20210422001708_Roles6.cs" />
+    <Compile Remove="Migrations\20210422001708_Roles6.Designer.cs" />
+    <Compile Remove="Migrations\20210422001802_Roles6.cs" />
+    <Compile Remove="Migrations\20210422001802_Roles6.Designer.cs" />
+    <Compile Remove="Migrations\20210623143845_MaamarLibraryLink4.cs" />
+    <Compile Remove="Migrations\20210623143845_MaamarLibraryLink4.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.4" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/babelrc" /></VisualStudio></ProjectExtensions>
+
+
+</Project>

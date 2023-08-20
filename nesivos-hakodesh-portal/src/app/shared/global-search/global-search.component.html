@@ -1,0 +1,421 @@
+<div class="position-relative dropdown-wrapper" (click)="clickOnTop($event)" dropdown #dropdown="bs-dropdown">
+  <button class="btn btn-filters" (click)="toggleFilters($event)">
+    <span></span>
+  </button>
+  <button *ngIf="searchText.length" class="btn btn-clear" (click)="clearFilter($event)">
+    <i style="font-size: 20px;" class="fas fa-times"></i>
+  </button>
+  <div class="search-field btn dropdown-toggle p-0" dropdownToggle aria-controls="dropdown-basic">
+    <input class="form-control" dir="rtl" type="search" placeholder="חיפוש בכל המערכת" [(ngModel)]="searchText">
+    <i class="fas fa-search"></i>
+  </div>
+  <div id="dropdown-basic" [class.open]="showDropdown" *dropdownMenu class="dropdown-menu search-dropdown-wrapper dropdown-menu-center p-0" role="menu" aria-labelledby="button-basic" (click)="$event.stopPropagation()">
+    <div class="results" *ngIf="false">
+      <ul class="categories-list">
+        <li class="category">
+          <div class="category-title">מאמרים</div>
+          <ul class="category-results">
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="fas fa-book-open"></i>
+            </li>
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="fas fa-book-open"></i>
+            </li>
+          </ul>
+        </li>
+        <li class="category">
+          <div class="category-title">תורה</div>
+          <ul class="category-results">
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="far fa-list-alt"></i>
+            </li>
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="far fa-list-alt"></i>
+            </li>
+          </ul>
+        </li>
+        <li class="category">
+          <div class="category-title">ספרים</div>
+          <ul class="category-results">
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="fas fa-bookmark"></i>
+            </li>
+          </ul>
+        </li>
+        <li class="category">
+          <div class="category-title">מקורות</div>
+          <ul class="category-results">
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="fas fa-user-circle"></i>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="advance" *ngIf="filtersActive">
+      <ul class="categories-list">
+        <li class="category">
+          <div class="category-title">
+            מילים
+            <i class="fas fa-font ml-2"></i>
+          </div>
+          <div class="p-2">
+            <div class="d-flex align-items-center flex-wrap justify-content-end" *ngFor="let word of search.words">
+              <input type="text" class="input-number form-control m-2" [(ngModel)]="word.DistanceWords" ngDefaultControl>
+              <span class="m-2">תווים</span>
+              <button class="btn m-2" [ngClass]="{'btn-blue': word.inOrder}"  (click)="word.inOrder = !word.inOrder" >מסודר</button>
+              <button class="btn m-2">עם שימוש</button>
+              <button class="btn m-2" [ngClass]="{'btn-blue': word.matchExactly}" (click)="word.matchExactly = !word.matchExactly">התאמה מדויקת</button>
+              <input dir="rtl" (keyup.enter)="newSearch(dropdown)" type="text" class="form-control m-2" [(ngModel)]="word.text" ngDefaultControl>
+            </div>
+            <button class="btn m-2"(click)="newWord()">
+              הוסף מילה
+              <i class="fas fa-plus-circle ml-2"></i>
+            </button>
+          </div>
+        </li>
+        <li class="category" [class.hid]="!showTypes">
+          <div class="category-title pnt" [class.filtered]="hasAnyFilter(ListOfTypes)" (click)="showTypes = !showTypes">
+            סוג
+            <i class="fas fa-book-open ml-2"></i>
+          </div>
+          <div *ngIf="showTypes" dir="rtl" class="mss-rtl p-2 d-flex align-items-center flex-wrap justify-content-end" >
+            <button class="btn m-2" [ngClass]="{'btn-blue': type.selected}" *ngFor="let type of ListOfTypes" (click)="type.selected = !type.selected">{{type.typeValue}}</button>
+          </div>
+        </li>
+        <li class="category" [class.hid]="!shotTopics">
+          <div class="category-title pnt" [class.filtered]="hasAnyFilter(ListOfTopices)" (click)="shotTopics = !shotTopics">
+            ענין
+            <i class="far fa-list-alt ml-2"></i>
+          </div>
+          <div *ngIf="shotTopics" dir="rtl" class="mss-rtl p-2 d-flex align-items-center flex-wrap justify-content-end">
+            <button  class="btn m-2" [ngClass]="{'btn-blue': Topice.selected}" *ngFor = "let Topice of ListOfTopices" (click)="Topice.selected = !Topice.selected">{{Topice.name}}</button>
+          </div>
+        </li>
+        <li class="category" [class.hid]="!showParshas">
+          <div class="category-title pnt" [class.filtered]="hasAnyFilter(obListOfParsha)" (click)="showParshas = !showParshas">
+            פרשות
+            <i class="fas fa-bookmark ml-2"></i>
+          </div>
+          <div *ngIf="showParshas" dir="rtl" class="mss-rtl p-2 d-flex align-items-center flex-wrap justify-content-end">
+            <button class="btn m-2" [ngClass]="{'btn-blue': Parsha.selected}" *ngFor = "let Parsha of obListOfParsha" (click)="Parsha.selected = !Parsha.selected">{{Parsha.name}}</button>
+
+          </div>
+        </li>
+        <li class="category">
+          <div class="category-title pnt" [class.filtered]="hasAnyFilter(ListOfYears)" (click)="showYears = !showYears">
+            שנים
+            <i class="fas fa-bookmark ml-2"></i>
+          </div>
+          <div *ngIf="showYears" dir="rtl" class="mss-rtl p-2 d-flex align-items-center flex-wrap justify-content-end">
+            <button class="btn m-2" [ngClass]="{'btn-blue': year.selected}" *ngFor = "let year of ListOfYears" (click)="year.selected = !year.selected">{{year.name}}</button>
+
+          </div>
+        </li>
+      </ul>
+      <div class="actions-wrapper d-flex justify-content-between p-2">
+        <button class="btn btn-primary m-2" (click)="newSearch(dropdown)" [disabled]="wordsToSearch().length == 0">חיפוש</button>
+        <button class="btn my-2 ml-2 mr-auto" (click)="cancel()">ביטול</button>
+        <button class="btn my-2 mr-2 ml-auto" (click)="clear()">איפוס</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="search-field" style="display: none;">
+  <input class="form-control" type="search" placeholder="חיפוש בכל המערכת">
+  <i class="fas fa-search"></i>
+  <button class="btn btn-filters" (click)="filtersActive = true">
+    <span></span>
+  </button>
+
+  <div class="search-dropdown-wrapper">
+    <div class="results" *ngIf="!filtersActive">
+      <ul class="categories-list">
+        <li class="category">
+          <div class="category-title">מאמרים</div>
+          <ul class="category-results">
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="fas fa-book-open"></i>
+            </li>
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="fas fa-book-open"></i>
+            </li>
+          </ul>
+        </li>
+        <li class="category">
+          <div class="category-title">תורה</div>
+          <ul class="category-results">
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="far fa-list-alt"></i>
+            </li>
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="far fa-list-alt"></i>
+            </li>
+          </ul>
+        </li>
+        <li class="category">
+          <div class="category-title">ספרים</div>
+          <ul class="category-results">
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="fas fa-bookmark"></i>
+            </li>
+          </ul>
+        </li>
+        <li class="category">
+          <div class="category-title">מקורות</div>
+          <ul class="category-results">
+            <li>
+              <i class="fas fa-long-arrow-alt-left"></i>
+              <h6>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע</h6>
+              <p>...לורם איפסום דולור סיט אמט, קונסקטורר  אדיפיסינג אלית אדיפיסינג אלית קולהע</p>
+              <div class="breadcrumbs">
+                <a href="#">הדרכות ישרות</a>
+                •
+                <a href="#">תפילה</a>
+                •
+                <a href="#">חיים יוסקאביטש</a>
+                •
+                <a href="#">נערך י״ג כסלו תשע״ז</a>
+                •
+                <a href="#">פרשת תצווה</a>
+              </div>
+              <i class="fas fa-user-circle"></i>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+   <!-- <div class="advance" *ngIf="filtersActive">
+      <ul class="categories-list">
+        <li class="category">
+          <div class="category-title">
+            מילים
+            <i class="fas fa-font ml-2"></i>
+          </div>
+          <div class="p-2 d-flex align-items-center flex-wrap justify-content-end">
+            <input type="text" class="input-number form-control m-2" value="50">
+            <span class="m-2">תווים</span>
+            <button class="btn btn-blue m-2">מסודר</button>
+            <button class="btn m-2">עם שימוש</button>
+            <button class="btn btn-blue m-2">התאמה מדויקת</button>
+            <input type="text" value="פסח" class="form-control m-2">
+            <input type="text" class="input-number form-control m-2" value="0">
+            <span class="m-2">תווים</span>
+            <button class="btn m-2">מסודר</button>
+            <button class="btn m-2">עם שימוש</button>
+            <button class="btn m-2">התאמה מדויקת</button>
+            <input type="text" value="הכנס מילה" class="form-control m-2">
+            <button class="btn m-2">
+              הוסף מילה
+              <i class="fas fa-plus-circle ml-2"></i>
+            </button>
+          </div>
+        </li>
+        <li class="category">
+          <div class="category-title">
+            סוג
+            <i class="fas fa-book-open ml-2"></i>
+          </div>
+          <div class="p-2 d-flex align-items-center flex-wrap justify-content-end">
+            <button class="m-2 btn">בחצר הקודש</button>
+            <button class="m-2 btn btn-blue">הדרכות ישרות</button>
+            <button class="m-2 btn">פתגמין קדישין</button>
+          </div>
+        </li>
+        <li class="category">
+          <div class="category-title">
+            ענין
+            <i class="far fa-list-alt ml-2"></i>
+          </div>
+          <div class="p-2 d-flex align-items-center flex-wrap justify-content-end">
+            <button class="btn m-2">ביטחון</button>
+            <button class="btn btn-blue m-2">חסידות</button>
+            <button class="btn m-2">אמונה</button>
+            <button class="btn btn-blue m-2">תפילה</button>
+            <button class="btn m-2">תורה</button>
+          </div>
+        </li>
+        <li class="category">
+          <div class="category-title">
+            פרשות
+            <i class="fas fa-bookmark ml-2"></i>
+          </div>
+          <div class="p-2 d-flex align-items-center flex-wrap justify-content-end">
+            <button class="btn btn-blue m-2">תולדות</button>
+            <button class="btn m-2">חי׳ שרה</button>
+            <button class="btn btn-blue m-2">וירא</button>
+            <button class="btn m-2">לך לך</button>
+            <button class="btn m-2">נח</button>
+            <button class="btn m-2">בראשית</button>
+            <button class="btn m-2">נח</button>
+            <button class="btn btn-blue m-2">נח</button>
+            <button class="btn m-2">נח</button>
+            <button class="btn m-2">נח</button>
+            <button class="btn btn-blue m-2">נח</button>
+            <button class="btn m-2">נח</button>
+          </div>
+        </li>
+      </ul>
+      <div class="actions-wrapper d-flex justify-content-between p-2">
+        <button class="btn btn-primary m-2">חיפוש</button>
+        <button class="btn my-2 ml-2 mr-auto">ביטול</button>
+        <button class="btn my-2 mr-2 ml-auto">איפוס</button>
+      </div>
+    </div>-->
+  </div>
+</div>

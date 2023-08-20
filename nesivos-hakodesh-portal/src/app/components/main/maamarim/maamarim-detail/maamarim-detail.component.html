@@ -1,0 +1,435 @@
+<button class="btn btn-primary p-absolute-btn" type="button" (click)="Save()"> לשמור <i class="fas fa-save"></i></button>
+
+<div class="details-page-wrapper">
+  <div class="content-column">
+    <div class="content-header">
+      <div class="editable main-title">
+
+        <a *ngIf ="Maamar.liberyTitleId != null" [routerLink]="'/library/' + Maamar.liberyTitleId.libraryId" target="_blank"><i class="fas fa-link" ></i></a>
+       
+         <!--...................................................-->
+
+        
+          
+           <input
+           
+            dir="rtl"
+            type="text"
+            [(ngModel)]="Maamar.title"
+            [typeahead]="contactsLiberySource"
+            (typeaheadOnSelect)="selectLiberyContact($event)"
+            [typeaheadItemTemplate]="contactLkpTemplate"
+            typeaheadOptionField="text"
+            [typeaheadMinLength]="0"
+            
+            [typeaheadAsync]="true"
+            #tab9
+          >
+          <ng-template #contactLkpTemplate let-model="item" let-index="index">
+            <div>
+              <p>{{ model.parsedText }}</p>
+            </div>
+            <p>{{ model.category }} - {{ model.type }} - {{ model.section }} - {{ model.chepter }} - {{ model.verse }}</p>
+          </ng-template>
+        
+
+         <!--....mssautofocus.....................................................-->
+        <!-- <h3 contentEditable class="inner" [textContent]="Maamar.title" (input)="Maamar.title = $event.target.innerText"></h3>-->
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <button class="btn" (click)="openDeleteMaamar()">
+          מחיקה
+          <i class="fas fa-trash ml-2"></i>
+        </button>
+        <!-- <button class="btn ml-3 mr-auto" (click)="Save()">
+          לשמור
+          <i class="fas fa-save"></i>
+        </button>-->
+        <div class="breadcrumbs" dir="rtl">
+          <a > עודכן לאחרונה בתאריך {{util.getHebrewDateNames(Maamar?.lastUpdatedTime).dwy}} ע״י  {{Maamar.lastUpdatedUser?.firstName}}  {{Maamar.lastUpdatedUser?.lastName}}</a>
+          •
+          <a>נוצר בתאריך {{util.getHebrewDateNames(Maamar?.createdTime).dwy}} ע״י {{Maamar.createdUser?.firstName}} {{Maamar.createdUser?.lastName}}</a>
+          •
+          <a >{{Maamar.maamarID}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="content-wrapper">
+      <div class="content-nav">
+        <ul class="tabs-list">
+          <li class="tab" *ngIf = "TorahLinks.length != 0 " [ngClass]="{ 'active': activeTab === tabs.sources }" (click)="activeTab = tabs.sources">מאמרים מקושרים</li>
+          <li *ngIf="util.getCurrentUser().hasTorhasAccess" class="tab" [ngClass]="{ 'active': activeTab === tabs.links }" (click)="activeTab = tabs.links">תורה מקושרים</li>
+          <li class="tab" [ngClass]="{ 'active': activeTab === tabs.generalInfo }" (click)="activeTab = tabs.generalInfo">פרטים כלליים</li>
+        </ul>
+        <div *ngIf="activeTab === tabs.sources">
+          
+          <ul class="links-list">
+            <li *ngFor="let MaamarLink of TorahLinks" [class.active]="MaamarLink.open">
+              <div class="link-header" (click)="MaamarLink.open = !MaamarLink.open">
+                <i class="far fa-trash-alt" *ngIf="!MaamarLink.open" (click)="deleteTorahLink(MaamarLink, $event)"></i>
+                <i class="fas fa-external-link-alt"(click)="openMaamarLink(MaamarLink)"></i>
+                <div>
+                  <div class="title">{{MaamarLink.maamar.title}}</div>
+                  <div dir="rtl" class="points">{{MaamarLink.maamar.maamarID}} • {{MaamarLink.maamar.typeValue}} • {{MaamarLink.maamar.parsha}} • {{MaamarLink.maamar.locationDetails}}</div>
+                </div>
+                <i class="fas fa-long-arrow-alt-right ml-3"></i>
+              </div>
+              <div class="link-content">
+                <h6>{{MaamarLink.maamar.title}}</h6>
+                <span  [innerHTML]="MaamarLink.maamar.content"></span>
+              </div>
+            </li>
+
+
+             <!--<li>
+              <div class="link-header" (click)="collapsingList($event)">
+                <i class="fas fa-long-arrow-alt-left"></i>
+                <i class="fas fa-external-link-alt"></i>
+                <div>
+                  <div class="title">כותרת התורה</div>
+                  <div class="points">מזהה • מזהה • מזהה</div>
+                </div>
+                <i class="fas fa-long-arrow-alt-right ml-3"></i>
+              </div>
+              <div class="link-content">
+                <h6>כותרת קטע חדש</h6>
+                <p>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק. להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורךגולר מונפרר סוברט לורם שבצק יהול, לכנוץ בעריר גק ליץ, ושבעגט. נולום ארווס סאפיאן - פוסיליס קוויס, אקווזמן קוואזי במר מודוף. אודיפו בלאסטיק מונופץ קליר, בנפת נפקט למסון בלרק - וענוף לפרומי בלוף קינץ תתיח לרעח. לת צשחמי קולורס מונפרד אדנדום סילקוף, מרגשי ומרגשח. עמחליף סחטיר בלובק. תצטנפל בלינדו למרקל אס לכימפו, דול, צוט ומעיוט - לפתיעם ברשג - ולתיעם גדדיש. קוויז דומור ליאמום בלינך רוגצה. לפמעט מוסן מנת. ושבעגט ליבם סולגק. בראיט ולחת צורק מונחף, בגורמי מגמש. תרבנך וסתעד לכנו סתשם השמה - לתכי מורגם בורק? לתיג ישבעס. לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי נולום ארווס סאפיאן - פוסיליס קוויס, אקווזמן קוואזי במר מודוף. אודיפו בלאסטיק מונופץ קליר, בנפת נפקט למסון בלרק - וענוף מוסן מנת. להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורך. להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורך. הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.</p>
+              </div>
+             <li>
+              <div class="link-header" (click)="collapsingList($event)">
+                <i class="fas fa-long-arrow-alt-left"></i>
+                <i class="fas fa-external-link-alt"></i>
+                <div>
+                  <div class="title">כותרת התורה</div>
+                  <div class="points">מזהה • מזהה • מזהה</div>
+                </div>
+                <i class="fas fa-long-arrow-alt-right ml-3"></i>
+              </div>
+              <div class="link-content">
+                <h6>כותרת קטע חדש</h6>
+                <p>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק. להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורךגולר מונפרר סוברט לורם שבצק יהול, לכנוץ בעריר גק ליץ, ושבעגט. נולום ארווס סאפיאן - פוסיליס קוויס, אקווזמן קוואזי במר מודוף. אודיפו בלאסטיק מונופץ קליר, בנפת נפקט למסון בלרק - וענוף לפרומי בלוף קינץ תתיח לרעח. לת צשחמי קולורס מונפרד אדנדום סילקוף, מרגשי ומרגשח. עמחליף סחטיר בלובק. תצטנפל בלינדו למרקל אס לכימפו, דול, צוט ומעיוט - לפתיעם ברשג - ולתיעם גדדיש. קוויז דומור ליאמום בלינך רוגצה. לפמעט מוסן מנת. ושבעגט ליבם סולגק. בראיט ולחת צורק מונחף, בגורמי מגמש. תרבנך וסתעד לכנו סתשם השמה - לתכי מורגם בורק? לתיג ישבעס. לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי נולום ארווס סאפיאן - פוסיליס קוויס, אקווזמן קוואזי במר מודוף. אודיפו בלאסטיק מונופץ קליר, בנפת נפקט למסון בלרק - וענוף מוסן מנת. להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורך. להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורך. הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.</p>
+              </div>
+             </li>
+             <li>
+              <div class="link-header" (click)="collapsingList($event)">
+                <i class="fas fa-long-arrow-alt-left"></i>
+                <i class="fas fa-external-link-alt"></i>
+                <div>
+                  <div class="title">כותרת התורה</div>
+                  <div class="points">מזהה • מזהה • מזהה</div>
+                </div>
+                <i class="fas fa-long-arrow-alt-right ml-3"></i>
+              </div>
+              <div class="link-content">
+                <h6>כותרת קטע חדש</h6>
+                <p>לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית. סת אלמנקום ניסי נון ניבאה. דס איאקוליס וולופטה דיאם. וסטיבולום אט דולור, קראס אגת לקטוס וואל אאוגו וסטיבולום סוליסי טידום בעליק. להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורךגולר מונפרר סוברט לורם שבצק יהול, לכנוץ בעריר גק ליץ, ושבעגט. נולום ארווס סאפיאן - פוסיליס קוויס, אקווזמן קוואזי במר מודוף. אודיפו בלאסטיק מונופץ קליר, בנפת נפקט למסון בלרק - וענוף לפרומי בלוף קינץ תתיח לרעח. לת צשחמי קולורס מונפרד אדנדום סילקוף, מרגשי ומרגשח. עמחליף סחטיר בלובק. תצטנפל בלינדו למרקל אס לכימפו, דול, צוט ומעיוט - לפתיעם ברשג - ולתיעם גדדיש. קוויז דומור ליאמום בלינך רוגצה. לפמעט מוסן מנת. ושבעגט ליבם סולגק. בראיט ולחת צורק מונחף, בגורמי מגמש. תרבנך וסתעד לכנו סתשם השמה - לתכי מורגם בורק? לתיג ישבעס. לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי נולום ארווס סאפיאן - פוסיליס קוויס, אקווזמן קוואזי במר מודוף. אודיפו בלאסטיק מונופץ קליר, בנפת נפקט למסון בלרק - וענוף מוסן מנת. להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורך. להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורך. הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.</p>
+              </div>-->
+         </ul>
+        </div>
+        <div *ngIf="activeTab === tabs.links">
+          <ul class="links-list">
+            <button class="btn add-new-link d-flex justify-content-between" (click)="openMergeModal2()">
+              <i class="fas fa-plus-circle" ></i>
+              תורה מקושר חדש
+            </button>
+            <li *ngFor="let TorahLink of Maamar.torahLinks" [class.active]="TorahLink.open">
+              <div class="link-header" (click)=" getMaamarimLinkToTorah(TorahLink)">
+                <!--<div class="link-header" (click)="TorahLink.open = !TorahLink.open">-->
+                <i class="far fa-trash-alt" *ngIf="!TorahLink.open" (click)="openDeleteMaamar(TorahLink, $event)"></i>
+                <i class="fas fa-external-link-alt" (click)="openTorahLink(TorahLink)"></i>
+
+                <div>
+                  <div class="title">{{TorahLink.torah.title}}</div>
+                  <div dir="rtl" class="points">{{TorahLink.torah.torahID}} •  {{TorahLink.torah.sefer.name}} •  {{TorahLink.torah.parsha}} • {{TorahLink.torah.maarahMakoim}}</div>
+
+                </div>
+                <i class="fas fa-long-arrow-alt-right ml-3"></i>
+              </div>
+              <div class="link-content">
+                <h6>{{TorahLink.torah.title}}</h6>
+                <!--<span *ngFor="let Paragraph of TorahLink.torah.torahParagraphs" [innerHTML]="Paragraph.text"></span>
+                <span [innerHTML]="TorahLink.maamar.content"></span>-->
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="activeTab === tabs.generalInfo">
+          <ul class="general-info-list">
+            <li>
+              <i class="fas fa-clipboard-check"></i>
+              <div class="propertie">מזהה מאמר</div>
+              <div class="value">{{ Maamar.maamarID }}</div>
+            </li>
+            <li dropdown dropdownToggle aria-controls="dropdown-basic" [isDisabled]="StatusColor(Maamar).ChangeMenu">
+              <i class="fas fa-exclamation-circle"></i>
+              <div class="propertie">סטטוס</div>
+              <div class="value">
+                <span [ngClass]="StatusColor(Maamar).color">{{ Maamar.statusValue }}<!--<textarea dir="rtl" class="textarea inner" [(ngModel)]="Maamar.locationDetails"></textarea>--></span>
+                <!--  <input *ngIf="Maamar.status === 'NeedToWork'" [(ngModel)]="Maamar.statusDetails">-->
+               </div>
+              <ul id="dropdown-basic1" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem" [ngClass]="so.color" *ngFor="let so of statusOptions">
+                  <a class="dropdown-item" [ngClass]="{ 'active': Maamar.statusValue == so.text }" (click)="updateStatus(so)">{{ so.text }}</a>
+                </li>
+              </ul>
+            </li>
+            <li *ngIf="Maamar.status === 'NeedToWork'">
+              <i class="fas fa-exclamation-circle"></i>
+              <div class="propertie">סטטוס פרטים</div>
+              <input dir="rtl" class="input inner" [(ngModel)]="Maamar.statusDetails">
+            </li>
+            <li dropdown dropdownToggle aria-controls="dropdown-basic">
+              <i class="far fa-list-alt"></i>
+              <div class="propertie">ענין</div>
+              <div class="value">{{ Maamar.topic?.name }}</div>
+              <ul id="dropdown-basic2" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem" *ngFor="let so of Topics">
+                  <a class="dropdown-item" [class.active]="Maamar.topic?.name == so.name" (click)="updateTopic(so)">{{ so.name }}</a>
+                </li>
+              </ul>
+            </li>
+
+            <li dropdown dropdownToggle aria-controls="dropdown-basic" >
+              <i class="far fa-list-alt"></i>
+              <div class="propertie">עיקר ספר</div>
+              <div class="tag" *ngFor="let subTopics of getMainSefer()">{{ subTopics.topic?.name }}</div>
+              <ul id="dropdown-basic3" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem" *ngFor="let so of getTopicesGroupByCategories('ספרים')">
+                  <a class="dropdown-item" [ngClass]="{ 'active': isMainSeferTopicActive(so) }" (click)="updateMainSefer(so)">{{ so.name }}</a>
+                </li>
+              </ul>
+            </li>
+
+            <li dropdown dropdownToggle aria-controls="dropdown-basic" *ngFor="let Category of ListOfCategories">
+              <i class="far fa-list-alt"></i>
+              <div class="propertie">{{Category.categoryName}}</div>
+              <div class="tag" *ngFor="let subTopics of getSubTopics(Category.categoryName)">{{ subTopics.topic?.name }}</div>
+              <ul id="dropdown-basic3" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic"  >
+                <li role="menuitem" *ngFor="let so of  getTopicesGroupByCategories(Category.categoryName)" >
+                  <a class="dropdown-item" [ngClass]="{ 'active': isSubTopicActive(so) }" (click)="updateSubTopic(so)">{{ so.name }}</a>
+                </li>
+              </ul>
+            </li>
+           <!-- <li dropdown dropdownToggle aria-controls="dropdown-basic" >
+              <i class="far fa-list-alt"></i>
+              <div class="propertie">ענינים נוספות</div>
+              <div class="tag" *ngFor="let subTopics of getSubTopics()">{{ subTopics.topic?.name }}</div>
+              <ul id="dropdown-basic3" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem" *ngFor="let so of Topics">
+                  <a class="dropdown-item" [ngClass]="{ 'active': isSubTopicActive(so) }" (click)="updateSubTopic(so)">{{ so.name }}</a>
+                </li>
+              </ul>
+            </li>-->
+            <li dropdown dropdownToggle aria-controls="dropdown-basic">
+              <i class="fas fa-book-open"></i>
+              <div class="propertie">סוג</div>
+              <div class="value">{{ Maamar.typeValue }}</div>
+              <ul id="dropdown-basic4" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem" *ngFor="let so of typeOptions">
+                  <a class="dropdown-item" [ngClass]="{ 'active': Maamar.typeValue == so.text }" (click)="updateType(so)">{{ so.text }}</a>
+                </li>
+              </ul>
+            </li>
+            <li *ngIf="Maamar.type == 'PisguminKadishin'" dropdown dropdownToggle aria-controls="dropdown-basic">
+              <i class="fas fa-list-alt"></i>
+              <div class="propertie">פרשה</div>
+              <div class="value">{{ Maamar.parsha }}</div>
+              <ul id="dropdown-basic5" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic" style="height: 340px;">
+                <li role="menuitem" *ngFor="let so of ListOfParsha">
+                  <a class="dropdown-item" [class.active]="Maamar.parsha == so" (click)="Maamar.parsha = so; updateDate()">{{ so }}</a>
+                </li>
+              </ul>
+            </li>
+            <li *ngIf="Maamar.type == 'PisguminKadishin'" dropdown dropdownToggle aria-controls="dropdown-basic">
+              <i class="fas fa-list-alt"></i>
+              <div class="propertie">שנה</div>
+              <div class="value">{{ Maamar.year }}</div>
+              <div *dropdownMenu id="dropdown-basic6" class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <ul virtualScroller [items]="ListOfYears" (vsUpdate)="viewPortItems = $event" style="min-height: 257px;">
+                  <li role="menuitem" *ngFor="let so of viewPortItems">
+                    <a class="dropdown-item" [class.active]="Maamar.year === so.name" (click)="Maamar.year = so.name; updateDate()">{{ so.name }}</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li *ngIf="Maamar.type == 'PisguminKadishin'" dropdown dropdownToggle aria-controls="dropdown-basic">
+              <i class="fas fa-list-alt"></i>
+              <div class="propertie">סדר</div>
+              <div class="value">{{ Maamar.weeklyIndex }}</div>
+              <ul id="dropdown-basic7" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic" style="height: 200px;">
+                <li role="menuitem" *ngFor="let so of util.getIndexOptions()">
+                  <a class="dropdown-item" [class.active]="Maamar.weeklyIndex == so" (click)="Maamar.weeklyIndex = so">{{ so }}</a>
+                </li>
+              </ul>
+            </li>
+            <li [popover]="popTemplate" container="body" [outsideClick]="true" [adaptivePosition]="false" #pop="bs-popover" placement="right bottom">
+              <i class="fas fa-calendar-day"></i>
+              <div class="propertie">תאריך המקור</div>
+              <div class="value">{{ util.getHebrewDateNames(Maamar.date).dwdmy }}</div>
+            </li>
+            <ng-template #popTemplate>
+              <div style="min-height: 500px;">
+                <app-hebrew-datapicker [date]="Maamar.date" (dateSelected)="setDate($event);pop.hide()"></app-hebrew-datapicker>
+              </div>
+            </ng-template>
+            <li *ngIf="Maamar.type != 'PisguminKadishin' && Maamar.type != 'Personals'">
+              <i class="fas fa-map-marker-alt"></i>
+              <div class="propertie">מקום המקור</div>
+              <textarea dir="rtl" class="textarea inner" [(ngModel)]="Maamar.locationDetails"></textarea>
+            </li>
+            <!-- <li *ngIf="!hidden(Maamar)" class="form-control mb-0">
+              <i class="fas fa-user-circle"></i>
+              <div class="propertie">מקור המאמר</div>
+              <input dir="rtl" class="inner" type="text" [(ngModel)]="selectedSource" [typeahead]="contactsDataSource" (typeaheadOnSelect)="selectContact($event)"
+                [typeaheadItemTemplate]="contactLkpTemplate" typeaheadOptionField="fullName" [typeaheadMinLength]="0" (change)="contactChanged()" [typeaheadAsync]="true">
+            </li>
+            <ng-template #contactLkpTemplate let-model="item" let-index="index">
+              <span>{{model.fullName}} </span>
+            </ng-template> -->
+            <li class="select-wrapper">
+              <i class="fas fa-user-circle"></i>
+              <div class="propertie">מקור המאמר</div>
+              <ng-select dir="rtl" class="inner" [(ngModel)]="Source" (change)="ChangeSource($event)">
+                <ng-option *ngFor="let item of (contactsDataSource | async)" [value]="item">{{ item.fullName }}</ng-option>
+              </ng-select>
+            </li>
+
+            <!-- Files Start -->
+
+            <a #aLinkPdf [hidden]="true" [attr.href]="getFileUrl(Maamar.originalFileName)"></a>
+            <li class="file-hldr" (click)="Maamar.originalFileName && openPdfFile()">
+              <i class="far fa-file-word"></i>
+              <div class="propertie">
+                קובץ מקור
+              </div>
+              <div class="value">
+                <i *ngIf="Maamar.originalFileName" (click)="removeFile('originalFileName', $event)" class="far fa-trash-alt file-dlt"></i>
+                <span class="fileLink" *ngIf="Maamar.originalFileName">{{Maamar.originalFileNameValue}}</span>
+                <span class="uploadLink" *ngIf="!Maamar.originalFileName">Upload</span>
+              </div>
+              <input *ngIf="!Maamar.originalFileName" type="file" (change)="handleUpload($event, 'originalFileName')">
+            </li>
+
+            <a #aLinkWord [hidden]="true" [attr.href]="getFileUrl(Maamar.pdfFileName)"></a>
+            <li class="file-hldr"  (click)="Maamar.pdfFileName && openWordFile()">
+              <i class="far fa-file-pdf"></i>
+              <div class="propertie">
+                קובץ שמור
+              </div>
+              <div class="value">
+                <i *ngIf="Maamar.pdfFileName" (click)="removeFile('pdfFileName', $event)" class="far fa-trash-alt file-dlt"></i>
+                <span class="fileLink" *ngIf="Maamar.pdfFileName">{{Maamar.pdfFileNameValue}}</span>
+                <span class="uploadLink" *ngIf="!Maamar.pdfFileName">Upload</span>
+              </div>
+              <input *ngIf="!Maamar.pdfFileName" type="file" (change)="handleUpload($event, 'pdfFileName')">
+            </li>
+
+
+            <a #aLinkAudio [hidden]="true" [attr.href]="getFileUrl(Maamar.audioFileName)"></a>
+            <li  class="file-hldr audioFile" (click)="Maamar.audioFileName && openAudioFile()">
+              <i class="far fa-file-audio"></i>
+              <div class="propertie">
+                קובץ שמע
+              </div>
+              <div class="value">
+                <i *ngIf="Maamar.audioFileName" (click)="removeFile('audioFileName', $event)" class="far fa-trash-alt file-dlt"></i>
+                <audio *ngIf="Maamar.audioFileName" #audio controls controlsList="nodownload"></audio>
+                <span class="uploadLink" *ngIf="!Maamar.audioFileName">Upload</span>
+              </div>
+              <input *ngIf="!Maamar.audioFileName" type="file" (change)="handleUpload($event, 'audioFileName')">
+            </li>
+
+            <!-- Files End -->
+
+            <li *ngIf="hidden(Maamar)">
+              <i class="fas fa-print"></i>
+              <div class="propertie">פורסם</div>
+              <div class="d-flex">
+                <div style="width: 100%;">
+                  <input *ngIf="Maamar.bechatzrPrinted" type="text" dir="rtl" class="inner" [(ngModel)]="Maamar.bechatzrPrintedWeek">
+                </div>
+                <input type="checkbox" class="inner bechatzrPrinted" [(ngModel)]="Maamar.bechatzrPrinted">
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="dndList" style="height: 100%;">
+          <div class="editable paragraph" style="height: 100%;">
+            <button class="btn" *ngIf="!Maamar.editable" (click)="Maamar.editable = true">
+              <i class="fas fa-edit"></i>
+            </button>
+            <!-- [(ngModel)]="Maamar.content"-->
+            <ckeditor #ckeditor (ready)="onReady($event)"   [editor]="Editor" [config]="edtrConfig" [disabled]="!Maamar.editable"></ckeditor>
+          </div>
+        </div>
+      </div>
+
+
+      <!--<div class="content">
+        <div
+          dndDropzone
+          [dndHorizontal]="false"
+          dndEffectAllowed="'copyMove'"
+          class="dndList"
+          (dndDrop)="onDrop($event, Maamar.maamarParagraphs)"
+        >
+          <div dndPlaceholderRef class="dndPlaceholder"></div>
+          <div
+
+            class="editable"
+            *ngFor="let mp of Maamar.maamarParagraphs; let  i = index"
+            [ngClass]="{'paragraph' : mp.paragraphType == 0}"
+            [dndDraggable]="mp"
+            [dndEffectAllowed]="'copyMove'"
+            [dndDragImageOffsetFunction]="dragImageOffsetRight"
+            (dndCopied)="onDragged(mp, Maamar.maamarParagraphs, 'copy')"
+            (dndLinked)="onDragged(mp, Maamar.maamarParagraphs, 'link')"
+            (dndMoved)="onDragged(mp, Maamar.maamarParagraphs, 'move')"
+            (dndCanceled)="onDragged(mp, Maamar.maamarParagraphs, 'none')"
+          >
+            <input #editableParagraph dir="rtl" *ngIf="mp.paragraphType == 1" class="subtitle inner" [(ngModel)]="mp.text">
+            <div #editableParagraph contentEditable dir="rtl" *ngIf="mp.paragraphType == 0" class="inner" [textContent]="mp.text" (input)="mp.text = $event.target.innerText" (paste)="onPaste($event, i)"></div>
+
+            <div class="field-actions">
+              <button class="btn">
+                <i class="fas fa-plus-circle" (click)="mp.addingP = true"></i>
+              </button>
+              <button *ngIf="!mp.addingP" class="btn" dndHandle>
+                <i class="fas fa-grip-vertical"></i>
+              </button>
+              <button *ngIf="!mp.addingP" class="btn">
+                <i class="fas fa-trash" (click)="DeleteParagraph(mp)"></i>
+              </button>
+              <button *ngIf="mp.addingP" (click)="mp.addingP = false" class="btn btn-close"></button>
+              <button *ngIf="mp.addingP" class="btn text-align-btn">
+                <img (click)="AddParagraph(i, 1);mp.addingP = false" src="assets/images/svg/text-icon.svg">
+                <span (click)="AddParagraph(i, 0);mp.addingP = false" class="text-align-status right">
+                  <span></span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>-->
+    </div>
+  </div>
+  <div class="right-sidebar">
+    <button class="btn form-control bg-transparent" (click)="Back()">
+      חזרה ל{{backToSearchResult ? 'חיפוש' : 'אוצר דברי רבינו '}}
+      <i class="fas fa-long-arrow-alt-right ml-2"></i>
+    </button>
+    <hr>
+    <button class="btn btn-dark">
+      פרטי המאמר
+      <i class="fas fa-clipboard-list ml-2"></i>
+    </button>
+    <!--<button class="btn bg-transparent">
+      פראגעקטס מקושרים
+      <i class="fas fa-shapes ml-2"></i>
+    </button>-->
+  </div>
+</div>

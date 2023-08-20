@@ -1,0 +1,91 @@
+.dropdown-item {
+  padding-right: 50px;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  position: relative;
+}
+
+.dropdown-item.active::after, .dropdown-item:active::after {
+  border-color: #0065FF;
+  border-style: solid;
+  border-width: 0 0 2px 2px;
+  content: '';
+  display: block;
+  height: 7px;
+  position: absolute;
+  right: 16px;
+  top: calc(50% - 3px);
+  transform: rotate(-45deg) translateY(-50%);
+  width: 14px;
+}
+
+.details-page-wrapper .general-info-list > li.form-control {
+  padding: 0;
+  position: relative;
+}
+
+.details-page-wrapper .general-info-list > li.form-control .propertie {
+  position: absolute;
+  right: 40px;
+  top: 8px;
+}
+
+.details-page-wrapper .general-info-list > li.form-control input {
+  padding: 24px 40px 8px;
+}
+
+.file-hldr .fileLink {
+  color: #0190ff;
+}
+
+.file-hldr .uploadLink {
+  color: #c0c2c3;
+}
+
+.file-dlt {
+  display: none;
+}
+
+.file-hldr:hover .file-dlt {
+  display: inline;
+  float: left;
+  position: absolute;
+  top: 15px;
+  left: 20px;
+}
+
+.file-hldr.audioFile:hover .file-dlt {
+  top: 30px;
+}
+
+.details-page-wrapper .general-info-list > li.file-hldr input[type="file"] {
+    left: 35px;
+    width: 88%;
+}
+
+
+
+.file-hldr audio {
+  outline: none;
+  height: 32px;
+  width: 238px;
+}
+
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display
+{
+  display: none !important;
+}
+
+.textarea.inner {
+  width: 100%;
+  min-height: 70px;
+  border: none;
+  outline: none;
+}
+
+.bechatzrPrinted {
+  width: 20px;
+  margin-left: 14px;
+}

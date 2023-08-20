@@ -1,0 +1,14 @@
+<div ngDraggable>
+<div class="modal-header">
+  {{ contact.title ? contact.title : 'מחיקה'}}
+  
+  <i class="fas fa-exclamation-circle ml-2"></i>
+</div>
+
+<div class="modal-body">
+  <p>{{contact.Msg}}</p>
+  <button class="btn btn-info mr-3 mt-2"   *ngIf="contact.okButton" (click)="cancal()">ביטול</button>
+  <button class="btn btn-primary mr-3 mt-2" (click)="Delete(false)"> {{ contact.okButton ? contact.okButton : 'ביטול'}}</button>
+  <button *ngIf="contact.Del"  class="btn btn-danger mt-2" (click)="Delete(true)"> {{ contact.deleteButton ? contact.deleteButton : 'מחק'}}</button>
+</div>
+</div>

@@ -1,0 +1,149 @@
+<!--<button class="btn btn-primary p-absolute-btn" type="button" (click)="Save()"> לשמור <i class="fas fa-save"></i></button>-->
+
+<div class="details-page-wrapper">
+  <div class="content-column">
+    <div class="content-header">
+      <div class="editable main-title">
+        <!-- <h3 contentEditable class="inner" [textContent]="Maamar.title" (input)="Maamar.title = $event.target.innerText"></h3>-->
+        <h3>{{LibrarySeferdetails[0].category}} > {{LibrarySeferdetails[0].type}} > {{LibrarySeferdetails[0].section}}</h3>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+      <!--  <button class="btn" (click)="openDeleteMaamar()">
+          מחיקה
+          <i class="fas fa-trash ml-2"></i>
+        </button>
+         <button class="btn ml-3 mr-auto" (click)="Save()">
+          לשמור
+          <i class="fas fa-save"></i>
+        </button>
+        <div class="breadcrumbs" dir="rtl">
+          <a > עודכן לאחרונה בתאריך {{util.getHebrewDateNames(Maamar?.lastUpdatedTime).dwy}} ע״י  {{Maamar.lastUpdatedUser?.firstName}}  {{Maamar.lastUpdatedUser?.lastName}}</a>
+          •
+          <a>נוצר בתאריך {{util.getHebrewDateNames(Maamar?.createdTime).dwy}} ע״י {{Maamar.createdUser?.firstName}} {{Maamar.createdUser?.lastName}}</a>
+          •
+          <a >{{Maamar.maamarID}}</a>
+        </div>-->
+      </div>
+    </div>
+    <div class="content-wrapper">
+      <div class="content-nav">
+        <ul class="tabs-list">
+          <li class="tab" *ngIf = "LibrarySeferdetails.length != 0 " [ngClass]="{ 'active': activeTab === tabs.sources }" (click)="activeTab = tabs.sources">מאמרים מקושרים</li>
+         <!--<li *ngIf="util.getCurrentUser().hasTorhasAccess" class="tab" [ngClass]="{ 'active': activeTab === tabs.links }" (click)="activeTab = tabs.links">תורה מקושרים</li>-->
+         <!-- <li class="tab" [ngClass]="{ 'active': activeTab === tabs.generalInfo }" (click)="activeTab = tabs.generalInfo">פרטים כלליים</li>-->
+        </ul>
+        <div *ngIf="activeTab === tabs.sources">
+          <ul class="links-list">
+
+            <li *ngFor="let MaamarLink of MaamarimLinks" [class.active]="MaamarLink.open">
+              <div class="link-header" (click)="MaamarLink.open = !MaamarLink.open">
+                <i class="far fa-trash-alt" *ngIf="!MaamarLink.open" (click)="deleteMaamarLink(MaamarLink, $event)"></i>
+                <i class="fas fa-external-link-alt"(click)="openMaamarLink(MaamarLink)"></i>
+                <div>
+                  <div class="title">{{MaamarLink.maamar?.title}}</div>
+                  <div dir="rtl" class="points">{{MaamarLink.maamar?.maamarID}} • {{MaamarLink.maamar?.typeValue}} • {{MaamarLink.maamar?.parsha}} • {{MaamarLink.maamar?.locationDetails}}</div>
+                </div>
+                <i class="fas fa-long-arrow-alt-right ml-3"></i>
+              </div>
+              <div class="link-content">
+                <h6>{{MaamarLink.maamar?.title}}</h6>
+                <span  [innerHTML]="MaamarLink.maamar?.content"></span>
+              </div>
+            </li>
+
+
+            <!--<li>
+              <div class="link-header" >
+                <i class="far fa-trash-alt"  ></i>
+                <i class="fas fa-external-link-alt"></i>
+                <div>
+                  <div class="title">Hord Code</div>
+                  <div dir="rtl" class="points">hord code</div>
+                </div>
+                <i class="fas fa-long-arrow-alt-right ml-3"></i>
+              </div>
+              <div class="link-content">
+                <h6>Hord code</h6>
+                <span  ></span>
+              </div>
+             </li>-->
+
+
+         </ul>
+        </div>
+        <div *ngIf="activeTab === tabs.links">
+          <ul class="links-list">
+            <button class="btn add-new-link d-flex justify-content-between" >
+              <i class="fas fa-plus-circle" ></i>
+              תורה מקושר חדש
+            </button>
+            <li >
+              <div class="link-header" >
+                <!--<div class="link-header" (click)="TorahLink.open = !TorahLink.open">-->
+                <i class="far fa-trash-alt"></i>
+                <i class="fas fa-external-link-alt" ></i>
+
+                <div>
+                  <div class="title">Hord code</div>
+                  <div dir="rtl" class="points">Hord code</div>
+
+                </div>
+                <i class="fas fa-long-arrow-alt-right ml-3"></i>
+              </div>
+              <div class="link-content">
+                <h6>Hord code</h6>
+                <!--<span *ngFor="let Paragraph of TorahLink.torah.torahParagraphs" [innerHTML]="Paragraph.text"></span>
+                <span [innerHTML]="TorahLink.maamar.content"></span>-->
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="activeTab === tabs.generalInfo">
+          <ul class="general-info-list">
+            <li>
+              <i class="fas fa-clipboard-check"></i>
+              <div class="propertie">מזהה מאמר</div>
+              <div class="value">Hord code</div>
+            </li>
+           </ul>
+        </div>
+      </div>
+
+      <div class="content">
+      <!--<div class="dndList"  infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="Scroll('down')" (scrolledUp)="Scroll('up')" [scrollWindow]="false" style="height: 100%;"></div>--> 
+        <div class="dndList"   style="height: 100%;">
+          <div class="editable paragraph"  *ngFor="let details of LibrarySeferdetails" >
+            <p class="table-row" [style.font-size.px]= "fortSize" [ngClass]="{ 'selected': details.libraryId === Libraryid }"  (click) = "clicked(details.libraryId)">{{ details.chepter }} - {{ details.verse }} : {{ details.parsedText }}</p>
+            <!--<p >{{ details.category }} - {{ details.type }} -{{ details.section }} - {{ details.chepter }} - {{ details.verse }} {{ details.libraryId }} =</p>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="right-sidebar">
+    <button class="btn form-control bg-transparent" (click)="Back()">
+      חזרה ל{{backToSearchResult ? 'חיפוש' : 'ספריית ספרים'}}
+      <i class="fas fa-long-arrow-alt-right ml-2"></i>
+    </button>
+    <hr>
+    <button class="btn btn-dark">
+      פרטי המאמר
+      <i class="fas fa-clipboard-list ml-2"></i>
+    </button>
+    <button class="btn btn-dark"  (click)= "Scroll('up')">
+      קודם 
+      <i class="fas fa-arrow-circle-left"></i>
+    </button>
+    <button class="btn btn-dark" (click)="Scroll('down')">
+      הבא 
+      <i class="fas fa-arrow-circle-right"></i>
+    </button>
+
+   <button (click)="Zoom('minus')"><i class="fas fa-minus"></i></button> 
+   <button (click)="Zoom('plus')"><i class="fas fa-plus"></i></button> 
+   
+   <!--<div> <input type="number" dir="rtl" [(ngModel)]="fortSize" ></div>--> 
+   
+  </div>
+</div>
+

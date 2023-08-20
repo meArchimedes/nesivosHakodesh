@@ -1,0 +1,10 @@
+<div class="modal-header">קישור</div>
+<div class="modal-body">
+
+  <app-maamarim-list [isMergePopup]="true" (selectionUpdated)="selectionUpdated($event)"></app-maamarim-list>
+
+  <div class="d-flex align-items-center mt-5">
+   <button class="btn btn-primary mr-3" (click)="connect()">מיזוג</button>
+    <button class="btn" (click) = "this.modalRef.hide()">ביטול</button>
+  </div>
+</div>

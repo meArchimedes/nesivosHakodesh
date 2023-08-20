@@ -1,0 +1,55 @@
+<p>
+    <ngx-extended-pdf-viewer
+      [src]="pdfSrc"
+      [(page)]="page"
+      [class.hideTextLayer]="viewType != 'text'"
+      [class.annon]="viewType == 'ann'"
+      class="{{curserType}}"
+      [reloadPage]="reloadPage"
+      [handTool]="viewType == 'hand'"
+      [textLayer]="viewType != 'ann'"
+      [minifiedJSLibraries]="false"
+
+      backgroundColor="#e8e8ef"
+      [contextMenuAllowed]="false"
+      [showBookmarkButton]="false"
+      [showDownloadButton]="false"
+      [showFindButton]="true"
+      [showOpenFileButton]="false"
+      [showRotateButton]="false"
+      [showSecondaryToolbarButton]="false"
+      [enablePrint]="false"
+
+      (pagesLoaded)="onPagesLoaded($event)"
+      (currentZoomFactor)="updateCurrentZoomFactor($event)"
+      (textLayerRendered)="onTextLayerRendered($event)"
+      (pdfLoaded)="onPdfLoaded($event)"
+      (pageRendered)="onPageRendered($event)"
+      (zoomChange)="onZoomChange($event)"
+      (pageChange)="pageChange($event)"
+
+      [customToolbar]="additionalButtons"
+    >
+    </ngx-extended-pdf-viewer>
+
+
+    <ng-template #additionalButtons>
+      <div id="toolbarViewer">
+        <div id="toolbarViewerLeft">
+          <pdf-toggle-sidebar></pdf-toggle-sidebar>
+          <div class="toolbarButtonSpacer"></div>
+          <pdf-find-button [showFindButton]="true" [textLayer]="true"></pdf-find-button>
+          <pdf-paging-area></pdf-paging-area>
+        </div>
+        <div id="toolbarViewerRight">
+          <div class="toolbar-buttons-wrp">
+            <button class="btn rounded-0" [class.active]="viewType == 'hand'" (click)="ViewHand()"><i class="far fa-hand-paper"></i></button>
+            <button class="btn rounded-0" [class.active]="viewType == 'text'" (click)="ViewText()"><i class="fas fa-paragraph"></i></button>
+            <button class="btn rounded-0" [class.active]="viewType == 'ann'" (click)="ViewAnn()"><i class="fas fa-draw-polygon"></i></button>
+          </div>
+        </div>
+        <pdf-zoom-toolbar ></pdf-zoom-toolbar>
+      </div>
+    </ng-template>
+  </p>
+  
