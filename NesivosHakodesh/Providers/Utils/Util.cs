@@ -1,4 +1,5 @@
-﻿using NesivosHakodesh.Domain.Entities;
+﻿using HtmlAgilityPack;
+using NesivosHakodesh.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -130,7 +131,7 @@ namespace NesivosHakodesh.Providers.Utils
 
         public static string RemovingVowels(string rawString)
         {
-            rawString = StripHTML(rawString);
+            rawString = StripHtml(rawString);
             var newString = "";
             rawString = rawString.Replace(@"\", "");
             rawString = rawString.Replace("־", " ");
@@ -151,12 +152,15 @@ namespace NesivosHakodesh.Providers.Utils
             }
             return newString;
         }
-        public static string StripHTML(string input)
+
+        public static string StripHtml(string html)
         {
-            return Regex.Replace(input, "<.*?>", String.Empty);
+            html = html.Replace("&nbsp;", string.Empty);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(html ?? string.Empty);
+            return doc.DocumentNode.InnerText;
         }
-
-
 
         public static List<string> SplitOnFullWords(string input, string split)
         {

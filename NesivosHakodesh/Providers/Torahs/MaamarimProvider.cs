@@ -1,20 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NesivosHakodesh.Comman;
 using NesivosHakodesh.Core;
-using NesivosHakodesh.Core.Config;
 using NesivosHakodesh.Core.DB;
 using NesivosHakodesh.Domain.Entities;
 using NesivosHakodesh.Providers.Identity;
 using NesivosHakodesh.Providers.Utils;
 using NesivosHakodesh.Providers.Utils.Api;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace NesivosHakodesh.Providers.Torahs
 {
@@ -22,15 +16,15 @@ namespace NesivosHakodesh.Providers.Torahs
     {
         internal static ProviderResponse GetAllMaamarim(SearchCriteria search)
         {
-            ProviderResponse response = new ProviderResponse();
-            ListResData<Maamar> listRes = new ListResData<Maamar>(search);
+            var response = new ProviderResponse();
+            var listRes = new ListResData<Maamar>(search);
             response.Data = listRes;
 
             try
             {
                 PermissionProvider.PopulateMaamarimSearchBasedOnUserRoles(search);
 
-                var MaamarimSearch = AppProvider.GetDBContext().Maamarim
+                var maamarimSearch = AppProvider.GetDBContext().Maamarim
 
                    .Where(x => search.Type == null || !search.Type.Any() || search.Type.Contains(x.Type.Value))
                    .Where(x => search.Topic == null || !search.Topic.Any() || search.Topic.Contains(x.Topic.Name) || x.SubTopics.Any(s => search.Topic.Contains(s.Topic.Name)) )
@@ -44,81 +38,72 @@ namespace NesivosHakodesh.Providers.Torahs
 
                 if (!string.IsNullOrEmpty(search.SearchTerm))
                 {
-                    List<string> words = Util.GetWords(search.SearchTerm);
+                    var phrases = Util.GetWords(search.SearchTerm);
 
-                    foreach (string word in words)
+                    foreach (var phrase in phrases)
                     {
-                        MaamarimSearch = MaamarimSearch.Where(x =>
-                         //x.OriginalFileName.Contains(word) ||
-                         x.Title.Contains(word) ||
-                         x.MaamarID.ToString().Contains(word) ||
-                         // x.Type.Value.Contains(search.SearchTerm) ||
-                         x.Parsha.Contains(word) ||
-                         x.Year.Contains(word) ||
-                         // x.MaarahMakoim.Contains(word) ||
-                         x.LocationDetails.Contains(word) ||
-                         x.BechatzrPrintedWeek.Contains(word) ||
-                         x.Source.FirstName.Contains(word) ||
-                         x.Topic.Name.Contains(word) ||
-                         x.AccuracyDescriptin.Contains(word) ||
-                         x.SubTopics.Any(x => x.Topic.Category.CategoryName.Contains(word)) ||
-                         x.SubTopics.Any(x => x.Topic.Name.Contains(word)));
-
+                        maamarimSearch = maamarimSearch.Where(x =>
+                         x.Title.Contains(phrase) ||
+                         x.MaamarID.ToString().Contains(phrase) ||
+                         x.Content.Contains(phrase) ||
+                         x.Parsha.Contains(phrase) ||
+                         x.Year.Contains(phrase) ||
+                         x.LocationDetails.Contains(phrase) ||
+                         x.BechatzrPrintedWeek.Contains(phrase) ||
+                         x.Source.FirstName.Contains(phrase) ||
+                         x.Topic.Name.Contains(phrase) ||
+                         x.AccuracyDescriptin.Contains(phrase) ||
+                         x.SubTopics.Any(x => x.Topic.Category.CategoryName.Contains(phrase)) ||
+                         x.SubTopics.Any(x => x.Topic.Name.Contains(phrase)));
                     }
                 }
 
-
-                listRes.TotalCount = MaamarimSearch.Count();
+                listRes.TotalCount = maamarimSearch.Count();
 
                 if (search.SortDirection == SortDirection.Ascending)
                 {
                     if (search.SortBy == "Topic.Name")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderBy(x => x.Topic.Name);
+                        maamarimSearch = maamarimSearch.OrderBy(x => x.Topic.Name);
                     }
                     else if (search.SortBy == "Source.FirstName")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderBy(x => x.Source.FirstName);
+                        maamarimSearch = maamarimSearch.OrderBy(x => x.Source.FirstName);
                     }
                     else if (search.SortBy == "LiberySource")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderBy(x => x.LiberyTitleId.SortBy);
+                        maamarimSearch = maamarimSearch.OrderBy(x => x.LiberyTitleId.SortBy);
                     }
                     else
                     {
-                        MaamarimSearch = MaamarimSearch.OrderBy(x => EF.Property<object>(x, search.SortBy));  //.ThenBy(x => x.HebrewFirstName)
+                        maamarimSearch = maamarimSearch.OrderBy(x => EF.Property<object>(x, search.SortBy));  //.ThenBy(x => x.HebrewFirstName)
                     }
-
-
-
                 }
                 else
                 {
                     if (search.SortBy == "Topic.Name")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderByDescending(x => x.Topic.Name);
+                        maamarimSearch = maamarimSearch.OrderByDescending(x => x.Topic.Name);
                     }
                     else if (search.SortBy == "Source.FirstName")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderByDescending(x => x.Source.FirstName);
+                        maamarimSearch = maamarimSearch.OrderByDescending(x => x.Source.FirstName);
                     }
                     else if (search.SortBy == "LiberySource")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderByDescending(x => x.LiberyTitleId.SortBy);
+                        maamarimSearch = maamarimSearch.OrderByDescending(x => x.LiberyTitleId.SortBy);
                     }
                     else
                     {
-                        MaamarimSearch = MaamarimSearch.OrderByDescending(x => EF.Property<object>(x, search.SortBy));  //.ThenBy(x => x.HebrewFirstName)
+                        maamarimSearch = maamarimSearch.OrderByDescending(x => EF.Property<object>(x, search.SortBy));  //.ThenBy(x => x.HebrewFirstName)
                     }
-
                 }
                 //order by
                 //  MaamarimSearch = MaamarimSearch.OrderBy(x => x.Year).ThenBy(x => x.WeeklyIndex);
 
+                maamarimSearch = maamarimSearch.Skip(search.PageStartIndex).Take(search.ItemsPerPage);
 
-                MaamarimSearch = MaamarimSearch.Skip(search.PageStartIndex).Take(search.ItemsPerPage);
-
-                listRes.List = MaamarimSearch.Select(x => new Maamar
+                listRes.List = maamarimSearch.Select(x => new Maamar
                 {
                     MaamarID = x.MaamarID,
                     Title = x.Title,
@@ -161,15 +146,16 @@ namespace NesivosHakodesh.Providers.Torahs
                     LiberyTitleId = x.LiberyTitleId,
 
                 })
-                                            .ToList();
-                response.Data = listRes;
+                .ToList();
 
+                response.Data = listRes;
             }
             catch (Exception e)
             {
                 Logger.Log(e.ToString());
                 response.Messages.Add("התרחשה שגיאה");
             }
+
             return response;
         }
 
