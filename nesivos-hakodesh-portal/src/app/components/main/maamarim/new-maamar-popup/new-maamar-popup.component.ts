@@ -52,7 +52,6 @@ export class NewMaamarPopupComponent implements OnInit {
   ngOnInit(): void {
     this.onClose = new Subject();
 
-
     this.contactsDataSource = Observable.create((observer: any) => {
       observer.next(this.NewMaamar.title);
     })
@@ -66,7 +65,6 @@ export class NewMaamarPopupComponent implements OnInit {
       LibraryChepter: this.searchCriteria.LibraryChepter,
 
     })));
-
 
     this.loadParshas();
     this.loadYears();
@@ -119,7 +117,6 @@ export class NewMaamarPopupComponent implements OnInit {
     }
   }
 
-  
   PersonelsOpenDate(pop) {
     setTimeout(() => {
         pop.popover.elementRef.nativeElement.previousElementSibling.focus();
@@ -203,32 +200,30 @@ OpenLiberySearch(contactLkp){
 
     ///////////////add this 11/17/2021
 
-    console.log('add safer', this.AddSafer)
-    if (this.AddSafer.length > 0) {
-
-      this.AddSafer.forEach(e => {
-        if (e.topicID) {
-          this.NewMaamar.subTopics.push({
-            topic: e,
-            status: 'Active'
-          });
-        }
+    //console.log('add safer', this.AddSafer)
+    //if (this.AddSafer != null) {
+    //  this.AddSafer.forEach(e => {
+    //    if (e.topicID) {
+    //      this.NewMaamar.subTopics.push({
+    //        topic: e,
+    //        status: 'Active'
+    //      });
+    //    }
   
-        else{
-          var topice = {
-            name: e.label
-          }
+    //    else{
+    //      var topice = {
+    //        name: e.label
+    //      }
   
-          this.NewMaamar.subTopics.push({
-            topic: topice,
-            status: 'Active'
-          });
-        }
-      });
+    //      this.NewMaamar.subTopics.push({
+    //        topic: topice,
+    //        status: 'Active'
+    //      });
+    //    }
+    //  });
   
-    }
+    //}
    
-
     console.log('add source', this.AddSource)
 
     if (!this.AddSource.sourceID) {
@@ -283,13 +278,10 @@ OpenLiberySearch(contactLkp){
 console.log('test', this.NewMaamar)
     this.util.loadingStart();
     this.api.AddMaamar(this.NewMaamar, success => {
+    this.util.loadingStop();
 
-      this.util.loadingStop();
-    if (details) {
-
-      this.util.navigate('maamarim/' + success.maamarID)
-      this.modalRef.hide()
-    }
+    this.util.navigate('maamarim/' + success.maamarID)
+    this.modalRef.hide()
 
       this.onClose.next({
         data: success
@@ -306,12 +298,10 @@ console.log('test', this.NewMaamar)
     })
   }
 
-
   hidden(){
   //console.log('this.NewMaamar.Type', this.NewMaamar.Type)
    return this.NewMaamar.Type?.startsWith("BH_") ;
    }
-
 
   // openDeleteMaamar(msg) {
   //   var modalRef =  this.modalService.show(DeleteMaamarComponent, { class: "delete-maamar-modal",  initialState: {
