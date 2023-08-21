@@ -270,3 +270,6 @@ __pycache__/
 /Logs
 /Files
 /PlayGround
+/NesivosHakodesh/Providers/Utils/Files/MssLocalFile.bat
+/NesivosHakodesh/Providers/Utils/Files/MssLocalFile.reg
+/NesivosHakodesh/Providers/Utils/Files/MssLocalFile.vbs

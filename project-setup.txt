@@ -11,7 +11,17 @@ set NODE_OPTIONS=--openssl-legacy-provider && npm run start
 
 DOWNLOADS
 
+Visual studio
 https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&passive=false&cid=2030
+
+MySql server / IDE
 https://dev.mysql.com/downloads/workbench/
 
 add directories to directory "Files": Maamarim, Sefurim, Torahs
+
+add project local path to the following files:
+ 
+MssLocalFile.bat
+MssLocalFile.reg
+MssLocalFile.vbs
+
