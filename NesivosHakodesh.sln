@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30711.63
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NesivosHakodesh", "NesivosHakodesh\NesivosHakodesh.csproj", "{ECF45F09-69F1-4A9A-BA25-8F6E3EF1FBDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NesivosHakodesh", "NesivosHakodesh\NesivosHakodesh.csproj", "{ECF45F09-69F1-4A9A-BA25-8F6E3EF1FBDD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayGround", "PlayGround\PlayGround.csproj", "{97CAA52E-161D-4F60-B51B-547BE0A2C6EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{ECF45F09-69F1-4A9A-BA25-8F6E3EF1FBDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECF45F09-69F1-4A9A-BA25-8F6E3EF1FBDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECF45F09-69F1-4A9A-BA25-8F6E3EF1FBDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97CAA52E-161D-4F60-B51B-547BE0A2C6EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97CAA52E-161D-4F60-B51B-547BE0A2C6EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97CAA52E-161D-4F60-B51B-547BE0A2C6EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97CAA52E-161D-4F60-B51B-547BE0A2C6EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
