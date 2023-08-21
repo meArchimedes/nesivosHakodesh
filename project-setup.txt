@@ -21,6 +21,7 @@ add directories to directory "Files": Maamarim, Sefurim, Torahs
 
 add project local path to the following files:
  
+appsettings.json
 MssLocalFile.bat
 MssLocalFile.reg
 MssLocalFile.vbs
