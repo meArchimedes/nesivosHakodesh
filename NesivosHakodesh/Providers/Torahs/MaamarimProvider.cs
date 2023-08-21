@@ -352,8 +352,6 @@ namespace NesivosHakodesh.Providers.Torahs
                         db.Maamarim.Add(newMaamar);
                         db.SaveChanges();
 
-                        //AddMaamarLibrarylink(maamar, db);
-
                         response.Data = newMaamar;
                     }
                     else
@@ -658,60 +656,36 @@ namespace NesivosHakodesh.Providers.Torahs
 
         public static void AddMaamarLibrarylink(Maamar maamar, AppDBContext db)
         {
-            //List<int> maamarLibrariesLinks = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == maamar.MaamarID).Select(x => x.Library.LibraryId).ToList();
+            var maamarLibraryLinks = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == maamar.MaamarID)
+                .Where(x => x.IsTitle == false)
+                .Include(x => x.Library).ToList();
 
-            List<MaamarLibraryLink> maamarLibrariesLinks = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == maamar.MaamarID)
-                          .Where(x => x.IsTitle == false)
-                         .Include(x => x.Library).ToList();
-
-
-
-
-            List<string> LibraryId = new List<string>();
-
-            foreach (string word in Util.SplitOnFullWords(maamar.Content, "href=\"library/"))
+            foreach (var maamarLibraryLink in maamarLibraryLinks)
             {
-
-                string toBeSearched = "href=\"library/";
-
-                string ipaddr = word.Substring(word.IndexOf(toBeSearched) + toBeSearched.Length );
-                string ipaddr2 = ipaddr.Substring(0, ipaddr.IndexOf("\""));
-
-                int newId = Int32.Parse(ipaddr2);
-                var link = maamarLibrariesLinks.Where(x => x.Library.LibraryId == newId).FirstOrDefault();
-
-                if (link == null)
-                {
-                    MaamarLibraryLink maamarLibraryLink = new MaamarLibraryLink
-                    {
-                        Library = db.Library.Find(int.Parse(ipaddr2)),
-                        Maamar = db.Maamarim.Find(maamar.MaamarID),
-
-                    };
-                    db.MaamarLibraryLinks.Add(maamarLibraryLink);
-                }
-
-                LibraryId.Add(ipaddr2);
-
-
+                db.MaamarLibraryLinks.Remove(maamarLibraryLink);
             }
 
-            List<string> StringLinkId = maamarLibrariesLinks.ConvertAll<string>(x => x.Library.LibraryId.ToString());
-            var isRemovedLinked = StringLinkId.Except(LibraryId).ToList();
+            var hrefIds = maamar.Content.Split(@"<a href=""library/");
 
-            if (isRemovedLinked.Count != 0)
+            foreach (var hrefId in hrefIds)
             {
-
-                foreach (var RemovedLinked in isRemovedLinked)
+                if (!char.IsDigit(hrefId.First()))
                 {
-                    MaamarLibraryLink Delete = maamarLibrariesLinks.Where(x => x.Library.LibraryId == int.Parse(RemovedLinked)).FirstOrDefault();
-                    Delete.IsDeleted = true;
-
+                    continue;
                 }
 
-            }
+                var index = hrefId.IndexOf('"');
+                var id = hrefId.Substring(0, index);
+                int libraryId = int.Parse(id);
+           
+                var maamarLibraryLink = new MaamarLibraryLink
+                {
+                    Library = db.Library.Find(libraryId),
+                    Maamar = db.Maamarim.Find(maamar.MaamarID),
+                };
 
-
+                db.MaamarLibraryLinks.Add(maamarLibraryLink);
+            }         
         }
 
         private static List<string> ValidateMaamarim(Maamar currMaamar, Maamar maamar, bool update, AppDBContext db)
