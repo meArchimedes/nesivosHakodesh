@@ -9,7 +9,7 @@ using NesivosHakodesh.Core.DB;
 namespace NesivosHakodesh.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230810131750_20230810_1617")]
+    [Migration("20230810_1617")]
     partial class _20230810_1617
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
