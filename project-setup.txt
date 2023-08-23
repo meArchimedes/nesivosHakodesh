@@ -4,7 +4,7 @@ npm version 9.5.1
 angular CLI version 11.0.4
 node version 18.16.1
 
-RUN Angular
+npm install --force
 
 ng build
 set NODE_OPTIONS=--openssl-legacy-provider && npm run start
@@ -14,15 +14,28 @@ DOWNLOADS
 Visual studio
 https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&passive=false&cid=2030
 
-MySql server / IDE
+MySql server
+https://dev.mysql.com/downloads/mysql/
+
+MySql IDE
 https://dev.mysql.com/downloads/workbench/
 
-add directories to directory "Files": Maamarim, Sefurim, Torahs
+Add these directories under the directory "Files": Maamarim, Sefurim, Torahs
 
-add project local path to the following files:
+Add project local path to the following files:
  
 appsettings.json
 MssLocalFile.bat
 MssLocalFile.reg
 MssLocalFile.vbs
+
+Add file "appsettings.json" to solution directory
+edit the following:
+   "Database": "Server=[SERVER];Database=NesivosHakodesh;Uid=[USER];Pwd=[PASSWORD];Persist Security Info=True;"
+   "DevEmail": "",
+   "FromEmail": "",
+   "FilesBaseDir": "C:\\inetpub\\Projects\\Nesivos\\Files\\",
+   "LogToFile": "C:\\inetpub\\Projects\\Mechon\\Logs\\myapp_.txt"
+
+Add file "environment.ts" to angualr project directory
 
