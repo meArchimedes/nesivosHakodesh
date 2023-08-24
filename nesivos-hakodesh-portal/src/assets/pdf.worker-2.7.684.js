@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1145,7 +1145,7 @@ function _isValidProtocol(url) {
   }
 
   switch (url.protocol) {
-    case "http:":
+    case "https:":
     case "https:":
     case "ftp:":
     case "mailto:":
@@ -5337,7 +5337,7 @@ class Catalog {
 
   static parseDestDictionary(params) {
     function addDefaultProtocolToUrl(url) {
-      return url.startsWith("www.") ? `http://${url}` : url;
+      return url.startsWith("www.") ? `https://${url}` : url;
     }
 
     function tryConvertUrlEncoding(url) {

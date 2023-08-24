@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -283,7 +283,7 @@ var _util = __w_pdfjs_require__(2);
 
 const DEFAULT_LINK_REL = "noopener noreferrer nofollow";
 exports.DEFAULT_LINK_REL = DEFAULT_LINK_REL;
-const SVG_NS = "http://www.w3.org/2000/svg";
+const SVG_NS = "https://www.w3.org/2000/svg";
 
 class BaseCanvasFactory {
   constructor() {
@@ -724,7 +724,7 @@ function isValidFetchUrl(url, baseUrl) {
     const {
       protocol
     } = baseUrl ? new URL(url, baseUrl) : new URL(url);
-    return protocol === "http:" || protocol === "https:";
+    return protocol === "https:" || protocol === "https:";
   } catch (ex) {
     return false;
   }
@@ -1225,7 +1225,7 @@ function _isValidProtocol(url) {
   }
 
   switch (url.protocol) {
-    case "http:":
+    case "https:":
     case "https:":
     case "ftp:":
     case "mailto:":
@@ -12065,8 +12065,8 @@ exports.SVGGraphics = SVGGraphics;
     fontWeight: "normal",
     fillColor: "#000000"
   };
-  const XML_NS = "http://www.w3.org/XML/1998/namespace";
-  const XLINK_NS = "http://www.w3.org/1999/xlink";
+  const XML_NS = "https://www.w3.org/XML/1998/namespace";
+  const XLINK_NS = "https://www.w3.org/1999/xlink";
   const LINE_CAP_STYLES = ["butt", "round", "square"];
   const LINE_JOIN_STYLES = ["miter", "round", "bevel"];
 
@@ -13832,7 +13832,7 @@ class PDFNetworkStreamFullRequestReader {
       suggestedLength
     } = (0, _network_utils.validateRangeRequestCapabilities)({
       getResponseHeader,
-      isHttp: this._manager.isHttp,
+      ishttps: this._manager.isHttp,
       rangeChunkSize: this._rangeChunkSize,
       disableRange: this._disableRange
     });
@@ -14494,7 +14494,7 @@ class PDFFetchStreamReader {
         suggestedLength
       } = (0, _network_utils.validateRangeRequestCapabilities)({
         getResponseHeader,
-        isHttp: this._stream.isHttp,
+        ishttps: this._stream.isHttp,
         rangeChunkSize: this._rangeChunkSize,
         disableRange: this._disableRange
       });

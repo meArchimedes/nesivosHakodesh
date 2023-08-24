@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'https://localhost:44366/',
-  solrBaseUrl: 'http://34.206.93.90:8983/solr/NesivosHakodesh/select',
+  solrBaseUrl: 'https://34.206.93.90:8983/solr/NesivosHakodesh/select',
   cookie: 'nserflocal',
   assestPrefix: ''
 };
