@@ -27,7 +27,7 @@ export class TestComponent implements OnInit {
   //       matchExactly : true,
   //       DistanceWords : 1
   //     }
-         
+
   //   ]
 
   // };
@@ -48,24 +48,24 @@ export class TestComponent implements OnInit {
        DistanceWords : 0
     },
   ],
- 
+
   };
- 
+
   filters : any = {
     topic : [],
     Source: [],
     mammarType: [],
     parsha : [],
     createdTime : [],
-    
+
 
 };
- 
+
 filter: string = '';
 
   createWord(){
-      
-     
+
+
    }
 
   newWord() {
@@ -80,7 +80,7 @@ filter: string = '';
   }
 
   newSearch() {
-    
+
     var source = this.filters.Source;
     if (source.length != 0) {
       this.filter += `fq=Source%20%3A%20(${source})&`;
@@ -91,28 +91,28 @@ filter: string = '';
     if (topic.length != 0) {
       this.filter += `fq=Topic%20%3A%20(${topic})&`;
     }
-  
+
     var mammarType =  this.filters.mammarType;
     if (mammarType.length != 0) {
       this.filter += `fq=MaamarType%20%3A%20(${mammarType})&`;
     }
-  
+
     var parsha =  this.filters.parsha;
 
     if (parsha.length != 0) {
       this.filter += `fq=Parsha%20%3A%20(${parsha})&`;
     }
-  
+
     var createdTime =  this.filters.createdTime;
 
     if (createdTime.length != 0) {
       this.filter += `fq=CreatedTime%20%3A%20(${createdTime})&`;
     }
-  
+
     this.filters.Source = [];
 // fq=Type%20%3A%20(Maamarim%20OR%20Torahs)&
 // (${topic})
-    
+
     var q = "";
     var a = "";
     var b = "";
@@ -120,19 +120,19 @@ filter: string = '';
       a = '';
       b = '"';
 ;
-    
+
     };
 
 
     //
-    
+
     var searchQuery = '{!complexphrase inOrder=true} ';
-    
+
     for (let index = 0; index < this.search.words.length; index++) {
-      
+
       searchQuery += this.buildSearchForWord2(index, 'Title', true, 10);
       searchQuery += this.buildSearchForWord2(index, 'Content', false, 1);
-      
+
     }
 
 
@@ -159,7 +159,7 @@ filter: string = '';
 
     //for yiddish
    // q += '{!complexphrase inOrder=true}';
- 
+
     this.search.words.forEach(word => {
 //word.text = this.newWord1;
 
@@ -168,18 +168,18 @@ filter: string = '';
        b = !word.matchExactly ? '*' : '%22';
        a = '%20'
       var d = '(';
- 
+
        q += `${d}${p}${word.DistanceWords} ${k} ${p}${a}${word.text})`;
-       
+
      });
-    
+
    // q += "%22%7E2";
-    
+
     //genrate solr url
-    var url = `http://localhost:8983/solr/myproducts/msssearch?${this.filter}q=${searchQuery}`;
-    // &defType=dismax&qf=text%20contact  
+    var url = `https://localhost:8983/solr/myproducts/msssearch?${this.filter}q=${searchQuery}`;
+    // &defType=dismax&qf=text%20contact
     //
-    //var url = `http://localhost:8983/solr/myproducts/select?defType=dismax&q=${searchQuery}&qf=Content%5E1%20text%5E2&start=0`;
+    //var url = `https://localhost:8983/solr/myproducts/select?defType=dismax&q=${searchQuery}&qf=Content%5E1%20text%5E2&start=0`;
     window.open(url, "_blank");
 
 
@@ -236,7 +236,7 @@ filter: string = '';
 
     var searchQuery = '';
 
-    if((index +1) == this.search.words.length) 
+    if((index +1) == this.search.words.length)
     {
       return searchQuery;
     }
@@ -292,4 +292,4 @@ filter: string = '';
     return `${leftDQ}${star}${word.text}${star}${rightDQ}`;
   }
 
-} 
+}
