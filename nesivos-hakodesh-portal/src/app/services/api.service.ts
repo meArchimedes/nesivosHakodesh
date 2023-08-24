@@ -138,7 +138,7 @@ console.log('term', term)
     var search = term
 
 
-    return this.http.post(url, search, httpOptions)
+    return this.https.post(url, search, httpOptions)
     .pipe(map(response => response['data']['list']));
   }
 
@@ -354,7 +354,7 @@ SearchSource(term){
     SortBy: 'FirstName',
     SortDirection: 'Ascending'
   };
-  return this.http.post(url, search, httpOptions)
+  return this.https.post(url, search, httpOptions)
   .pipe(map(response => response['data'] ['list']));
 }
 
@@ -665,7 +665,7 @@ Deleteuser(id, success, error){
     var formData = new FormData();
 
     formData.append(file.name, file);
-    this.http.post(url, formData, this.getHttpOptions(true)).subscribe(data => successCallback(data['data']), error => errorCallback(error.error));
+    this.https.post(url, formData, this.getHttpOptions(true)).subscribe(data => successCallback(data['data']), error => errorCallback(error.error));
 
   }
 
@@ -682,7 +682,7 @@ Deleteuser(id, success, error){
       observe: 'response'
     };
 
-    return this.http.post(url, {SearchTerm: filePath}, httpOptions).toPromise();
+    return this.https.post(url, {SearchTerm: filePath}, httpOptions).toPromise();
   }
 
   //private functions
@@ -732,7 +732,7 @@ Deleteuser(id, success, error){
         url = this.getUrlWithParams(url, option.data);
       }
 
-      return this.http
+      return this.https
         .get(url, httpOptions)
         .subscribe(
           data => {
@@ -747,7 +747,7 @@ Deleteuser(id, success, error){
           error => errorCallback(error)
         );
     } else if (option.method == 'POST') {
-      return this.http
+      return this.https
         .post(url, option.data, httpOptions)
         .subscribe(
           data => success(data[responseDataFieldName]),
@@ -755,7 +755,7 @@ Deleteuser(id, success, error){
         );
     } else if (option.method == 'PUT') {
 
-      return this.http
+      return this.https
         .put(url, option.data, httpOptions)
         .subscribe(
           data => success(data[responseDataFieldName]),
@@ -766,7 +766,7 @@ Deleteuser(id, success, error){
         url = this.getUrlWithParams(url, option.data);
       }
 
-      return this.http
+      return this.https
         .delete(url, httpOptions)
         .subscribe(
           data => success(data[responseDataFieldName]),
