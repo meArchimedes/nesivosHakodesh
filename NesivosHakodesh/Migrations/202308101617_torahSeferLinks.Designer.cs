@@ -9,8 +9,8 @@ using NesivosHakodesh.Core.DB;
 namespace NesivosHakodesh.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20230810_1617")]
-    partial class _20230810_1617
+    [Migration("202308101617_torahSeferLinks")]
+    partial class TorahSeferLinks
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
