@@ -51,7 +51,7 @@ export class MaamarimDetailComponent implements OnInit, ComponentCanDeactivate {
      topic: {},
     // torah: {}
     updatedUser: {},
-    liberyTitleId:{}
+    titleLibraryId:{}
   };
   saveMaamarJson: string = '';
   color: string
@@ -233,8 +233,8 @@ export class MaamarimDetailComponent implements OnInit, ComponentCanDeactivate {
     this.Maamar.title = e.item.parsedText
     
     
-    this.Maamar.liberyTitleId = e.item
-  //  console.log(' this.Maamar.LiberyTitleId',  this.Maamar.liberyTitleId)
+    this.Maamar.titleLibraryId = e.item
+  //  console.log(' this.Maamar.LiberyTitleId',  this.Maamar.titleLibraryId)
   //  console.log(' this.Maamar',  this.Maamar)
    /* this.onClose.next({
       result:  this.LibraryResult,

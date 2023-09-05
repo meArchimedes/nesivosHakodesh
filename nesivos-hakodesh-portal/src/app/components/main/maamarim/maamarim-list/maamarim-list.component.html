@@ -227,10 +227,10 @@
         <td [tooltip]="util.getHebrewDateNames(maamarim.date).dmy" [delay]="500" container="body">
           <div>{{ util.getHebrewDateNames(maamarim.date).dwy }}</div>
         </td>
-        <td *ngIf="maamarim.liberyTitleId != null">
-          <div>{{ maamarim.liberyTitleId?.section}} - {{ maamarim.liberyTitleId?.chepter}} - {{ maamarim.liberyTitleId?.verse}}</div>
+        <td *ngIf="maamarim.titleLibraryId != null">
+          <div>{{ maamarim.titleLibraryId?.section}} - {{ maamarim.titleLibraryId?.chepter}} - {{ maamarim.titleLibraryId?.verse}}</div>
         </td>
-        <td *ngIf="maamarim.liberyTitleId == null"></td>
+        <td *ngIf="maamarim.titleLibraryId == null"></td>
         <td>
           <div>{{ maamarim.typeValue }}</div>
         </td>

@@ -19,7 +19,7 @@ export class NewMaamarPopupComponent implements OnInit {
 
   NewMaamar: any = {
     subTopics: [],
-    LiberyTitleId: {}
+    TitleLibraryId: {}
   };
   AddSafer: any = {};
   AddSource : any= {};
@@ -82,7 +82,7 @@ export class NewMaamarPopupComponent implements OnInit {
   // this.masterContact.father = e.item;
    // this.LibraryResult = e.item.libraryId;
     this.NewMaamar.title = e.item.parsedText
-    this.NewMaamar.LiberyTitleId.LibraryId = e.item.libraryId
+    this.NewMaamar.TitleLibraryId.LibraryId = e.item.libraryId
     tab7.open()
    /* this.onClose.next({
       result:  this.LibraryResult,
