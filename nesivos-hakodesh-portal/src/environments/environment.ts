@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'https://localhost:44366/',
-  solrBaseUrl: 'http://34.206.93.90:8983/solr/NesivosHakodesh/select',
+  solrBaseUrl: 'https://34.206.93.90:8983/solr/NesivosHakodesh/select',
   cookie: 'nserflocal',
   assestPrefix: ''
 };
@@ -17,4 +17,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NesivosHakodesh.Migrations
 {
-    public partial class _20230810_1617 : Migration
+    public partial class TorahSeferLinks : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

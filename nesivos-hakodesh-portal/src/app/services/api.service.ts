@@ -15,7 +15,7 @@ import { LocalCookieService } from './cookie.service';
 export class ApiService {
 
   constructor(
-    private http: HttpClient,
+    private https: HttpClient,
     private router: Router,
     private util: UtilService,
     private localCookieService: LocalCookieService
@@ -86,7 +86,7 @@ export class ApiService {
     };
     this.makeApiRequest(option, success, error);
   }
-  
+
   Getmaamar(id, success , error){
     var option = {
       method:'GET',
@@ -108,7 +108,7 @@ export class ApiService {
     var option = {
       method: 'DELETE',
       url: 'api/Maamarim/' + id ,
-     
+
     };
     this.makeApiRequest(option, success, error);
   }
@@ -121,7 +121,7 @@ export class ApiService {
     this.makeApiRequest(option, success, error);
   }
 
-  
+
   GetMaamarStatus(success , error){
     var option = {
       method:'GET',
@@ -136,9 +136,9 @@ console.log('term', term)
     var httpOptions = this.getHttpOptions(false);
 
     var search = term
-    
 
-    return this.http.post(url, search, httpOptions)
+
+    return this.https.post(url, search, httpOptions)
     .pipe(map(response => response['data']['list']));
   }
 
@@ -169,7 +169,7 @@ console.log('term', term)
     var option = {
       method: 'GET',
       url: 'api/Library/' + id,
-      
+
     };
 
     this.makeApiRequest(option, success, error);
@@ -189,7 +189,7 @@ console.log('term', term)
     var option = {
       method: 'DELETE',
       url: 'api/Library/' + id ,
-     
+
     };
     this.makeApiRequest(option, success, error);
   }
@@ -198,9 +198,9 @@ console.log('term', term)
     var option = {
       method: 'GET',
       url: 'api/Library/Categoryfilters',
-     
+
     };
-  
+
     this.makeApiRequest(option, success, error);
   }
 
@@ -210,7 +210,7 @@ console.log('term', term)
       url: 'api/Library/Typefilters',
       data: search
     };
-  
+
     this.makeApiRequest(option, success, error);
   }
 
@@ -220,7 +220,7 @@ console.log('term', term)
       url: 'api/Library/Sectionfilters',
       data: search
     };
-  
+
     this.makeApiRequest(option, success, error);
   }
 
@@ -230,7 +230,7 @@ console.log('term', term)
       url: 'api/Library/Chopterfilters',
       data: search
     };
-  
+
     this.makeApiRequest(option, success, error);
   }
 
@@ -301,7 +301,7 @@ DeleteTopice(id, success, error){
   var option = {
     method: 'DELETE',
     url: 'api/Topics/' + id ,
-   
+
   };
   this.makeApiRequest(option, success, error);
 }
@@ -309,7 +309,7 @@ GetSeforimTopices(success , error){
   var option = {
     method: 'GET',
     url: 'api/Topics/Seforim' ,
-   
+
   };
   this.makeApiRequest(option, success, error);
 }
@@ -326,7 +326,7 @@ GetTopicesForDropDown(success , error){
   var option = {
     method: 'GET',
     url: 'api/Topics/List' ,
-   
+
   };
   this.makeApiRequest(option, success, error);
 }
@@ -354,7 +354,7 @@ SearchSource(term){
     SortBy: 'FirstName',
     SortDirection: 'Ascending'
   };
-  return this.http.post(url, search, httpOptions)
+  return this.https.post(url, search, httpOptions)
   .pipe(map(response => response['data'] ['list']));
 }
 
@@ -380,7 +380,7 @@ DeleteSource(id, success, error){
   var option = {
     method: 'DELETE',
     url: 'api/Sources/' + id ,
-   
+
   };
   this.makeApiRequest(option, success, error);
 }
@@ -429,7 +429,7 @@ DeleteSefur(id, success, error){
   var option = {
     method: 'DELETE',
     url: 'api/Sefurim/' + id ,
-   
+
   };
   this.makeApiRequest(option, success, error);
 }
@@ -440,7 +440,7 @@ getParshas(success, error){
   var option = {
     method: 'GET',
     url: 'api/Parsha',
-    
+
   };
 
   this.makeApiRequest(option, success, error);
@@ -450,7 +450,7 @@ getParshas2(success, error){
   var option = {
     method: 'GET',
     url: 'api/Parsha/withBooks',
-    
+
   };
 
   this.makeApiRequest(option, success, error);
@@ -507,7 +507,7 @@ DeleteTorah(id, success, error){
   var option = {
     method: 'DELETE',
     url: 'api/Torahs/' + id ,
-   
+
   };
   this.makeApiRequest(option, success, error);
 }
@@ -526,7 +526,7 @@ GetMaamarTorahLink(id, success, error){
   var option = {
     method: 'GET',
     url: 'api/MaamarTorahLink/' + id,
-   
+
   };
   this.makeApiRequest(option, success, error);
 }
@@ -535,7 +535,7 @@ DeleteMaamarTorahLink(id, success, error){
   var option = {
     method: 'DELETE',
     url: 'api/MaamarTorahLink/' + id ,
-   
+
   };
   this.makeApiRequest(option, success, error);
 }
@@ -582,18 +582,18 @@ DeleteCategory(id, success, error){
   var option = {
     method: 'DELETE',
     url: 'api/Categories/' + id ,
-   
+
   };
   this.makeApiRequest(option, success, error);
 }
 
 //Solr
 AddRecordsToSolr(success, error){
-  
+
   var option = {
     method: 'GET',
     url: 'api/test/solr',
-    
+
   };
 
   this.makeApiRequest(option, success, error);
@@ -654,7 +654,7 @@ Deleteuser(id, success, error){
   var option = {
     method: 'DELETE',
     url: 'api/Users/' + id ,
-   
+
   };
   this.makeApiRequest(option, success, error);
 }
@@ -663,9 +663,9 @@ Deleteuser(id, success, error){
 
     var url =  environment.apiBaseUrl + `api/Files/upload/${type}/${id}/${subType}` ;
     var formData = new FormData();
-  
+
     formData.append(file.name, file);
-    this.http.post(url, formData, this.getHttpOptions(true)).subscribe(data => successCallback(data['data']), error => errorCallback(error.error));
+    this.https.post(url, formData, this.getHttpOptions(true)).subscribe(data => successCallback(data['data']), error => errorCallback(error.error));
 
   }
 
@@ -682,7 +682,7 @@ Deleteuser(id, success, error){
       observe: 'response'
     };
 
-    return this.http.post(url, {SearchTerm: filePath}, httpOptions).toPromise();
+    return this.https.post(url, {SearchTerm: filePath}, httpOptions).toPromise();
   }
 
   //private functions
@@ -732,7 +732,7 @@ Deleteuser(id, success, error){
         url = this.getUrlWithParams(url, option.data);
       }
 
-      return this.http
+      return this.https
         .get(url, httpOptions)
         .subscribe(
           data => {
@@ -747,7 +747,7 @@ Deleteuser(id, success, error){
           error => errorCallback(error)
         );
     } else if (option.method == 'POST') {
-      return this.http
+      return this.https
         .post(url, option.data, httpOptions)
         .subscribe(
           data => success(data[responseDataFieldName]),
@@ -755,7 +755,7 @@ Deleteuser(id, success, error){
         );
     } else if (option.method == 'PUT') {
 
-      return this.http
+      return this.https
         .put(url, option.data, httpOptions)
         .subscribe(
           data => success(data[responseDataFieldName]),
@@ -765,8 +765,8 @@ Deleteuser(id, success, error){
       if(option.data) {
         url = this.getUrlWithParams(url, option.data);
       }
-      
-      return this.http
+
+      return this.https
         .delete(url, httpOptions)
         .subscribe(
           data => success(data[responseDataFieldName]),

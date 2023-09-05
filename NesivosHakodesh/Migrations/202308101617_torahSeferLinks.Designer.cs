@@ -3,14 +3,13 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NesivosHakodesh.Core.DB;
 
 namespace NesivosHakodesh.Migrations
 {
-    [DbContext(typeof(AppDBContext))]
-    [Migration("20230810_1617")]
-    partial class _20230810_1617
+    [DbContext(typeof(AppDBContext))]   
+    [Migration("202308101617_torahSeferLinks")]
+    partial class TorahSeferLinks
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

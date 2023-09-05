@@ -269,3 +269,7 @@ __pycache__/
 /nesivos-hakodesh-portal/package-lock.json
 /Logs
 /Files
+/PlayGround
+/NesivosHakodesh/Providers/Utils/Files/MssLocalFile.bat
+/NesivosHakodesh/Providers/Utils/Files/MssLocalFile.reg
+/NesivosHakodesh/Providers/Utils/Files/MssLocalFile.vbs

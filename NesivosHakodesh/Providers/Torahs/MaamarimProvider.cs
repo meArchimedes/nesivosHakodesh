@@ -1,20 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NesivosHakodesh.Comman;
 using NesivosHakodesh.Core;
-using NesivosHakodesh.Core.Config;
 using NesivosHakodesh.Core.DB;
 using NesivosHakodesh.Domain.Entities;
 using NesivosHakodesh.Providers.Identity;
 using NesivosHakodesh.Providers.Utils;
 using NesivosHakodesh.Providers.Utils.Api;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace NesivosHakodesh.Providers.Torahs
 {
@@ -22,15 +16,15 @@ namespace NesivosHakodesh.Providers.Torahs
     {
         internal static ProviderResponse GetAllMaamarim(SearchCriteria search)
         {
-            ProviderResponse response = new ProviderResponse();
-            ListResData<Maamar> listRes = new ListResData<Maamar>(search);
+            var response = new ProviderResponse();
+            var listRes = new ListResData<Maamar>(search);
             response.Data = listRes;
 
             try
             {
                 PermissionProvider.PopulateMaamarimSearchBasedOnUserRoles(search);
 
-                var MaamarimSearch = AppProvider.GetDBContext().Maamarim
+                var maamarimSearch = AppProvider.GetDBContext().Maamarim
 
                    .Where(x => search.Type == null || !search.Type.Any() || search.Type.Contains(x.Type.Value))
                    .Where(x => search.Topic == null || !search.Topic.Any() || search.Topic.Contains(x.Topic.Name) || x.SubTopics.Any(s => search.Topic.Contains(s.Topic.Name)) )
@@ -44,81 +38,72 @@ namespace NesivosHakodesh.Providers.Torahs
 
                 if (!string.IsNullOrEmpty(search.SearchTerm))
                 {
-                    List<string> words = Util.GetWords(search.SearchTerm);
+                    var phrases = Util.GetWords(search.SearchTerm);
 
-                    foreach (string word in words)
+                    foreach (var phrase in phrases)
                     {
-                        MaamarimSearch = MaamarimSearch.Where(x =>
-                         //x.OriginalFileName.Contains(word) ||
-                         x.Title.Contains(word) ||
-                         x.MaamarID.ToString().Contains(word) ||
-                         // x.Type.Value.Contains(search.SearchTerm) ||
-                         x.Parsha.Contains(word) ||
-                         x.Year.Contains(word) ||
-                         // x.MaarahMakoim.Contains(word) ||
-                         x.LocationDetails.Contains(word) ||
-                         x.BechatzrPrintedWeek.Contains(word) ||
-                         x.Source.FirstName.Contains(word) ||
-                         x.Topic.Name.Contains(word) ||
-                         x.AccuracyDescriptin.Contains(word) ||
-                         x.SubTopics.Any(x => x.Topic.Category.CategoryName.Contains(word)) ||
-                         x.SubTopics.Any(x => x.Topic.Name.Contains(word)));
-
+                        maamarimSearch = maamarimSearch.Where(x =>
+                         x.Title.Contains(phrase) ||
+                         x.MaamarID.ToString().Contains(phrase) ||
+                         x.Content.Contains(phrase) ||
+                         x.Parsha.Contains(phrase) ||
+                         x.Year.Contains(phrase) ||
+                         x.LocationDetails.Contains(phrase) ||
+                         x.BechatzrPrintedWeek.Contains(phrase) ||
+                         x.Source.FirstName.Contains(phrase) ||
+                         x.Topic.Name.Contains(phrase) ||
+                         x.AccuracyDescriptin.Contains(phrase) ||
+                         x.SubTopics.Any(x => x.Topic.Category.CategoryName.Contains(phrase)) ||
+                         x.SubTopics.Any(x => x.Topic.Name.Contains(phrase)));
                     }
                 }
 
-
-                listRes.TotalCount = MaamarimSearch.Count();
+                listRes.TotalCount = maamarimSearch.Count();
 
                 if (search.SortDirection == SortDirection.Ascending)
                 {
                     if (search.SortBy == "Topic.Name")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderBy(x => x.Topic.Name);
+                        maamarimSearch = maamarimSearch.OrderBy(x => x.Topic.Name);
                     }
                     else if (search.SortBy == "Source.FirstName")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderBy(x => x.Source.FirstName);
+                        maamarimSearch = maamarimSearch.OrderBy(x => x.Source.FirstName);
                     }
                     else if (search.SortBy == "LiberySource")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderBy(x => x.TitleLibraryId.SortBy);
+                        maamarimSearch = maamarimSearch.OrderBy(x => x.TitleLibraryId.SortBy);
                     }
                     else
                     {
-                        MaamarimSearch = MaamarimSearch.OrderBy(x => EF.Property<object>(x, search.SortBy));  //.ThenBy(x => x.HebrewFirstName)
+                        maamarimSearch = maamarimSearch.OrderBy(x => EF.Property<object>(x, search.SortBy));  //.ThenBy(x => x.HebrewFirstName)
                     }
-
-
-
                 }
                 else
                 {
                     if (search.SortBy == "Topic.Name")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderByDescending(x => x.Topic.Name);
+                        maamarimSearch = maamarimSearch.OrderByDescending(x => x.Topic.Name);
                     }
                     else if (search.SortBy == "Source.FirstName")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderByDescending(x => x.Source.FirstName);
+                        maamarimSearch = maamarimSearch.OrderByDescending(x => x.Source.FirstName);
                     }
                     else if (search.SortBy == "LiberySource")
                     {
-                        MaamarimSearch = MaamarimSearch.OrderByDescending(x => x.TitleLibraryId.SortBy);
+                        maamarimSearch = maamarimSearch.OrderByDescending(x => x.TitleLibraryId.SortBy);
                     }
                     else
                     {
-                        MaamarimSearch = MaamarimSearch.OrderByDescending(x => EF.Property<object>(x, search.SortBy));  //.ThenBy(x => x.HebrewFirstName)
+                        maamarimSearch = maamarimSearch.OrderByDescending(x => EF.Property<object>(x, search.SortBy));  //.ThenBy(x => x.HebrewFirstName)
                     }
-
                 }
                 //order by
                 //  MaamarimSearch = MaamarimSearch.OrderBy(x => x.Year).ThenBy(x => x.WeeklyIndex);
 
+                maamarimSearch = maamarimSearch.Skip(search.PageStartIndex).Take(search.ItemsPerPage);
 
-                MaamarimSearch = MaamarimSearch.Skip(search.PageStartIndex).Take(search.ItemsPerPage);
-
-                listRes.List = MaamarimSearch.Select(x => new Maamar
+                listRes.List = maamarimSearch.Select(x => new Maamar
                 {
                     MaamarID = x.MaamarID,
                     Title = x.Title,
@@ -161,18 +146,18 @@ namespace NesivosHakodesh.Providers.Torahs
                     TitleLibraryId = x.TitleLibraryId,
 
                 })
-                                            .ToList();
-                response.Data = listRes;
+                .ToList();
 
+                response.Data = listRes;
             }
             catch (Exception e)
             {
                 Logger.Log(e.ToString());
                 response.Messages.Add("התרחשה שגיאה");
             }
+
             return response;
         }
-
 
         internal static ProviderResponse GetMaamar(int id)
         {
@@ -271,21 +256,22 @@ namespace NesivosHakodesh.Providers.Torahs
 
         internal static ProviderResponse AddMaamar(Maamar maamar)
         {
-            ProviderResponse response = new ProviderResponse();
+            var response = new ProviderResponse();
 
             try
             {
-                AppDBContext db = AppProvider.GetDBContext();
+                var db = AppProvider.GetDBContext();
                 response.Messages.AddRange(ValidateMaamarim(null, maamar, false, db));
 
                 if (response.Success)
                 {
+                    var hasPermission = (PermissionProvider.HasPermissionToMaamar(maamar, PermissionType.EDIT));
 
-                    if (PermissionProvider.HasPermissionToMaamar(maamar, PermissionType.EDIT))
+                    if (hasPermission)
                     {
-                        Maamar NewMaamar = new Maamar
+                        var newMaamar = new Maamar
                         {
-                           // Source = maamar.Source,
+                            // Source = maamar.Source,
                             Topic = maamar.Topic,
                             Type = maamar.Type,
                             Status = MaamarimStatus.NewWithOutDetails,
@@ -301,77 +287,72 @@ namespace NesivosHakodesh.Providers.Torahs
                             BechatzrPrinted = maamar.BechatzrPrinted,
                             BechatzrPrintedWeek = maamar.BechatzrPrintedWeek,
                             Comments = maamar.Comments,
-                            TitleLibraryId = db.Library.Find(maamar.TitleLibraryId.LibraryId),
-                            
+                            TitleLibraryId = db.Library.Find(maamar.TitleLibraryId.LibraryId),                           
                             //MaamarParagraphs = maamar.MaamarParagraphs,
                             SubTopics = new List<MaamarTopic>(),
                         };
 
-                        //add new source  11/18/2021
                         if (maamar.Source.SourceID == 0)
                         {
-                            Source NewSource = new Source
+                            var source = new Source
                             {
                                 FirstName = maamar.Source.FirstName,
                             };
-                            db.Sources.Add(NewSource);
+                            db.Sources.Add(source);
 
-                            NewMaamar.Source = NewSource;
+                            newMaamar.Source = source;
                         }
                         else
                         {
-                            NewMaamar.Source = maamar.Source;
+                            var source = db.Sources.Find(maamar.Source.SourceID);
+                            newMaamar.Source = source;
                         }
 
                         //add safer as main safer 11/17/2021
-                        foreach (MaamarTopic MaamarTopics in maamar.SubTopics)
-                        {
-                            //insert
+                        //foreach (MaamarTopic MaamarTopics in maamar.SubTopics)
+                        //{
+                        //    //insert
+
+                        //  //  if add new topice(Safer)
+                        //    if (MaamarTopics.Topic.TopicID == 0)
+                        //    {
+                        //       Topic topice = new Topic
+                        //        {
+                        //            Name = MaamarTopics.Topic.Name,
+                        //            Category = db.Categories.Where(x => x.CategoryName == "ספרים").FirstOrDefault()
 
 
+                        //        };
 
-                            //  if add new topice(Safer)
-                            if (MaamarTopics.Topic.TopicID == 0)
-                            {
-                                Topic topice = new Topic
-                                {
-                                    Name = MaamarTopics.Topic.Name,
-                                    Category = db.Categories.Where(x => x.CategoryName == "ספרים").FirstOrDefault()
-
-
-                                };
-
-                                MaamarTopic newSubTopic = new MaamarTopic
-                                {
-                                    Status = MaamarTopics.Status,
-                                    Topic = topice,
-                                    MainTopic = true,
-                                };
-                                NewMaamar.SubTopics.Add(newSubTopic);
-                            }
-                            else
-                            {
-                                // topice = MaamarTopics.Topic;
-                                MaamarTopic newSubTopic = new MaamarTopic
-                                {
-                                    Status = MaamarTopics.Status,
-                                    Topic = db.Topics.Find(MaamarTopics.Topic.TopicID),
-                                    MainTopic = true,
-                                };
-                                NewMaamar.SubTopics.Add(newSubTopic);
-                            }
-                        }
-
-                        db.Maamarim.Add(NewMaamar);
+                        //        MaamarTopic newSubTopic = new MaamarTopic
+                        //        {
+                        //            Status = MaamarTopics.Status,
+                        //            Topic = topice,
+                        //            MainTopic = true,
+                        //        };
+                        //        newMaamar.SubTopics.Add(newSubTopic);
+                        //    }
+                        //    else
+                        //    {
+                        //       // topice = MaamarTopics.Topic;
+                        //        MaamarTopic newSubTopic = new MaamarTopic
+                        //        {
+                        //            Status = MaamarTopics.Status,
+                        //            Topic = db.Topics.Find(MaamarTopics.Topic.TopicID),
+                        //            MainTopic = true,
+                        //        };
+                        //        newMaamar.SubTopics.Add(newSubTopic);
+                        //    }                                                         
+                        //}
 
                         //Add this to link Maamar Title to library;
                         var library = db.Library.Find(maamar.TitleLibraryId.LibraryId);
-                        NewMaamar.TitleLibraryId = library;
+                        newMaamar.TitleLibraryId = library;
 
-                        AddMaamarLibrarylink(maamar, db);
-
+                        db.Maamarim.Add(newMaamar);
                         db.SaveChanges();
-                        response.Data = NewMaamar;
+
+                        response.Data = newMaamar;
                     }
                     else
                     {
@@ -384,6 +365,7 @@ namespace NesivosHakodesh.Providers.Torahs
                 Logger.Log(e.ToString());
                 response.Messages.Add("התרחשה שגיאה");
             }
+
             return response;
         }
 
@@ -432,7 +414,10 @@ namespace NesivosHakodesh.Providers.Torahs
                     if (PermissionProvider.HasPermissionToMaamar(currMaamar, PermissionType.EDIT))
                     {
                         currMaamar.Content = maamar.Content;
-                        currMaamar.Source = maamar.Source;
+
+                        var source = db.Sources.Find(maamar.Source.SourceID);
+                        currMaamar.Source = source;
+
                         currMaamar.Type = maamar.Type;
                         currMaamar.StatusDetails = maamar.StatusDetails;
                         currMaamar.OriginalFileName = maamar.OriginalFileName;
@@ -448,16 +433,11 @@ namespace NesivosHakodesh.Providers.Torahs
                         currMaamar.BechatzrPrintedWeek = maamar.BechatzrPrintedWeek;
                         currMaamar.AccuracyRate = maamar.AccuracyRate;
                         currMaamar.AccuracyDescriptin = maamar.AccuracyDescriptin;
-                        //currMaamar.Status = maamar.Status;
-                        currMaamar.Topic = maamar.Topic;
-                        currMaamar.Source = maamar.Source;
+                        //currMaamar.Topic = maamar.Topic;
                         currMaamar.Comments = maamar.Comments;
-
 
                         if (maamar.Title != maamar.TitleLibraryId.ParsedText)
                         {
-
-
                             if (currMaamar.TitleLibraryId != null)
                             {
                                 var CurrMammarTitleLiberylink = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == currMaamar.MaamarID && x.Library.LibraryId == currMaamar.TitleLibraryId.LibraryId).FirstOrDefault();
@@ -466,8 +446,6 @@ namespace NesivosHakodesh.Providers.Torahs
 
                                     CurrMammarTitleLiberylink.IsDeleted = true;
                                 }
-
-
                             }
 
                             currMaamar.TitleLibraryId = null;
@@ -483,8 +461,6 @@ namespace NesivosHakodesh.Providers.Torahs
                                     CurrMammarTitleLiberylink.Library = db.Library.Find(maamar.TitleLibraryId.LibraryId);
                                     CurrMammarTitleLiberylink.IsDeleted = false;
                                 }
-
-
                             }
                             else
                             {
@@ -498,9 +474,6 @@ namespace NesivosHakodesh.Providers.Torahs
 
                             currMaamar.TitleLibraryId = db.Library.Find(maamar.TitleLibraryId.LibraryId);
                         }
-
-
-
 
                         foreach (MaamarTopic MaamarTopics in maamar.SubTopics)
                         {
@@ -683,49 +656,35 @@ namespace NesivosHakodesh.Providers.Torahs
 
         public static void AddMaamarLibrarylink(Maamar maamar, AppDBContext db)
         {
-            //List<int> maamarLibrariesLinks = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == maamar.MaamarID).Select(x => x.Library.LibraryId).ToList();
-
-            var maamarLibrariesLinks = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == maamar.MaamarID)
+            var maamarLibraryLinks = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == maamar.MaamarID)
                 .Include(x => x.Library).ToList();
 
-            var LibraryId = new List<string>();
-
-            foreach (var word in Util.SplitOnFullWords(maamar.Content, "href=\"library/"))
+            foreach (var maamarLibraryLink in maamarLibraryLinks)
             {
-
-                string toBeSearched = "href=\"library/";
-
-                string ipaddr = word.Substring(word.IndexOf(toBeSearched) + toBeSearched.Length );
-                string ipaddr2 = ipaddr.Substring(0, ipaddr.IndexOf("\""));
-
-                int newId = Int32.Parse(ipaddr2);
-                var link = maamarLibrariesLinks.Where(x => x.Library.LibraryId == newId).FirstOrDefault();
-
-                if (link == null)
-                {
-                    MaamarLibraryLink maamarLibraryLink = new MaamarLibraryLink
-                    {
-                        Library = db.Library.Find(int.Parse(ipaddr2)),
-                        Maamar = db.Maamarim.Find(maamar.MaamarID),
-
-                    };
-                    db.MaamarLibraryLinks.Add(maamarLibraryLink);
-                }
-
-                LibraryId.Add(ipaddr2);
+                db.MaamarLibraryLinks.Remove(maamarLibraryLink);
             }
 
-            List<string> StringLinkId = maamarLibrariesLinks.ConvertAll<string>(x => x.Library.LibraryId.ToString());
-            var isRemovedLinked = StringLinkId.Except(LibraryId).ToList();
+            var hrefIds = maamar.Content.Split(@"<a href=""library/");
 
-            if (isRemovedLinked.Count != 0)
+            foreach (var hrefId in hrefIds)
             {
-                foreach (var RemovedLinked in isRemovedLinked)
+                if (!char.IsDigit(hrefId.First()))
                 {
-                    MaamarLibraryLink Delete = maamarLibrariesLinks.Where(x => x.Library.LibraryId == int.Parse(RemovedLinked)).FirstOrDefault();
-                    Delete.IsDeleted = true;
+                    continue;
                 }
-            }
+
+                var index = hrefId.IndexOf('"');
+                var id = hrefId.Substring(0, index);
+                int libraryId = int.Parse(id);
+           
+                var maamarLibraryLink = new MaamarLibraryLink
+                {
+                    Library = db.Library.Find(libraryId),
+                    Maamar = db.Maamarim.Find(maamar.MaamarID),
+                };
+
+                db.MaamarLibraryLinks.Add(maamarLibraryLink);
+            }         
         }
 
         private static List<string> ValidateMaamarim(Maamar currMaamar, Maamar maamar, bool update, AppDBContext db)
@@ -781,7 +740,7 @@ namespace NesivosHakodesh.Providers.Torahs
 
                     if (maamar.SubTopics.Count == 0)
                     {
-                        errors.Add("נא למלאות הענין");
+                        //errors.Add("נא למלאות הענין");
                     }
 
                     /* foreach (MaamarTopic MaamarTopic in maamar.SubTopics)
