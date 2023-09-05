@@ -72,7 +72,7 @@ namespace NesivosHakodesh.Providers.Torahs
                     }
                     else if (search.SortBy == "LiberySource")
                     {
-                        maamarimSearch = maamarimSearch.OrderBy(x => x.LiberyTitleId.SortBy);
+                        maamarimSearch = maamarimSearch.OrderBy(x => x.TitleLibraryId.SortBy);
                     }
                     else
                     {
@@ -91,7 +91,7 @@ namespace NesivosHakodesh.Providers.Torahs
                     }
                     else if (search.SortBy == "LiberySource")
                     {
-                        maamarimSearch = maamarimSearch.OrderByDescending(x => x.LiberyTitleId.SortBy);
+                        maamarimSearch = maamarimSearch.OrderByDescending(x => x.TitleLibraryId.SortBy);
                     }
                     else
                     {
@@ -143,7 +143,7 @@ namespace NesivosHakodesh.Providers.Torahs
                     AudioFileName = x.AudioFileName,
                     Content = x.Content,
                     Comments = x.Comments,
-                    LiberyTitleId = x.LiberyTitleId,
+                    TitleLibraryId = x.TitleLibraryId,
 
                 })
                 .ToList();
@@ -203,7 +203,7 @@ namespace NesivosHakodesh.Providers.Torahs
                                                     BechatzrPrinted = x.BechatzrPrinted,
                                                     BechatzrPrintedWeek = x.BechatzrPrintedWeek,
                                                     Comments = x.Comments,
-                                                    LiberyTitleId = x.LiberyTitleId,
+                                                    TitleLibraryId = x.TitleLibraryId,
                                                     TorahLinks = x.TorahLinks.Select(tl => new MaamarTorahLink
                                                     {
                                                         MaamarTorahLinkID = tl.MaamarTorahLinkID,
@@ -287,7 +287,7 @@ namespace NesivosHakodesh.Providers.Torahs
                             BechatzrPrinted = maamar.BechatzrPrinted,
                             BechatzrPrintedWeek = maamar.BechatzrPrintedWeek,
                             Comments = maamar.Comments,
-                            LiberyTitleId = db.Library.Find(maamar.LiberyTitleId.LibraryId),                           
+                            TitleLibraryId = db.Library.Find(maamar.TitleLibraryId.LibraryId),                           
                             //MaamarParagraphs = maamar.MaamarParagraphs,
                             SubTopics = new List<MaamarTopic>(),
                         };
@@ -346,8 +346,8 @@ namespace NesivosHakodesh.Providers.Torahs
                         //}
 
                         //Add this to link Maamar Title to library;
-                        var library = db.Library.Find(maamar.LiberyTitleId.LibraryId);
-                        newMaamar.LiberyTitleId = library;
+                        var library = db.Library.Find(maamar.TitleLibraryId.LibraryId);
+                        newMaamar.TitleLibraryId = library;
 
                         db.Maamarim.Add(newMaamar);
                         db.SaveChanges();
@@ -381,7 +381,7 @@ namespace NesivosHakodesh.Providers.Torahs
                            .Include(x => x.Topic)
                            .Include(x => x.SubTopics)
                                 .ThenInclude(x => x.Topic)
-                           .Include(x => x.LiberyTitleId)
+                           .Include(x => x.TitleLibraryId)
                            .Include(x => x.LibraryLink)
                            .FirstOrDefault();
 
@@ -436,11 +436,11 @@ namespace NesivosHakodesh.Providers.Torahs
                         //currMaamar.Topic = maamar.Topic;
                         currMaamar.Comments = maamar.Comments;
 
-                        if (maamar.Title != maamar.LiberyTitleId.ParsedText)
+                        if (maamar.Title != maamar.TitleLibraryId.ParsedText)
                         {
-                            if (currMaamar.LiberyTitleId != null)
+                            if (currMaamar.TitleLibraryId != null)
                             {
-                                var CurrMammarTitleLiberylink = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == currMaamar.MaamarID && x.Library.LibraryId == currMaamar.LiberyTitleId.LibraryId).FirstOrDefault();
+                                var CurrMammarTitleLiberylink = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == currMaamar.MaamarID && x.Library.LibraryId == currMaamar.TitleLibraryId.LibraryId).FirstOrDefault();
                                 if (CurrMammarTitleLiberylink != null)
                                 {
 
@@ -448,17 +448,17 @@ namespace NesivosHakodesh.Providers.Torahs
                                 }
                             }
 
-                            currMaamar.LiberyTitleId = null;
+                            currMaamar.TitleLibraryId = null;
                         }
 
                         else
                         {
-                            if (currMaamar.LiberyTitleId != null)
+                            if (currMaamar.TitleLibraryId != null)
                             {
-                                var CurrMammarTitleLiberylink = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == currMaamar.MaamarID && x.Library.LibraryId == currMaamar.LiberyTitleId.LibraryId).FirstOrDefault();
+                                var CurrMammarTitleLiberylink = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == currMaamar.MaamarID && x.Library.LibraryId == currMaamar.TitleLibraryId.LibraryId).FirstOrDefault();
                                 if (CurrMammarTitleLiberylink != null)
                                 {
-                                    CurrMammarTitleLiberylink.Library = db.Library.Find(maamar.LiberyTitleId.LibraryId);
+                                    CurrMammarTitleLiberylink.Library = db.Library.Find(maamar.TitleLibraryId.LibraryId);
                                     CurrMammarTitleLiberylink.IsDeleted = false;
                                 }
                             }
@@ -466,13 +466,13 @@ namespace NesivosHakodesh.Providers.Torahs
                             {
                                 currMaamar.LibraryLink.Add(new MaamarLibraryLink
                                 {
-                                    Library = db.Library.Find(maamar.LiberyTitleId.LibraryId),
+                                    Library = db.Library.Find(maamar.TitleLibraryId.LibraryId),
                                     IsDeleted = false,
 
                                 });
                             }
 
-                            currMaamar.LiberyTitleId = db.Library.Find(maamar.LiberyTitleId.LibraryId);
+                            currMaamar.TitleLibraryId = db.Library.Find(maamar.TitleLibraryId.LibraryId);
                         }
 
                         foreach (MaamarTopic MaamarTopics in maamar.SubTopics)
@@ -657,7 +657,6 @@ namespace NesivosHakodesh.Providers.Torahs
         public static void AddMaamarLibrarylink(Maamar maamar, AppDBContext db)
         {
             var maamarLibraryLinks = db.MaamarLibraryLinks.Where(x => x.Maamar.MaamarID == maamar.MaamarID)
-                .Where(x => x.IsTitle == false)
                 .Include(x => x.Library).ToList();
 
             foreach (var maamarLibraryLink in maamarLibraryLinks)

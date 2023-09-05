@@ -36,7 +36,7 @@ namespace NesivosHakodesh.Domain.Entities
         public string OriginalFileName { get; set; }
         public string PdfFileName { get; set; }
         public string AudioFileName { get; set; }
-        public Library LiberyTitleId { get; set; }
+        public Library TitleLibraryId { get; set; }
 
         public string Comments { get; set; }
         public List<MaamarParagraph> MaamarParagraphs { get; set; }
@@ -104,7 +104,7 @@ namespace NesivosHakodesh.Domain.Entities
         BH_MaameremProtem = 13,
         [EnumValue("סיפורי קודש")]
         BH_SeperiKodesh = 14,
-        
+
 
 
 
